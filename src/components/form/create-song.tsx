@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from "react";
-import Select from "react-select";
-import { rythmoi, keys, dromoi } from "../../data/data";
-import { ISong } from "../../interfaces/interfaces";
+import React, { useState, useEffect } from 'react';
+import Select from 'react-select';
+import { rythmoi, keys, dromoi } from '../../data/data';
+import { ISong } from '../../interfaces/interfaces';
 
 interface IProps {
 	handleSubmit: (_sng: ISong) => void;
@@ -17,16 +17,16 @@ interface IFormProps {
 
 const CreateSong: React.FC<IProps> = ({ handleSubmit, songToEdit }: IProps) => {
 	const [song, setSong] = useState({
-		id: "",
-		title: "",
-		youtube: "",
+		id: '',
+		title: '',
+		youtube: '',
 		tempo: 0,
-		rythm: "",
-		key: "",
-		dromos: "",
-		body: "",
+		rythm: '',
+		key: '',
+		dromos: '',
+		body: '',
 		presentable: false,
-		notes: "",
+		notes: '',
 	});
 
 	const onChangeSelect = (option: string, attribute: string) => {
@@ -52,7 +52,7 @@ const CreateSong: React.FC<IProps> = ({ handleSubmit, songToEdit }: IProps) => {
 				<label
 					htmlFor={name}
 					className="col-md-2 text-right col-md-form-label"
-					style={{ textTransform: "capitalize" }}
+					style={{ textTransform: 'capitalize' }}
 				>
 					{label}
 				</label>
@@ -90,10 +90,11 @@ const CreateSong: React.FC<IProps> = ({ handleSubmit, songToEdit }: IProps) => {
 					placeholder="Yourtube URL"
 					type="text"
 					className="form-control"
-					onChange={(e) =>
-						setSong((song) => {
+					onChange={(e) => {
+						return setSong((song) => {
 							return { ...song, youtube: e.target.value };
-						})
+						});
+					}
 					}
 					value={song.youtube}
 				/>
@@ -110,10 +111,11 @@ const CreateSong: React.FC<IProps> = ({ handleSubmit, songToEdit }: IProps) => {
 						className="form-control"
 						aria-describedby="stixoiHelpBlock"
 						required
-						onChange={(e) =>
-							setSong((song) => {
+						onChange={(e) => {
+							return setSong((song) => {
 								return { ...song, body: e.target.value };
-							})
+							});
+						}
 						}
 						value={song.body}
 						rows={15}
@@ -122,12 +124,12 @@ const CreateSong: React.FC<IProps> = ({ handleSubmit, songToEdit }: IProps) => {
 			</FormPiece>
 			<FormPiece isSelect={true} label="Κλειδί" name="key">
 				<Select
-					classNamePrefix={"select"}
+					classNamePrefix={'select'}
 					options={keys}
 					onChange={(option) => {
 						option &&
 							option.value &&
-							onChangeSelect(option.value, "key");
+							onChangeSelect(option.value, 'key');
 					}}
 					value={keys.find((key) => {
 						return key.value === song.key;
@@ -138,12 +140,12 @@ const CreateSong: React.FC<IProps> = ({ handleSubmit, songToEdit }: IProps) => {
 			</FormPiece>
 			<FormPiece isSelect={true} label="Δρόμοι" name="dromoi">
 				<Select
-					classNamePrefix={"select"}
+					classNamePrefix={'select'}
 					options={dromoi}
 					onChange={(option) => {
 						option &&
 							option.value &&
-							onChangeSelect(option.value, "dromos");
+							onChangeSelect(option.value, 'dromos');
 					}}
 					value={dromoi.find((dromos) => {
 						return dromos.value === song.dromos;
@@ -154,12 +156,12 @@ const CreateSong: React.FC<IProps> = ({ handleSubmit, songToEdit }: IProps) => {
 			</FormPiece>
 			<FormPiece isSelect={true} label="Ρυθμός" name="rythm">
 				<Select
-					classNamePrefix={"select"}
+					classNamePrefix={'select'}
 					options={rythmoi}
 					onChange={(option) => {
 						option &&
 							option.value &&
-							onChangeSelect(option.value.name, "rythm");
+							onChangeSelect(option.value.name, 'rythm');
 					}}
 					value={rythmoi.find((rythm) => {
 						return rythm.value.name === song.rythm;
@@ -174,13 +176,14 @@ const CreateSong: React.FC<IProps> = ({ handleSubmit, songToEdit }: IProps) => {
 					type="number"
 					className="form-control"
 					value={song.tempo}
-					onChange={(e) =>
-						setSong((song) => {
+					onChange={(e) => {
+						return setSong((song) => {
 							return {
 								...song,
 								tempo: e.target.valueAsNumber,
 							};
-						})
+						});
+					}
 					}
 				/>
 			</FormPiece>
@@ -194,10 +197,11 @@ const CreateSong: React.FC<IProps> = ({ handleSubmit, songToEdit }: IProps) => {
 					name="notes"
 					className="form-control"
 					value={song.notes}
-					onChange={(e) =>
-						setSong((song) => {
+					onChange={(e) => {
+						return setSong((song) => {
 							return { ...song, notes: e.target.value };
-						})
+						});
+					}
 					}
 				></textarea>
 			</FormPiece>
@@ -211,13 +215,14 @@ const CreateSong: React.FC<IProps> = ({ handleSubmit, songToEdit }: IProps) => {
 						value="presentable"
 						aria-describedby="presentableHelpBlock"
 						checked={song.presentable}
-						onChange={(e) =>
-							setSong((song) => {
+						onChange={(_e) => {
+							return setSong((song) => {
 								return {
 									...song,
 									presentable: !song.presentable,
 								};
-							})
+							});
+						}
 						}
 					/>
 					<label htmlFor="presentable_0" className="form-check-label">
@@ -232,7 +237,7 @@ const CreateSong: React.FC<IProps> = ({ handleSubmit, songToEdit }: IProps) => {
 						name="submit"
 						type="submit"
 						className="btn btn-primary"
-						onClick={() => handleSubmit(song)}
+						onClick={() => {return handleSubmit(song);}}
 					>
 						Submit
 					</button>

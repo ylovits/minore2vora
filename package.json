@@ -5,28 +5,32 @@
   "dependencies": {
     "@testing-library/jest-dom": "^5.11.10",
     "@testing-library/react": "^11.2.6",
-    "@testing-library/user-event": "^13.1.2",
+    "@testing-library/user-event": "^13.1.5",
     "@types/bootstrap": "^5.0.12",
     "@types/firebase": "^3.2.1",
     "@types/jest": "^26.0.22",
-    "@types/node": "^14.14.37",
+    "@types/node": "^14.14.41",
     "@types/node-sass": "^4.11.1",
     "@types/react": "^17.0.3",
     "@types/react-dom": "^17.0.3",
+    "raw-loader": "^4.0.2",
     "bootstrap": "^4.6.0",
-    "firebase": "^8.3.3",
+    "firebase": "^8.4.1",
     "node-sass": "^5.0.0",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "react-scripts": "4.0.3",
     "react-select": "^4.3.0",
-    "web-vitals": "^1.1.1"
+    "sass": "^1.32.11",
+    "typescript": "^4.2.4",
+    "web-vitals": "^1.1.1",
+    "zustand": "^3.4.1"
   },
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "start": "react-app-rewired start",
+    "build": "react-app-rewired build",
+    "test": "react-app-rewired test",
+    "eject": "react-app-rewired eject"
   },
   "eslintConfig": {
     "extends": [
@@ -36,20 +40,21 @@
   },
   "browserslist": {
     "production": [
-      ">0.2%",
-      "not dead",
-      "not op_mini all"
+      "since 2010"
     ],
     "development": [
+      "ie 11",
       "last 1 chrome version",
       "last 1 firefox version",
       "last 1 safari version"
     ]
   },
   "devDependencies": {
-    "@types/react-select": "^4.0.14",
-    "@typescript-eslint/eslint-plugin": "^4.21.0",
-    "@typescript-eslint/parser": "^4.21.0",
-    "typescript": "^4.2.4"
+    "@types/react-select": "^4.0.15",
+    "@typescript-eslint/eslint-plugin": "^4.22.0",
+    "@typescript-eslint/parser": "^4.22.0",
+    "typescript": "^4.2.4",
+    "react-app-rewired": "^2.1.8",
+    "sass-resources-loader": "^2.2.1"
   }
 }

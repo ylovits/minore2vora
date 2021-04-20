@@ -1,3 +1,6 @@
+$main-family: 'Roboto Mono', Arial, Helvetica, sans-serif;
+$condensed-family: 'Roboto Condensed', Arial, Helvetica, sans-serif;
+
 $darkLiver: #931F1D;
 $isabelline: #937B63;
 $etonBlue: #8A9B68;
@@ -29,5 +32,3 @@ $container-max-widths: (
   xl: 1300px,
   xxl: 2000px
 );
-
-@import "node\_modules/bootstrap/scss/bootstrap";

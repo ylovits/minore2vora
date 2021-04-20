@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from "react";
-import firebase from "../firebase";
-import { ISong } from "../interfaces/interfaces";
+import React, { useState, useEffect } from 'react';
+import firebase from '../firebase';
+import { ISong } from '../interfaces/interfaces';
 
 const GetFirebase = () => {
 	const [songs, setSongs] = useState<ISong[]>([]);
@@ -11,7 +11,7 @@ const GetFirebase = () => {
 	const getSongs = () => {
 		setLoading(true);
 		ref.get().then((item) => {
-			const items: any[] = item.docs.map((doc) => { return { id: doc.id, ...doc.data() }});
+			const items: any[] = item.docs.map((doc) => { return { id: doc.id, ...doc.data() };});
 			setSongs(items);
 			setLoading(false);
 		});
@@ -23,8 +23,8 @@ const GetFirebase = () => {
 	}, []);
 
 	const logout = () => {
-        firebase.auth().signOut();
-    }
+		firebase.auth().signOut();
+	};
 	
 	if (loading) {
 		return <h1>Loading...</h1>;
@@ -33,14 +33,16 @@ const GetFirebase = () => {
 	return (
 		<div className="App">
 			<h1>Songs</h1>
-			<button onClick={()=>logout()}>Logout</button>
-			{songs.map((song) => (
-				<div key={`song-${song.title}`}>
-					<h1>{song.title}</h1>
-				</div>
-			))}
+			<button onClick={()=>{return logout();}}>Logout</button>
+			{songs.map((song) => {
+				return (
+					<div key={`song-${song.title}`}>
+						<h1>{song.title}</h1>
+					</div>
+				);
+			})}
 		</div>
 	);
-}
+};
 
-export default GetFirebase
+export default GetFirebase;

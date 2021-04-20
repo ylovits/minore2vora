@@ -1,0 +1,5 @@
+readme.md
+build/*
+src/service-worker-config.js
+src/reportWebVitals.ts
+src/data*
