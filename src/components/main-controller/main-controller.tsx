@@ -1,9 +1,8 @@
 import React, { useState, useEffect, lazy } from 'react';
 import firebase from '../../firebase';
 import { ISong } from '../../interfaces/interfaces';
-import CreateSong from 'components/form/create-song';
 import useStore from 'store/globalStore';
-
+import Header from 'components/layout/header';
 
 /**
  * Lazy load all "page" components for code splitting
@@ -12,22 +11,28 @@ const SongList = lazy(() => {
 	return import('components/song-list/song-list');
 });
 
+const Song = lazy(() => {
+	return import('components/song/song');
+});
+
+const SongForm = lazy(() => {
+	return import('components/song-form/song-form');
+});
+
 const SnapshotFirebase: React.FC = () => {
 	/**
 	 * Import global state parts needed
 	 */
-	const [_glob, page] = useStore((state) => {
-		return [state, state.page];
+	const [_glob, page, selectedSong] = useStore((state) => {
+		return [state, state.page, state.selectedSong];
 	});
 
 	// Uncomment those lines to get global state logging, also the appConfig import
-	console.log('Global state:', _glob);
+	// console.log('Global state:', _glob);
 
 	const [songs, setSongs] = useState<ISong[]>([]);
 	const [loading, setLoading] = useState(false);
-	const [showNewSong, setShowNewSong] = useState(false);
 	const [showDeletePopup, setShowDeletePopup] = useState(false);
-	const [songToEdit, setSongToEdit] = useState<ISong | null>(null);
 	const ref = firebase.firestore().collection('songs');
 
 	const getSongs = () => {
@@ -60,7 +65,6 @@ const SnapshotFirebase: React.FC = () => {
 
 	const _editSong = (song: ISong) => {
 		if (song.id !== '') {
-			setShowNewSong(true);
 			ref.doc(song.id)
 				.update(song)
 				.catch((err: Error) => {
@@ -94,11 +98,22 @@ const SnapshotFirebase: React.FC = () => {
 		case 'song-list':
 			return <SongList
 				songs={songs}
-				setShowNewSong={setShowNewSong}
-				setShowDeletePopup={setShowDeletePopup}
-				setSongToEdit={setSongToEdit} 
 			/>;
+		case 'song':
+			return <Song
+				song={selectedSong}
+				setShowDeletePopup={setShowDeletePopup}
+			/>;	
+		case 'new-song':
+			return <SongForm 
+				handleSubmit={handleAddSong} 
+			/>;	
+		case 'edit-song':
+			return <SongForm 
+				handleSubmit={handleAddSong} 
+			/>;	
 		} 
+
 	};
 	
 	if (loading) {
@@ -109,19 +124,7 @@ const SnapshotFirebase: React.FC = () => {
 
 	return (
 		<React.Fragment>
-			<div className="Header d-flex justify-content-between align-items-center p-2">
-				<h1 className="h3">Μινόρε του Βορρά</h1>
-				<button
-					className="btn btn-sm btn-secondary m-2"
-					onClick={() => {
-						return logout();
-					}}
-				>
-					Logout
-				</button>
-			</div>
-			{showNewSong && <CreateSong handleSubmit={handleAddSong} songToEdit={null} />}
-			{songToEdit && <CreateSong handleSubmit={handleAddSong} songToEdit={songToEdit} />}
+			<Header logout={logout} />
 			{showDeletePopup && (
 				// pass toggleShowDeletePpup={toggleShowDeletePpup} to close popup
 				<p>Delete popup here</p>

@@ -15,14 +15,16 @@ const App:React.FC = () => {
 	
 	return (
 		<React.Fragment> 
-			<SnapshotFirebase />
-			{/* ETSI EINAI AMA THELOU ME KAI ME GET METHOD APO FIREBASE 
-			{appConfig.firebaseSnapshot ? (
+			<div className="container">
 				<SnapshotFirebase />
-			) : (
-				<GetFirebase />
-			)} 
-			*/}
+				{/* ETSI EINAI AMA THELOU ME KAI ME GET METHOD APO FIREBASE 
+				{appConfig.firebaseSnapshot ? (
+					<SnapshotFirebase />
+				) : (
+					<GetFirebase />
+				)} 
+				*/}
+			</div>
 		</React.Fragment>
 	);
 };

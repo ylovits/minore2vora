@@ -3,10 +3,12 @@ import create from 'zustand';
 import firebase from 'firebase/app';
 import 'firebase/auth';
 import 'firebase/firestore';
+import { ISong } from 'interfaces/interfaces';
 
 const initialState = {		
 	page: 'login',
 	isLoading: true,
+	selectedSong: null
 };
 
 const useStore = create<globalTypes.IGlobalSate>((set) => {
@@ -22,6 +24,12 @@ const useStore = create<globalTypes.IGlobalSate>((set) => {
 		setIsLoading: (isLoading: boolean) => {
 			set((_state) => {
 				return { isLoading };
+			});
+		},
+
+		setSelectedSong: (song: ISong | null) => {
+			set((_state) => {
+				return { selectedSong: song };
 			});
 		},
 

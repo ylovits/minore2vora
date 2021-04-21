@@ -1,0 +1,37 @@
+.Song{
+    &-section{
+        display: inline-block;
+        margin-right:2em;
+    }
+    &-title{
+        color:#222;
+    }
+    &-rythm{
+        color:#222;
+    }
+    &-dromos{
+        color:#222;
+    }
+    &-key{
+        color:#222;
+    }
+    &-tempo{
+        color:#222;
+    }
+    &-body{
+
+    }
+    &-notes{
+        color:#222;
+    }
+    &-content{
+        label{
+            font-weight: normal;
+            margin-right:0.5em;
+            color:#361847;
+        }
+    }
+    &-footer{
+        
+    }
+}

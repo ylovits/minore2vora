@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import Select from 'react-select';
 import { rythmoi, keys, dromoi } from '../../data/data';
+import useStore from 'store/globalStore';
 import { ISong } from '../../interfaces/interfaces';
 
 interface IProps {
 	handleSubmit: (_sng: ISong) => void;
-	songToEdit: ISong | null;
 }
 
 interface IFormProps {
@@ -14,8 +14,29 @@ interface IFormProps {
 	isSelect: boolean;
 	children: React.ReactNode;
 }
+const FormPiece: React.FC<IFormProps> = ({ name, label, isSelect, children }: IFormProps) => {
+	return (
+		<div className="form-group row">
+			<label
+				htmlFor={name}
+				className="col-md-2 text-right col-md-form-label"
+				style={{ textTransform: 'capitalize' }}
+			>
+				{label}
+			</label>
+			{isSelect ? <>{children}</> : <div className="col-md-10">{children}</div>}
+		</div>
+	);
+};
 
-const CreateSong: React.FC<IProps> = ({ handleSubmit, songToEdit }: IProps) => {
+const SongForm: React.FC<IProps> = ({ handleSubmit }: IProps) => {
+	/**
+	 * Import global state parts needed
+	 */
+	const [selectedSong] = useStore((state) => {
+		return [ state.selectedSong];
+	});
+
 	const [song, setSong] = useState({
 		id: '',
 		title: '',
@@ -36,35 +57,14 @@ const CreateSong: React.FC<IProps> = ({ handleSubmit, songToEdit }: IProps) => {
 	};
 
 	useEffect(() => {
-		if (songToEdit) {
-			setSong(songToEdit);
+		if (selectedSong !== null) {
+			setSong(selectedSong);
 		}
-	}, [songToEdit]);
+	// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, []);
 
-	const FormPiece: React.FC<IFormProps> = ({
-		name,
-		label,
-		isSelect,
-		children,
-	}: IFormProps) => {
-		return (
-			<div className="form-group row">
-				<label
-					htmlFor={name}
-					className="col-md-2 text-right col-md-form-label"
-					style={{ textTransform: 'capitalize' }}
-				>
-					{label}
-				</label>
-				{isSelect ? (
-					<>{children}</>
-				) : (
-					<div className="col-md-10">{children}</div>
-				)}
-			</div>
-		);
-	};
 
+	console.log(song);
 	return (
 		<form className="container">
 			<FormPiece isSelect={false} label="Τίτλος" name="title">
@@ -94,8 +94,7 @@ const CreateSong: React.FC<IProps> = ({ handleSubmit, songToEdit }: IProps) => {
 						return setSong((song) => {
 							return { ...song, youtube: e.target.value };
 						});
-					}
-					}
+					}}
 					value={song.youtube}
 				/>
 			</FormPiece>
@@ -112,11 +111,10 @@ const CreateSong: React.FC<IProps> = ({ handleSubmit, songToEdit }: IProps) => {
 						aria-describedby="stixoiHelpBlock"
 						required
 						onChange={(e) => {
-							return setSong((song) => {
+							setSong((song) => {
 								return { ...song, body: e.target.value };
 							});
-						}
-						}
+						}}
 						value={song.body}
 						rows={15}
 					></textarea>
@@ -127,9 +125,7 @@ const CreateSong: React.FC<IProps> = ({ handleSubmit, songToEdit }: IProps) => {
 					classNamePrefix={'select'}
 					options={keys}
 					onChange={(option) => {
-						option &&
-							option.value &&
-							onChangeSelect(option.value, 'key');
+						option && option.value && onChangeSelect(option.value, 'key');
 					}}
 					value={keys.find((key) => {
 						return key.value === song.key;
@@ -143,9 +139,7 @@ const CreateSong: React.FC<IProps> = ({ handleSubmit, songToEdit }: IProps) => {
 					classNamePrefix={'select'}
 					options={dromoi}
 					onChange={(option) => {
-						option &&
-							option.value &&
-							onChangeSelect(option.value, 'dromos');
+						option && option.value && onChangeSelect(option.value, 'dromos');
 					}}
 					value={dromoi.find((dromos) => {
 						return dromos.value === song.dromos;
@@ -159,9 +153,7 @@ const CreateSong: React.FC<IProps> = ({ handleSubmit, songToEdit }: IProps) => {
 					classNamePrefix={'select'}
 					options={rythmoi}
 					onChange={(option) => {
-						option &&
-							option.value &&
-							onChangeSelect(option.value.name, 'rythm');
+						option && option.value && onChangeSelect(option.value.name, 'rythm');
 					}}
 					value={rythmoi.find((rythm) => {
 						return rythm.value.name === song.rythm;
@@ -183,15 +175,10 @@ const CreateSong: React.FC<IProps> = ({ handleSubmit, songToEdit }: IProps) => {
 								tempo: e.target.valueAsNumber,
 							};
 						});
-					}
-					}
+					}}
 				/>
 			</FormPiece>
-			<FormPiece
-				isSelect={false}
-				label="Σημειώσεις - σχόλια"
-				name="notes"
-			>
+			<FormPiece isSelect={false} label="Σημειώσεις - σχόλια" name="notes">
 				<textarea
 					id="notes"
 					name="notes"
@@ -201,8 +188,7 @@ const CreateSong: React.FC<IProps> = ({ handleSubmit, songToEdit }: IProps) => {
 						return setSong((song) => {
 							return { ...song, notes: e.target.value };
 						});
-					}
-					}
+					}}
 				></textarea>
 			</FormPiece>
 			<FormPiece isSelect={false} label="Έτοιμο;" name="presentable_0">
@@ -222,8 +208,7 @@ const CreateSong: React.FC<IProps> = ({ handleSubmit, songToEdit }: IProps) => {
 									presentable: !song.presentable,
 								};
 							});
-						}
-						}
+						}}
 					/>
 					<label htmlFor="presentable_0" className="form-check-label">
 						Είναι έτοιμο για παρουσίαση;
@@ -237,7 +222,9 @@ const CreateSong: React.FC<IProps> = ({ handleSubmit, songToEdit }: IProps) => {
 						name="submit"
 						type="submit"
 						className="btn btn-primary"
-						onClick={() => {return handleSubmit(song);}}
+						onClick={() => {
+							return handleSubmit(song);
+						}}
 					>
 						Submit
 					</button>
@@ -247,4 +234,4 @@ const CreateSong: React.FC<IProps> = ({ handleSubmit, songToEdit }: IProps) => {
 	);
 };
 
-export default CreateSong;
+export default SongForm;
