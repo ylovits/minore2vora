@@ -64,8 +64,8 @@ const Song: React.FC<IProps> = ({ song, setShowDeletePopup }: IProps) => {
 				<button
 					className="btn btn-sm btn-primary"
 					onClick={() => {
-						goToPage('edit-song');
 						song && setSelectedSong(song);
+						goToPage('edit-song');
 					}}
 				>
 					Edit Song

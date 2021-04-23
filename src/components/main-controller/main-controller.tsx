@@ -47,10 +47,13 @@ const SnapshotFirebase: React.FC = () => {
 		});
 	};
 
-	const _addSong = (song: ISong) => {
+	const addSong = (song: ISong) => {
 		ref.add(song).catch((err: Error) => {
 			console.error(err);
 		});
+	};
+	const handleAddSong = (song: ISong) => {
+		addSong(song);
 	};
 
 	const _deleteSong = (song: ISong) => {
@@ -63,7 +66,7 @@ const SnapshotFirebase: React.FC = () => {
 		}
 	};
 
-	const _editSong = (song: ISong) => {
+	const editSong = (song: ISong) => {
 		if (song.id !== '') {
 			ref.doc(song.id)
 				.update(song)
@@ -72,16 +75,15 @@ const SnapshotFirebase: React.FC = () => {
 				});
 		}
 	};
+	const handleEditSong = (song: ISong) => {
+		editSong(song);
+	};
 
 	useEffect(() => {
 		getSongs();
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
-	const handleAddSong = (song: ISong) => {
-		console.log(song);
-		// addSong(song);
-	};
 
 	const _toggleShowDeletePpup = () => {
 		setShowDeletePopup((show) => {
@@ -110,7 +112,7 @@ const SnapshotFirebase: React.FC = () => {
 			/>;	
 		case 'edit-song':
 			return <SongForm 
-				handleSubmit={handleAddSong} 
+				handleSubmit={handleEditSong} 
 			/>;	
 		} 
 

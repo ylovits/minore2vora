@@ -37,20 +37,20 @@ const SongForm: React.FC<IProps> = ({ handleSubmit }: IProps) => {
 		return [ state.selectedSong];
 	});
 
-	const [song, setSong] = useState({
+	const [song, setSong] = useState<ISong>({
 		id: '',
 		title: '',
 		youtube: '',
 		tempo: 0,
-		rythm: '',
-		key: '',
-		dromos: '',
+		rythm: [],
+		key: [],
+		dromos: [],
 		body: '',
 		presentable: false,
 		notes: '',
 	});
 
-	const onChangeSelect = (option: string, attribute: string) => {
+	const onChangeSelect = (option: string | string[], attribute: string) => {
 		setSong((song) => {
 			return { ...song, [attribute]: option };
 		});
@@ -63,8 +63,6 @@ const SongForm: React.FC<IProps> = ({ handleSubmit }: IProps) => {
 	// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
-
-	console.log(song);
 	return (
 		<form className="container">
 			<FormPiece isSelect={false} label="Τίτλος" name="title">
@@ -120,15 +118,22 @@ const SongForm: React.FC<IProps> = ({ handleSubmit }: IProps) => {
 					></textarea>
 				</>
 			</FormPiece>
-			<FormPiece isSelect={true} label="Κλειδί" name="key">
+			<FormPiece isSelect={true} label="Κλειδιά" name="key">
 				<Select
 					classNamePrefix={'select'}
 					options={keys}
-					onChange={(option) => {
-						option && option.value && onChangeSelect(option.value, 'key');
+					isMulti
+					onChange={(options) => {
+						const values:string[] = [];
+						if (options) {
+							options.forEach((option) => {
+								values.push(option.value);
+							});
+						}  
+						onChangeSelect(values, 'key');
 					}}
-					value={keys.find((key) => {
-						return key.value === song.key;
+					defaultValue={keys.filter((key) => {
+						return song.key.includes(key.value);
 					})}
 					className="col-md-10 z-2"
 					required
@@ -136,13 +141,20 @@ const SongForm: React.FC<IProps> = ({ handleSubmit }: IProps) => {
 			</FormPiece>
 			<FormPiece isSelect={true} label="Δρόμοι" name="dromoi">
 				<Select
+					isMulti
 					classNamePrefix={'select'}
 					options={dromoi}
-					onChange={(option) => {
-						option && option.value && onChangeSelect(option.value, 'dromos');
+					onChange={(options) => {
+						const values:string[] = [];
+						if (options) {
+							options.forEach((option) => {
+								values.push(option.value);
+							});
+						}  
+						onChangeSelect(values, 'dromos');
 					}}
-					value={dromoi.find((dromos) => {
-						return dromos.value === song.dromos;
+					defaultValue={dromoi.filter((dromos) => {
+						return song.dromos.includes(dromos.value);
 					})}
 					className="col-md-10 z-2"
 					required
@@ -150,13 +162,20 @@ const SongForm: React.FC<IProps> = ({ handleSubmit }: IProps) => {
 			</FormPiece>
 			<FormPiece isSelect={true} label="Ρυθμός" name="rythm">
 				<Select
+					isMulti
 					classNamePrefix={'select'}
 					options={rythmoi}
-					onChange={(option) => {
-						option && option.value && onChangeSelect(option.value.name, 'rythm');
+					onChange={(options) => {
+						const values:string[] = [];
+						if (options) {
+							options.forEach((option) => {
+								values.push(option.value.name);
+							});
+						}  
+						onChangeSelect(values, 'rythm');
 					}}
-					value={rythmoi.find((rythm) => {
-						return rythm.value.name === song.rythm;
+					defaultValue={rythmoi.filter((rythm) => {
+						return song.rythm.includes(rythm.value.name);
 					})}
 					className="col-md-10 z-2"
 					required
