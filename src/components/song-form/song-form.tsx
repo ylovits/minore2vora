@@ -3,6 +3,7 @@ import Select from 'react-select';
 import { rythmoi, keys, dromoi } from '../../data/data';
 import useStore from 'store/globalStore';
 import { ISong } from '../../interfaces/interfaces';
+import Button from '@material-ui/core/Button';
 
 interface IProps {
 	handleSubmit: (_sng: ISong) => void;
@@ -237,16 +238,11 @@ const SongForm: React.FC<IProps> = ({ handleSubmit }: IProps) => {
 
 			<div className="form-group row">
 				<div className="offset-2 col-md-10">
-					<button
+					<Button 
 						name="submit"
-						type="submit"
-						className="btn btn-primary"
-						onClick={() => {
+						type="submit"onClick={()=>{
 							return handleSubmit(song);
-						}}
-					>
-						Submit
-					</button>
+						}} variant="contained" color="primary">Submit</Button>
 				</div>
 			</div>
 		</form>

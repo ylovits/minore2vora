@@ -3,6 +3,7 @@ import firebase from '../../firebase';
 import { ISong } from '../../interfaces/interfaces';
 import useStore from 'store/globalStore';
 import Header from 'components/layout/header';
+import Grid from '@material-ui/core/Grid';
 
 /**
  * Lazy load all "page" components for code splitting
@@ -23,14 +24,13 @@ const SnapshotFirebase: React.FC = () => {
 	/**
 	 * Import global state parts needed
 	 */
-	const [_glob, page, selectedSong] = useStore((state) => {
-		return [state, state.page, state.selectedSong];
+	const [_glob, page, selectedSong, setSongs] = useStore((state) => {
+		return [state, state.page, state.selectedSong, state.setSongs];
 	});
 
 	// Uncomment those lines to get global state logging, also the appConfig import
 	// console.log('Global state:', _glob);
 
-	const [songs, setSongs] = useState<ISong[]>([]);
 	const [loading, setLoading] = useState(false);
 	const [showDeletePopup, setShowDeletePopup] = useState(false);
 	const ref = firebase.firestore().collection('songs');
@@ -84,7 +84,6 @@ const SnapshotFirebase: React.FC = () => {
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
-
 	const _toggleShowDeletePpup = () => {
 		setShowDeletePopup((show) => {
 			return !show;
@@ -98,41 +97,33 @@ const SnapshotFirebase: React.FC = () => {
 	const renderPages = (page: string) => {
 		switch (page) {
 		case 'song-list':
-			return <SongList
-				songs={songs}
-			/>;
+			return <SongList />;
 		case 'song':
-			return <Song
-				song={selectedSong}
-				setShowDeletePopup={setShowDeletePopup}
-			/>;	
+			return <Song song={selectedSong} setShowDeletePopup={setShowDeletePopup} />;
 		case 'new-song':
-			return <SongForm 
-				handleSubmit={handleAddSong} 
-			/>;	
+			return <SongForm handleSubmit={handleAddSong} />;
 		case 'edit-song':
-			return <SongForm 
-				handleSubmit={handleEditSong} 
-			/>;	
-		} 
-
+			return <SongForm handleSubmit={handleEditSong} />;
+		}
 	};
-	
+
 	if (loading) {
 		return <h1>Loading...</h1>;
 	}
 
-
-
 	return (
 		<React.Fragment>
-			<Header logout={logout} />
+			<Grid container direction="row" justify="center" alignItems="center">
+				<Header logout={logout} />
+			</Grid>
 			{showDeletePopup && (
 				// pass toggleShowDeletePpup={toggleShowDeletePpup} to close popup
 				<p>Delete popup here</p>
 			)}
 			<React.Suspense fallback={<h1>Loading...</h1>}>
-				{renderPages(page)}
+				<Grid item xs={12}>
+					{renderPages(page)}
+				</Grid>
 			</React.Suspense>
 		</React.Fragment>
 	);

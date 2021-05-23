@@ -1,6 +1,7 @@
 import React from 'react';
 import { ISong } from 'interfaces/interfaces';
 import useStore from 'store/globalStore';
+import Button from '@material-ui/core/Button';
 import './song.scss';
 
 interface IProps {
@@ -61,23 +62,13 @@ const Song: React.FC<IProps> = ({ song, setShowDeletePopup }: IProps) => {
 				)}
 			</div>
 			<div className="Song-footer justify-content-between align-items-center d-flex">
-				<button
-					className="btn btn-sm btn-primary"
-					onClick={() => {
-						song && setSelectedSong(song);
-						goToPage('edit-song');
-					}}
-				>
-					Edit Song
-				</button>
-				<button
-					className="btn btn-sm btn-danger"
-					onClick={() => {
-						song && handleShowDeletePopup(song);
-					}}
-				>
-					Delete Song!!
-				</button>
+				<Button onClick={()=>{
+					song && setSelectedSong(song);
+					goToPage('edit-song');
+				}} variant="contained" color="primary">Edit Song</Button>
+				<Button onClick={()=>{ 
+					song && handleShowDeletePopup(song);
+				} } variant="contained" color="secondary">Delete Song!!</Button>
 			</div>
 		</div>
 	);

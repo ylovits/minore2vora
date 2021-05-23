@@ -8,16 +8,18 @@ import { ISong } from 'interfaces/interfaces';
 const initialState = {		
 	page: 'login',
 	isLoading: true,
-	selectedSong: null
+	selectedSong: null,
+	songs: []
 };
 
 const useStore = create<globalTypes.IGlobalSate>((set) => {
 	return {
 		...initialState,
+
 		logOut: () => {
+			firebase.auth().signOut();
 			set((_state) => {
-				firebase.auth().signOut();
-				return { isLoggedIn: false, userId: '', userEmail: '', isSeniorTutor: false, gameId: '', page: 'login' };
+				return { page: 'login' };
 			});
 		},
 
@@ -32,6 +34,11 @@ const useStore = create<globalTypes.IGlobalSate>((set) => {
 				return { selectedSong: song };
 			});
 		},
+		setSongs: (songs: ISong[] | []) => {
+			set((_state) => {
+				return { songs: songs };
+			});
+		},
 
 		goToPage: (page: string) => {
 			set((_state) => {
@@ -44,6 +51,7 @@ const useStore = create<globalTypes.IGlobalSate>((set) => {
 				return { ...state, ...newState };
 			});
 		},
+
 	};
 });
 

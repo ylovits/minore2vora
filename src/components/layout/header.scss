@@ -1,0 +1,15 @@
+.logoutBtn {
+	width: 2em;
+	height: 2em;
+	margin: 1em;
+	cursor: pointer;
+	display: inline-flex;
+	justify-content: center;
+	align-items: center;
+	background: #ccc;
+	border-radius: 50%;
+	svg {
+		max-width: 80%;
+		height: auto;
+	}
+}
