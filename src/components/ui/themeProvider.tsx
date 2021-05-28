@@ -29,6 +29,13 @@ const ThemeProvider: React.FC<IProps> = ({ children, theme }:IProps) => {
 	const memoizedTheme = React.useMemo(() => {
 		return createMuiTheme({
 			...theme,
+			overrides: {
+				MuiPopover: {
+					root: {
+						zIndex: 35003,
+					}
+				},
+			},
 			palette: {
 				type: themeOptions.paletteType,
 			},

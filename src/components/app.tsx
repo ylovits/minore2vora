@@ -12,7 +12,7 @@ const App: React.FC = () => {
 	const initialTheme = createMuiTheme({
 		palette: {
 			type: 'light',
-		},
+		}
 	});
 
 	const { user } = useContext(AuthContext);
