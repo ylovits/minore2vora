@@ -1,6 +1,6 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import React from 'react';
-import { createMuiTheme, ThemeProvider as MuiThemeProvider, Theme } from '@material-ui/core/styles';
-import { useTheme } from '@material-ui/core/styles';
+import { useTheme, createMuiTheme, ThemeProvider as MuiThemeProvider, Theme } from '@material-ui/core/styles';
 
 interface IProps {
 	children: React.ReactNode;
