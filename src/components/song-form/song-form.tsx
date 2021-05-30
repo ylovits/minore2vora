@@ -7,6 +7,7 @@ import { makeStyles, createStyles, Theme } from '@material-ui/core/styles';
 import { FormControlLabel, Checkbox, Container, TextField, MenuItem, FormControl, Input, Select, InputLabel, ListItemText} from '@material-ui/core';
 interface IProps {
 	handleSubmit: (_sng: ISong) => void;
+	handleSuccess: () => void;
 }
 
 
@@ -29,7 +30,7 @@ const useStyles = makeStyles((theme: Theme) => {
 });
 
 
-const SongForm: React.FC<IProps> = ({ handleSubmit }: IProps) => {
+const SongForm: React.FC<IProps> = ({ handleSubmit, handleSuccess }: IProps) => {
 
 	const classes = useStyles();
 
@@ -45,7 +46,7 @@ const SongForm: React.FC<IProps> = ({ handleSubmit }: IProps) => {
 		title: '',
 		youtube: '',
 		tempo: 1,
-		rythm: [],
+		rhythm: [],
 		key: [],
 		dromos: [],
 		body: '',
@@ -67,7 +68,7 @@ const SongForm: React.FC<IProps> = ({ handleSubmit }: IProps) => {
 	}, []);
 
 	return (
-		<form className={classes.form} autoComplete="off">
+		<div className={classes.form}>
 			<Container maxWidth="md">
 				<TextField
 					id="title"
@@ -107,7 +108,6 @@ const SongForm: React.FC<IProps> = ({ handleSubmit }: IProps) => {
 					}}
 					value={song.youtube}
 					autoComplete="off"
-					required
 				/>
 
 				<TextField
@@ -131,7 +131,6 @@ const SongForm: React.FC<IProps> = ({ handleSubmit }: IProps) => {
 					value={song.body}
 					autoComplete="off"
 					variant="outlined"
-					required
 				/>
 
 				<FormControl 
@@ -224,7 +223,7 @@ const SongForm: React.FC<IProps> = ({ handleSubmit }: IProps) => {
 					<InputLabel >Ρυθμός</InputLabel>
 					<Select
 						multiple
-						value={song.rythm}
+						value={song.rhythm}
 						onChange={(options) => {
 							const values: string[] = [];
 							if (options) {
@@ -232,7 +231,7 @@ const SongForm: React.FC<IProps> = ({ handleSubmit }: IProps) => {
 									values.push(option);
 								});
 							}
-							onChangeSelect(values, 'rythm');
+							onChangeSelect(values, 'rhythm');
 						}}
 						renderValue={(selected) => { return (selected as string[]).join(', '); }}
 						MenuProps={{ 
@@ -246,11 +245,11 @@ const SongForm: React.FC<IProps> = ({ handleSubmit }: IProps) => {
 						}}
 						input={<Input />}
 					>
-						{rythmoi.map((rythm) => { 
+						{rythmoi.map((rhythm) => { 
 							return (
-								<MenuItem key={rythm.label} value={rythm.label} >
-									<Checkbox checked={song.rythm.indexOf(rythm.label) > -1} />
-									<ListItemText primary={rythm.label} />
+								<MenuItem key={rhythm.label} value={rhythm.label} >
+									<Checkbox checked={song.rhythm.indexOf(rhythm.label) > -1} />
+									<ListItemText primary={rhythm.label} />
 								</MenuItem>
 							);
 						})}
@@ -278,7 +277,6 @@ const SongForm: React.FC<IProps> = ({ handleSubmit }: IProps) => {
 					}}
 					value={song.tempo}
 					autoComplete="off"
-					required
 				/>
 
 
@@ -303,7 +301,6 @@ const SongForm: React.FC<IProps> = ({ handleSubmit }: IProps) => {
 					value={song.notes}
 					autoComplete="off"
 					variant="outlined"
-					required
 				/>
 				<FormControlLabel
 					control={
@@ -332,6 +329,7 @@ const SongForm: React.FC<IProps> = ({ handleSubmit }: IProps) => {
 							name="submit"
 							type="submit"
 							onClick={() => {
+								handleSuccess();								
 								return handleSubmit(song);
 							}}
 							variant="contained"
@@ -342,7 +340,7 @@ const SongForm: React.FC<IProps> = ({ handleSubmit }: IProps) => {
 					</div>
 				</div>
 			</Container>
-		</form>
+		</div>
 	);
 };
 

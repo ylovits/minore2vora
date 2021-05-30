@@ -13,6 +13,8 @@ import SearchIcon from '@material-ui/icons/Search';
 
 interface IProps {
 	logout: () => void;
+	handleSearchChange: (_event: React.ChangeEvent<HTMLInputElement>) => void;
+
 }
 
 const useStyles = makeStyles((theme: Theme) => {
@@ -73,7 +75,7 @@ const useStyles = makeStyles((theme: Theme) => {
 		}
 	});
 });
-const Header: React.FC<IProps> = ({ logout }: IProps) => {
+const Header: React.FC<IProps> = ({ logout, handleSearchChange }: IProps) => {
 	/**
 	 * Import global state parts needed
 	 */
@@ -109,6 +111,7 @@ const Header: React.FC<IProps> = ({ logout }: IProps) => {
 								input: classes.inputInput,
 							}}
 							inputProps={{ 'aria-label': 'search' }}
+							onChange={handleSearchChange}
 						/>
 					</div>
 					<IconButton

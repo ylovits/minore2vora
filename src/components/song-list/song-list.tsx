@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import useStore from 'store/globalStore';
 import Button from '@material-ui/core/Button';
 import Paper from '@material-ui/core/Paper';
@@ -27,7 +27,11 @@ const useStyles = makeStyles((theme: Theme) => {
 	});
 });
 
-const SongList: React.FC = () => {
+interface IProps {
+	searchTerm:string;
+}
+
+const SongList: React.FC<IProps> = ({searchTerm}:IProps) => {
 	/**
 	 * Import global state parts needed
 	 */
@@ -37,9 +41,25 @@ const SongList: React.FC = () => {
 
 	const classes = useStyles();
 
+
+	/**
+	 * Searching
+	 */
+
+	const [searchResults, setSearchResults] = useState(JSON.parse(JSON.stringify(songs)));
+	
+	const initSongs = useRef(JSON.parse(JSON.stringify(songs)));
+	
+	useEffect(() => {
+		const results = initSongs.current.filter((song: ISong) => {
+			return song.title.toLowerCase().includes(searchTerm);
+		});
+		setSearchResults(results);
+	}, [searchTerm]);
+
 	return (
 		<div className={classes.root}>
-			{songs.map((song: ISong) => {
+			{searchResults.map((song: ISong) => {
 				return (
 					<Paper
 						className={classes.paper}
