@@ -193,7 +193,7 @@ const SnapshotFirebase: React.FC = () => {
 
 	return (
 		<React.Fragment>
-			<Grid container direction="row" justify="center" alignItems="center">
+			<Grid container direction="row" justifyContent="center" alignItems="center">
 				<Header logout={logout} handleSearchChange={handleSearchChange}/>
 			</Grid>
 			<React.Suspense fallback={<Backdrop className={classes.backdrop} open={true} ><CircularProgress color="inherit" /></Backdrop>}>

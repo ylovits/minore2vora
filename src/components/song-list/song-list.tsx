@@ -2,7 +2,7 @@ import React, { useEffect, useState, useRef } from 'react';
 import useStore from 'store/globalStore';
 import Button from '@material-ui/core/Button';
 import Paper from '@material-ui/core/Paper';
-import { fade, makeStyles, createStyles, Theme } from '@material-ui/core/styles';
+import { alpha, makeStyles, createStyles, Theme } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import { ISong } from 'interfaces/interfaces';
 import './song-list.scss';
@@ -21,7 +21,7 @@ const useStyles = makeStyles((theme: Theme) => {
 			padding: theme.spacing(2),
 			cursor: 'pointer',
 			'&:hover': {
-				backgroundColor: fade(theme.palette.common.white, 0.25),
+				backgroundColor: alpha(theme.palette.common.white, 0.25),
 			},
 		},
 	});
