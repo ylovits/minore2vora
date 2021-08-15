@@ -3,13 +3,13 @@ import SnapshotFirebase from './main-controller/main-controller';
 import { AuthContext } from '../auth/auth';
 import Login from '../auth/login';
 import FabThemeSelector from './ui/fab-theme-selector';
-import { createMuiTheme } from '@material-ui/core/styles';
+import { createTheme } from '@material-ui/core/styles';
 import ThemeProvider from 'components/ui/themeProvider';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import './app.scss';
 
 const App: React.FC = () => {
-	const initialTheme = createMuiTheme({
+	const initialTheme = createTheme({
 		palette: {
 			type: 'light',
 		}

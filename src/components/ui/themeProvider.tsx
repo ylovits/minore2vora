@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import React from 'react';
-import { useTheme, createMuiTheme, ThemeProvider as MuiThemeProvider, Theme } from '@material-ui/core/styles';
+import { useTheme, createTheme, ThemeProvider as MuiThemeProvider, Theme } from '@material-ui/core/styles';
 
 interface IProps {
 	children: React.ReactNode;
@@ -27,7 +27,7 @@ const ThemeProvider: React.FC<IProps> = ({ children, theme }:IProps) => {
 	}, themeInitialOptions);
 
 	const memoizedTheme = React.useMemo(() => {
-		return createMuiTheme({
+		return createTheme({
 			...theme,
 			overrides: {
 				MuiPopover: {
