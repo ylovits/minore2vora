@@ -14,7 +14,6 @@ import SearchIcon from '@material-ui/icons/Search';
 interface IProps {
 	logout: () => void;
 	handleSearchChange: (_event: React.ChangeEvent<HTMLInputElement>) => void;
-
 }
 
 const useStyles = makeStyles((theme: Theme) => {

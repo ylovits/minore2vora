@@ -22,6 +22,7 @@ import {
 
 import { makeStyles, createStyles, Theme } from '@material-ui/core/styles';
 import CloseIcon from '@material-ui/icons/Close';
+import { greeklishToGreek } from 'components/main-controller/characterMap';
 
 
 /* Styles */
@@ -164,7 +165,8 @@ const SnapshotFirebase: React.FC = () => {
 	 */
 	const [searchTerm, setSearchTerm] = useState('');
 	const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-		setSearchTerm(event.target.value);
+		const modifiedSearch = greeklishToGreek(event.target.value);
+		setSearchTerm(modifiedSearch);
 	};
 
 	const renderPages = (page: string) => {
