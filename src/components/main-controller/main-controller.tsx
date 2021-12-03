@@ -22,6 +22,7 @@ import {
 
 import { makeStyles, createStyles, Theme } from '@material-ui/core/styles';
 import CloseIcon from '@material-ui/icons/Close';
+import { greeklishToGreek } from 'components/main-controller/characterMap';
 
 
 /* Styles */
@@ -164,7 +165,8 @@ const SnapshotFirebase: React.FC = () => {
 	 */
 	const [searchTerm, setSearchTerm] = useState('');
 	const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-		setSearchTerm(event.target.value);
+		const modifiedSearch = greeklishToGreek(event.target.value).toLowerCase();
+		setSearchTerm(modifiedSearch);
 	};
 
 	const renderPages = (page: string) => {
@@ -194,7 +196,7 @@ const SnapshotFirebase: React.FC = () => {
 	return (
 		<React.Fragment>
 			<Grid container direction="row" justifyContent="center" alignItems="center">
-				<Header logout={logout} handleSearchChange={handleSearchChange}/>
+				<Header logout={logout} handleSearchChange={handleSearchChange} showSearch={page === 'song-list'}/>
 			</Grid>
 			<React.Suspense fallback={<Backdrop className={classes.backdrop} open={true} ><CircularProgress color="inherit" /></Backdrop>}>
 				<Grid item xs={12}>

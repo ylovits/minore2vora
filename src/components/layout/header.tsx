@@ -10,11 +10,12 @@ import Toolbar from '@material-ui/core/Toolbar';
 import InputBase from '@material-ui/core/InputBase';
 import IconButton from '@material-ui/core/IconButton';
 import SearchIcon from '@material-ui/icons/Search';
+import HomeIcon from '@material-ui/icons/Home';
 
 interface IProps {
 	logout: () => void;
 	handleSearchChange: (_event: React.ChangeEvent<HTMLInputElement>) => void;
-
+	showSearch: boolean
 }
 
 const useStyles = makeStyles((theme: Theme) => {
@@ -26,10 +27,20 @@ const useStyles = makeStyles((theme: Theme) => {
 			marginRight: theme.spacing(2),
 		},
 		title: {
-			flexGrow: 1,
 			display: 'none',
 			[theme.breakpoints.up('sm')]: {
 				display: 'block',
+			},
+			cursor: 'pointer',
+			'&:hover': {
+				color: alpha(theme.palette.common.white, 0.85),
+			},
+		},
+		homeBtn: {
+			marginRight: theme.spacing(2),
+			display: 'block',
+			[theme.breakpoints.up('sm')]: {
+				display: 'none',
 			},
 			cursor: 'pointer',
 			'&:hover': {
@@ -50,6 +61,7 @@ const useStyles = makeStyles((theme: Theme) => {
 				marginLeft: theme.spacing(3),
 				width: 'auto',
 			},
+			flexGrow: 1,
 		},
 		searchIcon: {
 			padding: theme.spacing(0, 2),
@@ -75,7 +87,7 @@ const useStyles = makeStyles((theme: Theme) => {
 		}
 	});
 });
-const Header: React.FC<IProps> = ({ logout, handleSearchChange }: IProps) => {
+const Header: React.FC<IProps> = ({ logout, handleSearchChange, showSearch }: IProps) => {
 	/**
 	 * Import global state parts needed
 	 */
@@ -99,20 +111,30 @@ const Header: React.FC<IProps> = ({ logout, handleSearchChange }: IProps) => {
 					>
 						Μινόρε του Βορρά
 					</Typography>
+					<HomeIcon
+						onClick={() => {
+							goToPage('song-list');
+						}}
+						className={classes.homeBtn}
+					/>
 
 					<div className={classes.search}>
-						<div className={classes.searchIcon}>
-							<SearchIcon />
-						</div>
-						<InputBase
-							placeholder="Search…"
-							classes={{
-								root: classes.inputRoot,
-								input: classes.inputInput,
-							}}
-							inputProps={{ 'aria-label': 'search' }}
-							onChange={handleSearchChange}
-						/>
+						{showSearch && (
+							<>
+								<div className={classes.searchIcon}>
+									<SearchIcon />
+								</div>
+								<InputBase
+									placeholder="Search…"
+									classes={{
+										root: classes.inputRoot,
+										input: classes.inputInput,
+									}}
+									inputProps={{ 'aria-label': 'search' }}
+									onChange={handleSearchChange}
+								/>
+							</>)
+						}
 					</div>
 					<IconButton
 						aria-label="account of current user"

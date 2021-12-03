@@ -18,9 +18,7 @@
     &-tempo{
         color:#222;
     }
-    &-body{
 
-    }
     &-notes{
         color:#222;
     }
@@ -31,7 +29,24 @@
             color:#361847;
         }
     }
-    &-footer{
-        
+}
+
+.SongBody{
+    white-space: pre-line;
+    strong {
+        line-height: 2.3em;
+        position: relative;
+        color: #f50000;
+        top: -1em;
+        display: inline-block;
+        width: 0;
+    }
+    em {
+        line-height: 2.3em;
+        position: relative;
+        color: #f50000;
+        display: inline-block;
+        width: 0;
+        white-space: nowrap;
     }
 }

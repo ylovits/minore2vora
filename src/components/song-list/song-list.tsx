@@ -5,6 +5,7 @@ import Paper from '@material-ui/core/Paper';
 import { alpha, makeStyles, createStyles, Theme } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import { ISong } from 'interfaces/interfaces';
+import { removeAccents } from 'components/main-controller/characterMap';
 import './song-list.scss';
 
 const useStyles = makeStyles((theme: Theme) => {
@@ -16,7 +17,14 @@ const useStyles = makeStyles((theme: Theme) => {
 			paddingTop: '1rem',
 		},
 		paper: {
-			maxWidth: '80%',
+			maxWidth: '100%',
+			[theme.breakpoints.up('sm')]: {
+				width: '90%',
+				maxWidth: '90%',
+			},
+			[theme.breakpoints.up('md')]: {
+				maxWidth: '600px',
+			},
 			margin: `${theme.spacing(1)}px auto`,
 			padding: theme.spacing(2),
 			cursor: 'pointer',
@@ -52,14 +60,14 @@ const SongList: React.FC<IProps> = ({searchTerm}:IProps) => {
 	
 	useEffect(() => {
 		const results = initSongs.current.filter((song: ISong) => {
-			return song.title.toLowerCase().includes(searchTerm);
+			return removeAccents(song.title).toLowerCase().includes(searchTerm);
 		});
 		setSearchResults(results);
 	}, [searchTerm]);
 
 	return (
 		<div className={classes.root}>
-			{searchResults.map((song: ISong) => {
+			{searchResults.sort((a:ISong, b:ISong) => { return ('' + a.title).localeCompare(b.title); }).map((song: ISong) => {
 				return (
 					<Paper
 						className={classes.paper}
