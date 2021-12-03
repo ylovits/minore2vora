@@ -175,11 +175,34 @@ export const characterMap = [
 	{ find: '\\?', replace: ';' },
 ];
 
-export const greeklishToGreek = (text: string) => {
+const accentMap = [
+	{ find: 'ώ', replace: 'ω' },
+	{ find: 'έ', replace: 'ε' },
+	{ find: 'ά', replace: 'α' },
+	{ find: 'ί', replace: 'ι' },
+	{ find: 'ό', replace: 'ο' },
+	{ find: 'ή', replace: 'η' }
+];
+
+export const greeklishToGreek = (text: string):string => {
 	let regexString, regex;
 	let returnString = text;
 	if (typeof text === 'string' && text.length > 0) {
 		characterMap.forEach((replacementItem) => {
+			regexString = replacementItem.find;
+			regex = new RegExp(regexString, 'g');
+			returnString = returnString.replace(regex, replacementItem.replace);
+		});
+	}
+	return returnString;
+};
+
+
+export const removeAccents = (text: string):string => {
+	let regexString, regex;
+	let returnString = text;
+	if (typeof text === 'string' && text.length > 0) {
+		accentMap.forEach((replacementItem) => {
 			regexString = replacementItem.find;
 			regex = new RegExp(regexString, 'g');
 			returnString = returnString.replace(regex, replacementItem.replace);

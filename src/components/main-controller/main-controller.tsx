@@ -165,7 +165,7 @@ const SnapshotFirebase: React.FC = () => {
 	 */
 	const [searchTerm, setSearchTerm] = useState('');
 	const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-		const modifiedSearch = greeklishToGreek(event.target.value);
+		const modifiedSearch = greeklishToGreek(event.target.value).toLowerCase();
 		setSearchTerm(modifiedSearch);
 	};
 
@@ -196,7 +196,7 @@ const SnapshotFirebase: React.FC = () => {
 	return (
 		<React.Fragment>
 			<Grid container direction="row" justifyContent="center" alignItems="center">
-				<Header logout={logout} handleSearchChange={handleSearchChange}/>
+				<Header logout={logout} handleSearchChange={handleSearchChange} showSearch={page === 'song-list'}/>
 			</Grid>
 			<React.Suspense fallback={<Backdrop className={classes.backdrop} open={true} ><CircularProgress color="inherit" /></Backdrop>}>
 				<Grid item xs={12}>

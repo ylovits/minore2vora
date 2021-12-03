@@ -1,14 +1,14 @@
 import React from 'react';
 import Fab from '@material-ui/core/Fab';
 import SettingsIcon from '@material-ui/icons/Settings';
-import { makeStyles, createStyles, Theme } from '@material-ui/core/styles';
+import { makeStyles, createStyles } from '@material-ui/core/styles';
 
-const useStyles = makeStyles((theme: Theme) => {
+const useStyles = makeStyles(() => {
 	return createStyles({
 		fab: {
 			position: 'fixed',
-			bottom: theme.spacing(1),
-			left: theme.spacing(1),
+			bottom: '1em',
+			left: '1em',
 		},
 	});
 });
