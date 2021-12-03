@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { ISong } from 'interfaces/interfaces';
 import useStore from 'store/globalStore';
 import { Button, Chip, Typography, Container, Box, Popover, Drawer } from '@material-ui/core';
@@ -41,8 +41,12 @@ const useStyles = makeStyles((theme: Theme) => {
 			margin: theme.spacing(1, 0),
 		},
 		inline: {
-			margin: '1rem 1rem 1rem 0',
+			margin: '0.5rem 0.5rem 0 0',
 			display: 'inline-block',
+		},
+		notes: {
+			margin: '0.5rem 0.5rem 0 0',
+			display: 'block',
 		},
 		popPad: {
 			padding: theme.spacing(2),
@@ -77,9 +81,9 @@ const Song: React.FC<IProps> = ({ song, setShowDeletePopup }: IProps) => {
 		setShowDeletePopup();
 	};
 
-	const [anchorEl, setAnchorEl] = React.useState<any | null>(null);
+	const [anchorEl, setAnchorEl] = React.useState<Element | ((_element: Element) => Element) | null | undefined>(null);
 
-	const handleClick = (event: React.MouseEvent<any>) => {
+	const handleClick = (event: React.MouseEvent<HTMLDivElement>) => {
 		setAnchorEl(event.currentTarget);
 	};
   
@@ -95,13 +99,26 @@ const Song: React.FC<IProps> = ({ song, setShowDeletePopup }: IProps) => {
 	const toggleDrawer = () => {
 		setShowDrawer((show) => { return !show; });
 	};
-	
+
+	const strongRef = useRef<HTMLElement>(null);
+
+	useEffect(() => {
+		if (strongRef.current) {
+			strongRef.current.innerHTML = (song?.body as string).replace(
+				/\[\[(.*?)\]\]/g,
+				'<strong>$1</strong>'
+			).replace(
+				/\{\{(.*?)\}\}/g,
+				'<em>$1</em>'
+			);
+		}
+	}, [song?.body, strongRef]);
 
 	return (
 		<div className={classes.root}>
 			<Container maxWidth="md">
 				<a href={song?.youtube ? song?.youtube : '#'} rel="noreferrer" target={song?.youtube ? '_blank' : '_self'} className={classes.titleLink}>
-					<Typography variant="h4" component="h1" className={classes.title} >
+					<Typography variant="h6" component="h1" className={classes.title} >
 						{song?.title}
 					</Typography>
 				</a>
@@ -145,7 +162,7 @@ const Song: React.FC<IProps> = ({ song, setShowDeletePopup }: IProps) => {
 					<Box className={classes.inline}>
 						<label>Dromos: </label>
 						{song?.dromos.map((dromos) => {
-							return <Chip key={`${song.id}-${dromos}`} color="primary" size="small" label={dromos} />;
+							return <Chip className={classes.chip} key={`${song.id}-${dromos}`} color="primary" size="small" label={dromos} />;
 						})}
 					</Box>
 				)}
@@ -153,23 +170,25 @@ const Song: React.FC<IProps> = ({ song, setShowDeletePopup }: IProps) => {
 					<Box className={classes.inline}>
 						<label>Key: </label>
 						{song?.key.map((musicKey) => {
-							return <Chip key={`${song.id}-${musicKey}`} color="secondary" size="small" label={musicKey} />;
+							return <Chip className={classes.chip} key={`${song.id}-${musicKey}`} color="secondary" size="small" label={musicKey} />;
 						})}
 					</Box>
 				)}
 				{song?.tempo && (
 					<Box className={classes.inline}>
 						<label>Tempo: </label>
-						<Chip variant="outlined" color="primary" size="small" label={song?.tempo} />
+						<Chip className={classes.chip} variant="outlined" color="primary" size="small" label={song?.tempo} />
 					</Box>
 				)}
-				{song?.body && <Typography variant="body1" className={classes.mainContent}>{song?.body}</Typography>}
 				{song?.notes && (
-					<Box className={classes.inline}>
+					<Box className={classes.notes}>
 						<label>Notes: </label>
 						{song?.notes}
 					</Box>
 				)}
+				{song?.body && 
+					<Typography ref={strongRef} variant="body1" className={`${classes.mainContent} SongBody`}></Typography>
+				}
 			</Container>
 			<FabMenu toggleDrawer={toggleDrawer}/>
 			<Drawer anchor='bottom' open={showDrawer} onClose={toggleDrawer}>
