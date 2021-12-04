@@ -1,5 +1,5 @@
 const appConfig = {
-    firebaseSnapshot: true,
-}
+	firebaseSnapshot: true,
+};
 
-export default appConfig
+export default appConfig;

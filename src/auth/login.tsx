@@ -1,11 +1,11 @@
-import React, { useState } from 'react';
-import firebase from '../firebase';
-import useStore from 'store/globalStore';
-import 'firebase/auth';
-import Button from '@material-ui/core/Button';
-import TextField from '@material-ui/core/TextField';
-import Typography from '@material-ui/core/Typography';
-import Box from '@material-ui/core/Box';
+import React, { useState } from "react";
+import firebase from "../firebase";
+import useStore from "store/globalStore";
+import "firebase/auth";
+import Button from "@material-ui/core/Button";
+import TextField from "@material-ui/core/TextField";
+import Typography from "@material-ui/core/Typography";
+import Box from "@material-ui/core/Box";
 
 interface UserData {
 	email: string;
@@ -19,8 +19,8 @@ const Login: React.FC = () => {
 	});
 
 	const [values, setValues] = useState({
-		email: '',
-		password: '',
+		email: "",
+		password: "",
 	} as UserData);
 
 	const login = () => {
@@ -28,7 +28,7 @@ const Login: React.FC = () => {
 			.auth()
 			.signInWithEmailAndPassword(values.email, values.password)
 			.then(() => {
-				goToPage('song-list');
+				goToPage("song-list");
 				resetInput();
 			})
 			.catch((err) => {
@@ -38,8 +38,8 @@ const Login: React.FC = () => {
 
 	const resetInput = () => {
 		setValues({
-			email: '',
-			password: '',
+			email: "",
+			password: "",
 		});
 	};
 

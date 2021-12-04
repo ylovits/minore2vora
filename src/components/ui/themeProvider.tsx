@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import React from 'react';
-import { useTheme, createTheme, ThemeProvider as MuiThemeProvider, Theme } from '@material-ui/core/styles';
+import React from "react";
+import { useTheme, createTheme, ThemeProvider as MuiThemeProvider, Theme } from "@material-ui/core/styles";
 
 interface IProps {
 	children: React.ReactNode;
@@ -11,12 +11,12 @@ const ThemeDispatchContext = React.createContext<any>(null);
 
 const ThemeProvider: React.FC<IProps> = ({ children, theme }:IProps) => {
 	const themeInitialOptions = {
-		paletteType: 'light',
+		paletteType: "light",
 	};
 
 	const [themeOptions, dispatch] = React.useReducer((state: any, action: any) => {
 		switch (action.type) {
-		case 'changeTheme':
+		case "changeTheme":
 			return {
 				...state,
 				paletteType: action.payload,
@@ -38,6 +38,12 @@ const ThemeProvider: React.FC<IProps> = ({ children, theme }:IProps) => {
 			},
 			palette: {
 				type: themeOptions.paletteType,
+				primary: {
+					main: "#546e7a",
+				},
+				secondary: {
+					main: "#f4511e",
+				},
 			},
 		});
 	}, [theme, themeOptions.paletteType]);
@@ -55,7 +61,7 @@ export const useChangeTheme = (): any => {
 	const dispatch = React.useContext(ThemeDispatchContext);
 	const theme = useTheme();
 	const changeTheme = React.useCallback(() => {
-		dispatch({ type: 'changeTheme', payload: theme.palette.type === 'light' ? 'dark' : 'light' });
+		dispatch({ type: "changeTheme", payload: theme.palette.type === "light" ? "dark" : "light" });
 	}, [theme.palette.type, dispatch]);	
 	return changeTheme;
 };

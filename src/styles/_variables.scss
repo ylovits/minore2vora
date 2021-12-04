@@ -1,20 +1,8 @@
 $main-family: 'Roboto Mono', Arial, Helvetica, sans-serif;
 $condensed-family: 'Roboto Condensed', Arial, Helvetica, sans-serif;
 
-$darkLiver: #931F1D;
-$isabelline: #937B63;
-$etonBlue: #8A9B68;
-$dingyDungeon: #B6C197;
-$flax: #FFF;
-
-$theme-colors: (
-  "primary": $isabelline,
-  "secondary": $darkLiver,
-  "light": $etonBlue,
-  "dark": $dingyDungeon
-);
-
-$white: $flax;
+$primary: #546e7a;
+$secondary: #f4511e;
 
 $grid-breakpoints: (
   xs: 0,

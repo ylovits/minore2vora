@@ -1,14 +1,14 @@
-import React from 'react';
-import Fab from '@material-ui/core/Fab';
-import SettingsIcon from '@material-ui/icons/Settings';
-import { makeStyles, createStyles } from '@material-ui/core/styles';
+import React from "react";
+import Fab from "@material-ui/core/Fab";
+import SettingsIcon from "@material-ui/icons/Settings";
+import { makeStyles, createStyles } from "@material-ui/core/styles";
 
 const useStyles = makeStyles(() => {
 	return createStyles({
 		fab: {
-			position: 'fixed',
-			bottom: '1em',
-			left: '1em',
+			position: "fixed",
+			bottom: "1em",
+			left: "1em",
 		},
 	});
 });

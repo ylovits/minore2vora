@@ -1,16 +1,16 @@
-import React from 'react';
-import useStore from 'store/globalStore';
-import ExitToAppIcon from '@material-ui/icons/ExitToApp';
-import Typography from '@material-ui/core/Typography';
-import './header.scss';
+import React from "react";
+import useStore from "store/globalStore";
+import ExitToAppIcon from "@material-ui/icons/ExitToApp";
+import Typography from "@material-ui/core/Typography";
+import "./header.scss";
 
-import { alpha, makeStyles, Theme, createStyles } from '@material-ui/core/styles';
-import AppBar from '@material-ui/core/AppBar';
-import Toolbar from '@material-ui/core/Toolbar';
-import InputBase from '@material-ui/core/InputBase';
-import IconButton from '@material-ui/core/IconButton';
-import SearchIcon from '@material-ui/icons/Search';
-import HomeIcon from '@material-ui/icons/Home';
+import { alpha, makeStyles, Theme, createStyles } from "@material-ui/core/styles";
+import AppBar from "@material-ui/core/AppBar";
+import Toolbar from "@material-ui/core/Toolbar";
+import InputBase from "@material-ui/core/InputBase";
+import IconButton from "@material-ui/core/IconButton";
+import SearchIcon from "@material-ui/icons/Search";
+import HomeIcon from "@material-ui/icons/Home";
 
 interface IProps {
 	logout: () => void;
@@ -27,63 +27,60 @@ const useStyles = makeStyles((theme: Theme) => {
 			marginRight: theme.spacing(2),
 		},
 		title: {
-			display: 'none',
-			[theme.breakpoints.up('sm')]: {
-				display: 'block',
+			display: "none",
+			[theme.breakpoints.up("sm")]: {
+				display: "block",
 			},
-			cursor: 'pointer',
-			'&:hover': {
+			cursor: "pointer",
+			"&:hover": {
 				color: alpha(theme.palette.common.white, 0.85),
 			},
 		},
 		homeBtn: {
 			marginRight: theme.spacing(2),
-			display: 'block',
-			[theme.breakpoints.up('sm')]: {
-				display: 'none',
+			display: "block",
+			[theme.breakpoints.up("sm")]: {
+				display: "none",
 			},
-			cursor: 'pointer',
-			'&:hover': {
+			cursor: "pointer",
+			"&:hover": {
 				color: alpha(theme.palette.common.white, 0.85),
 			},
 		},
 		search: {
-			position: 'relative',
+			position: "relative",
 			borderRadius: theme.shape.borderRadius,
 			backgroundColor: alpha(theme.palette.common.white, 0.15),
-			'&:hover': {
+			"&:hover": {
 				backgroundColor: alpha(theme.palette.common.white, 0.25),
 			},
 			marginRight: theme.spacing(2),
 			marginLeft: 0,
-			width: '100%',
-			[theme.breakpoints.up('sm')]: {
+			width: "100%",
+			[theme.breakpoints.up("sm")]: {
 				marginLeft: theme.spacing(3),
-				width: 'auto',
+				width: "auto",
 			},
 			flexGrow: 1,
 		},
 		searchIcon: {
 			padding: theme.spacing(0, 2),
-			height: '100%',
-			position: 'absolute',
-			pointerEvents: 'none',
-			display: 'flex',
-			alignItems: 'center',
-			justifyContent: 'center',
+			height: "100%",
+			position: "absolute",
+			pointerEvents: "none",
+			display: "flex",
+			alignItems: "center",
+			justifyContent: "center",
 		},
 		inputRoot: {
-			color: 'inherit',
+			color: "inherit",
+			width:"100%"
 		},
 		inputInput: {
 			padding: theme.spacing(1, 1, 1, 0),
-			// vertical padding + font size from searchIcon
 			paddingLeft: `calc(1em + ${theme.spacing(4)}px)`,
-			transition: theme.transitions.create('width'),
-			width: '100%',
-			[theme.breakpoints.up('md')]: {
-				width: '20ch',
-			},
+			transition: theme.transitions.create("width"),
+			width: "100%",
 		}
 	});
 });
@@ -103,7 +100,7 @@ const Header: React.FC<IProps> = ({ logout, handleSearchChange, showSearch }: IP
 				<Toolbar>
 					<Typography
 						onClick={() => {
-							goToPage('song-list');
+							goToPage("song-list");
 						}}
 						className={classes.title}
 						variant="h6"
@@ -113,7 +110,7 @@ const Header: React.FC<IProps> = ({ logout, handleSearchChange, showSearch }: IP
 					</Typography>
 					<HomeIcon
 						onClick={() => {
-							goToPage('song-list');
+							goToPage("song-list");
 						}}
 						className={classes.homeBtn}
 					/>
@@ -130,7 +127,7 @@ const Header: React.FC<IProps> = ({ logout, handleSearchChange, showSearch }: IP
 										root: classes.inputRoot,
 										input: classes.inputInput,
 									}}
-									inputProps={{ 'aria-label': 'search' }}
+									inputProps={{ "aria-label": "search" }}
 									onChange={handleSearchChange}
 								/>
 							</>)

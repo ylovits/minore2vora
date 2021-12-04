@@ -1,16 +1,14 @@
-import * as React from 'react';
-import * as ReactDOM from 'react-dom';
-import App from './components/app';
-import AuthProvider from './auth/auth';
-import reportWebVitals from './reportWebVitals';
+import * as React from "react";
+import * as ReactDOM from "react-dom";
+import App from "./components/app";
+import AuthProvider from "./auth/auth";
+import reportWebVitals from "./reportWebVitals";
 
 ReactDOM.render(
-	<React.StrictMode>
-		<AuthProvider>
-			<App />
-		</AuthProvider>
-	</React.StrictMode>,
-	document.getElementById('root')
+	<AuthProvider>
+		<App />
+	</AuthProvider>,
+	document.getElementById("root")
 );
 
 // If you want to start measuring performance in your app, pass a function
