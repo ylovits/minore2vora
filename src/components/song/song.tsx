@@ -65,7 +65,6 @@ const useStyles = makeStyles((theme: Theme) => {
 		mainContent: {
 			padding: theme.spacing(2, 0),
 			whiteSpace: "pre-line",
-
 		},
 		btn: {
 			borderRadius: 0,
