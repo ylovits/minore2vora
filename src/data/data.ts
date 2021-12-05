@@ -17,31 +17,46 @@ const dromoi = [
 	{ value: "Σαμπαχ", label: "Σαμπαχ" },
 ];
 
+const scales = [
+	{ value: "A", label: "A", key: "A", type: "major" },
+	{ value: "Am", label: "Am", key: "A", type: "minor" },
+	{ value: "A#", label: "A#", key: "A#", type: "major" },
+	{ value: "A#m", label: "A#m", key: "A#", type: "minor" },
+	{ value: "B", label: "B", key: "B", type: "major" },
+	{ value: "Bm", label: "Bm", key: "B", type: "minor" },
+	{ value: "C", label: "C", key: "C", type: "major" },
+	{ value: "Cm", label: "Cm", key: "C", type: "minor" },
+	{ value: "C#", label: "C#", key: "C#", type: "major" },
+	{ value: "C#m", label: "C#m", key: "C#", type: "minor" },
+	{ value: "D", label: "D", key: "D", type: "major" },
+	{ value: "Dm", label: "Dm", key: "D", type: "minor" },
+	{ value: "D#", label: "D#", key: "D#", type: "major" },
+	{ value: "D#m", label: "D#m", key: "D#", type: "minor" },
+	{ value: "E", label: "E", key: "E", type: "major" },
+	{ value: "Em", label: "Em", key: "E", type: "minor" },
+	{ value: "F", label: "F", key: "F", type: "major" },
+	{ value: "Fm", label: "Fm", key: "F", type: "minor" },
+	{ value: "F#", label: "F#", key: "F#", type: "major" },
+	{ value: "F#m", label: "F#m", key: "F#", type: "minor" },
+	{ value: "G", label: "G", key: "G", type: "major" },
+	{ value: "Gm", label: "Gm", key: "G", type: "minor" },
+	{ value: "G#", label: "G#", key: "G#", type: "major" },
+	{ value: "G#m", label: "G#m", key: "G#", type: "minor" },
+];
+
 const keys = [
 	{ value: "A", label: "A" },
-	{ value: "Am", label: "Am" },
 	{ value: "A#", label: "A#" },
-	{ value: "A#m", label: "A#m" },
 	{ value: "B", label: "B" },
-	{ value: "Bm", label: "Bm" },
 	{ value: "C", label: "C" },
-	{ value: "Cm", label: "Cm" },
 	{ value: "C#", label: "C#" },
-	{ value: "C#m", label: "C#m" },
 	{ value: "D", label: "D" },
-	{ value: "Dm", label: "Dm" },
 	{ value: "D#", label: "D#" },
-	{ value: "D#m", label: "D#m" },
 	{ value: "E", label: "E" },
-	{ value: "Em", label: "Em" },
 	{ value: "F", label: "F" },
-	{ value: "Fm", label: "Fm" },
 	{ value: "F#", label: "F#" },
-	{ value: "F#m", label: "F#m" },
 	{ value: "G", label: "G" },
-	{ value: "Gm", label: "Gm" },
-	{ value: "G#", label: "G#" },
-	{ value: "G#m", label: "G#m" },
+	{ value: "G#", label: "G#" }
 ];
 
 const rythmoi = [
@@ -118,4 +133,4 @@ const rythmoi = [
 	},
 ];
 
-export { rythmoi, keys, dromoi };
+export { rythmoi, keys, scales, dromoi };

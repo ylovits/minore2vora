@@ -1,10 +1,10 @@
-import React, { useState, useEffect } from 'react';
-import { rythmoi, keys, dromoi } from '../../data/data';
-import useStore from 'store/globalStore';
-import { ISong } from '../../interfaces/interfaces';
-import Button from '@material-ui/core/Button';
-import { makeStyles, createStyles, Theme } from '@material-ui/core/styles';
-import { FormControlLabel, Checkbox, Container, TextField, MenuItem, FormControl, Input, Select, InputLabel, ListItemText} from '@material-ui/core';
+import React, { useState, useEffect, BaseSyntheticEvent } from "react";
+import { rythmoi, scales, dromoi } from "data/data";
+import useStore from "store/globalStore";
+import { ISong } from "interfaces/interfaces";
+import Button from "@material-ui/core/Button";
+import { makeStyles, createStyles, Theme } from "@material-ui/core/styles";
+import { FormControlLabel, Checkbox, Container, TextField, MenuItem, FormControl, Input, Select, InputLabel, ListItemText} from "@material-ui/core";
 interface IProps {
 	handleSubmit: (_sng: ISong) => void;
 	handleSuccess: () => void;
@@ -14,13 +14,13 @@ interface IProps {
 const useStyles = makeStyles((theme: Theme) => {
 	return createStyles({
 		root: {
-			display: 'flex',
-			flexDirection: 'column',
+			display: "flex",
+			flexDirection: "column",
 		},
 		form: {
 			flexGrow: 1,
-			overflow: 'hidden',
-			paddingTop: '1rem',
+			overflow: "hidden",
+			paddingTop: "1rem",
 		},
 		formControl: {
 			margin: theme.spacing(1),
@@ -42,16 +42,16 @@ const SongForm: React.FC<IProps> = ({ handleSubmit, handleSuccess }: IProps) => 
 	});
 
 	const [song, setSong] = useState<ISong>({
-		id: '',
-		title: '',
-		youtube: '',
+		id: "",
+		title: "",
+		youtube: "",
 		tempo: 1,
 		rhythm: [],
-		key: [],
+		key: "D",
 		dromos: [],
-		body: '',
+		body: "",
 		presentable: false,
-		notes: '',
+		notes: "",
 	});
 
 	const onChangeSelect = (option: string | string[], attribute: string) => {
@@ -73,7 +73,7 @@ const SongForm: React.FC<IProps> = ({ handleSubmit, handleSuccess }: IProps) => 
 				<TextField
 					id="title"
 					label="Τίτλος"
-					style={{ margin: '0.5rem 0' }}
+					style={{ margin: "0.5rem 0" }}
 					placeholder="Τίτλος"
 					fullWidth
 					margin="normal"
@@ -93,7 +93,7 @@ const SongForm: React.FC<IProps> = ({ handleSubmit, handleSuccess }: IProps) => 
 				<TextField
 					id="youtube"
 					label="youtube"
-					style={{ margin: '0.5rem 0' }}
+					style={{ margin: "0.5rem 0" }}
 					placeholder="Yourtube URL"
 					fullWidth
 					margin="normal"
@@ -115,7 +115,7 @@ const SongForm: React.FC<IProps> = ({ handleSubmit, handleSuccess }: IProps) => 
 					rows={15}
 					id="stixoi"
 					label="Στίχοι"
-					style={{ margin: '0.5rem 0' }}
+					style={{ margin: "0.5rem 0" }}
 					placeholder="Εδώ μπαίνουν οι στίχοι - ακόρντα"
 					fullWidth
 					margin="normal"
@@ -134,24 +134,18 @@ const SongForm: React.FC<IProps> = ({ handleSubmit, handleSuccess }: IProps) => 
 				/>
 
 				<FormControl 
-					style={{ margin: '0.5rem 0', color:'#000' }}
+					style={{ margin: "0.5rem 0", color:"#000" }}
 					className={classes.formControl}
 					fullWidth
 				>
-					<InputLabel >Κλειδιά</InputLabel>
+					<InputLabel >Κλειδί</InputLabel>
 					<Select
-						multiple
 						value={song.key}
-						onChange={(options) => {
-							const values: string[] = [];
-							if (options) {
-								(options.target.value as string[]).forEach((option: string) => {
-									values.push(option);
-								});
-							}
-							onChangeSelect(values, 'key');
+						onChange={(selection: BaseSyntheticEvent) => {
+							setSong((song) => {
+								return { ...song, key: selection.target.value };
+							});
 						}}
-						renderValue={(selected) => { return (selected as string[]).join(', '); }}
 						MenuProps={{ 
 							PaperProps: {
 								style: {
@@ -163,19 +157,16 @@ const SongForm: React.FC<IProps> = ({ handleSubmit, handleSuccess }: IProps) => 
 						}}
 						input={<Input />}
 					>
-						{keys.map((musicKey) => { 
+						{scales.map((scale) => { 
 							return (
-								<MenuItem key={musicKey.label} value={musicKey.label} >
-									<Checkbox checked={song.key.indexOf(musicKey.label) > -1} />
-									<ListItemText primary={musicKey.label} />
-								</MenuItem>
+								<MenuItem key={scale.label} value={scale.label} >{scale.label}</MenuItem>
 							);
 						})}
 					</Select>
 				</FormControl>
 
 				<FormControl 
-					style={{ margin: '0.5rem 0', color:'#000' }}
+					style={{ margin: "0.5rem 0", color:"#000" }}
 					className={classes.formControl}
 					fullWidth
 				>
@@ -190,9 +181,9 @@ const SongForm: React.FC<IProps> = ({ handleSubmit, handleSuccess }: IProps) => 
 									values.push(option);
 								});
 							}
-							onChangeSelect(values, 'dromos');
+							onChangeSelect(values, "dromos");
 						}}
-						renderValue={(selected) => { return (selected as string[]).join(', '); }}
+						renderValue={(selected) => { return (selected as string[]).join(", "); }}
 						MenuProps={{ 
 							PaperProps: {
 								style: {
@@ -207,7 +198,7 @@ const SongForm: React.FC<IProps> = ({ handleSubmit, handleSuccess }: IProps) => 
 						{dromoi.map((dromos) => { 
 							return (
 								<MenuItem key={dromos.label} value={dromos.label} >
-									<Checkbox checked={song.dromos.indexOf(dromos.label) > -1} />
+									<Checkbox checked={dromos.label in song.dromos} />
 									<ListItemText primary={dromos.label} />
 								</MenuItem>
 							);
@@ -216,7 +207,7 @@ const SongForm: React.FC<IProps> = ({ handleSubmit, handleSuccess }: IProps) => 
 				</FormControl>
 
 				<FormControl 
-					style={{ margin: '0.5rem 0', color:'#000' }}
+					style={{ margin: "0.5rem 0", color:"#000" }}
 					className={classes.formControl}
 					fullWidth
 				>
@@ -231,9 +222,9 @@ const SongForm: React.FC<IProps> = ({ handleSubmit, handleSuccess }: IProps) => 
 									values.push(option);
 								});
 							}
-							onChangeSelect(values, 'rhythm');
+							onChangeSelect(values, "rhythm");
 						}}
-						renderValue={(selected) => { return (selected as string[]).join(', '); }}
+						renderValue={(selected) => { return (selected as string[]).join(", "); }}
 						MenuProps={{ 
 							PaperProps: {
 								style: {
@@ -248,7 +239,7 @@ const SongForm: React.FC<IProps> = ({ handleSubmit, handleSuccess }: IProps) => 
 						{rythmoi.map((rhythm) => { 
 							return (
 								<MenuItem key={rhythm.label} value={rhythm.label} >
-									<Checkbox checked={song.rhythm.indexOf(rhythm.label) > -1} />
+									<Checkbox checked={rhythm.label in song.rhythm} />
 									<ListItemText primary={rhythm.label} />
 								</MenuItem>
 							);
@@ -259,7 +250,7 @@ const SongForm: React.FC<IProps> = ({ handleSubmit, handleSuccess }: IProps) => 
 				<TextField
 					id="tempo"
 					label="Tempo"
-					style={{ margin: '0.5rem 0' }}
+					style={{ margin: "0.5rem 0" }}
 					placeholder="Τέμπο"
 					fullWidth
 					margin="normal"
@@ -285,7 +276,7 @@ const SongForm: React.FC<IProps> = ({ handleSubmit, handleSuccess }: IProps) => 
 					rows={15}
 					id="notes"
 					label="Νotes"
-					style={{ margin: '0.5rem 0' }}
+					style={{ margin: "0.5rem 0" }}
 					placeholder="Σημειώσεις - σχόλια"
 					fullWidth
 					margin="normal"
@@ -305,7 +296,7 @@ const SongForm: React.FC<IProps> = ({ handleSubmit, handleSuccess }: IProps) => 
 				<FormControlLabel
 					control={
 						<Checkbox
-							style={{ margin: '0.5rem 0' }}
+							style={{ margin: "0.5rem 0" }}
 							checked={song.presentable}
 							onChange={(_e) => {
 								return setSong((song) => {
@@ -325,7 +316,7 @@ const SongForm: React.FC<IProps> = ({ handleSubmit, handleSuccess }: IProps) => 
 				<div className="form-group row">
 					<div className="offset-2 col-md-10">
 						<Button
-							style={{ margin: '0.5rem 0' }}
+							style={{ margin: "0.5rem 0" }}
 							name="submit"
 							type="submit"
 							onClick={() => {

@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react';
-import useStore from 'store/globalStore';
-import firebase from '../firebase';
+import React, { useState, useEffect } from "react";
+import useStore from "store/globalStore";
+import firebase from "../firebase";
 
 interface IProps {
     children: React.ReactNode;
@@ -34,7 +34,7 @@ const AuthProvider:React.FC<IProps> = ({children}: IProps) => {
 	useEffect(() => {
 		firebase.auth().onAuthStateChanged((user) => {
 			setUser(user);
-			goToPage('song-list');
+			goToPage("song-list");
 			setLoadingAuthState(false);
 		});
 	// eslint-disable-next-line react-hooks/exhaustive-deps

@@ -34,19 +34,39 @@
 .SongBody{
     white-space: pre-line;
     strong {
+        font-family: monospace;
         line-height: 2.3em;
         position: relative;
-        color: #f50000;
+        color: $secondary;
         top: -1em;
         display: inline-block;
         width: 0;
+        white-space: nowrap;
     }
     em {
+        font-family: monospace;
         line-height: 2.3em;
         position: relative;
-        color: #f50000;
+        color: $secondary;
         display: inline-block;
         width: 0;
         white-space: nowrap;
+    }
+    .perasma {
+        font-family: monospace;
+        line-height: 2.3em;
+        position: relative;
+        color: $secondary;
+        top: -1em;
+        display: inline-block;
+        width: 0;
+        white-space: nowrap;
+        font-weight: 900;
+        font-size: 0.7em;
+        strong{
+            font-family: monospace;
+            font-size: 1rem;
+            top:auto
+        }
     }
 }

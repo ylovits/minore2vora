@@ -1,6 +1,6 @@
-# Minore2vora
+# Minore2Vorra
 
-![Issues](https://img.shields.io/github/issues/ylovits/minore2vora?style=flat-square)
+![Issues](https://img.shields.io/github/issues/ylovits/minore2vorra?style=flat-square)
 
 
 

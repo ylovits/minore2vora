@@ -1,8 +1,8 @@
-import React, { useState, useEffect, lazy } from 'react';
-import firebase from '../../firebase';
-import { ISong } from '../../interfaces/interfaces';
-import useStore from 'store/globalStore';
-import Header from 'components/layout/header';
+import React, { useState, useEffect, lazy } from "react";
+import firebase from "../../firebase";
+import { ISong } from "../../interfaces/interfaces";
+import useStore from "store/globalStore";
+import Header from "components/layout/header";
 import {
 	Snackbar,
 	Grid,
@@ -15,14 +15,14 @@ import {
 	DialogContent,
 	DialogContentText,
 	DialogTitle,
-} from '@material-ui/core';
+} from "@material-ui/core";
 
 
 
 
-import { makeStyles, createStyles, Theme } from '@material-ui/core/styles';
-import CloseIcon from '@material-ui/icons/Close';
-import { greeklishToGreek } from 'components/main-controller/characterMap';
+import { makeStyles, createStyles, Theme } from "@material-ui/core/styles";
+import CloseIcon from "@material-ui/icons/Close";
+import { greeklishToGreek } from "utils/characterMap";
 
 
 /* Styles */
@@ -30,7 +30,7 @@ const useStyles = makeStyles((theme: Theme) => {
 	return createStyles({
 		backdrop: {
 			zIndex: theme.zIndex.drawer + 1,
-			color: '#fff',
+			color: "#fff",
 		},
 	});
 });
@@ -38,13 +38,13 @@ const useStyles = makeStyles((theme: Theme) => {
 
 /* Lazy load all "page" components for code splitting */
 const SongList = lazy(() => { 
-	return import('components/song-list/song-list');
+	return import("components/song-list/song-list");
 });
 const Song = lazy(() => {
-	return import('components/song/song');
+	return import("components/song/song");
 });
 const SongForm = lazy(() => {
-	return import('components/song-form/song-form');
+	return import("components/song-form/song-form");
 });
 
 
@@ -65,7 +65,7 @@ const SnapshotFirebase: React.FC = () => {
 	const [loading, setLoading] = useState(false);
 
 
-	const ref = firebase.firestore().collection('songs');
+	const ref = firebase.firestore().collection("songs");
 
 	const getSongs = () => {
 		setLoading(true);
@@ -83,7 +83,7 @@ const SnapshotFirebase: React.FC = () => {
 		setLoading(true);
 		ref.add(song)
 			.then(() => {
-				goToPage('song-list');
+				goToPage("song-list");
 			}).then(() => {
 				setLoading(false);
 			})
@@ -94,11 +94,11 @@ const SnapshotFirebase: React.FC = () => {
 
 	const handleEditSong = (song: ISong) => {
 		setLoading(true);
-		if (song.id !== '') {
+		if (song.id !== "") {
 			ref.doc(song.id)
 				.update(song)
 				.then(() => {
-					goToPage('song-list');
+					goToPage("song-list");
 				}).then(() => {
 					setLoading(false);
 				})
@@ -129,7 +129,7 @@ const SnapshotFirebase: React.FC = () => {
 	};
 
 	const handleCloseSnackBar = (event?: React.SyntheticEvent, reason?: string) => {
-		if (reason === 'clickaway') {
+		if (reason === "clickaway") {
 			return;
 		}
 		
@@ -141,11 +141,11 @@ const SnapshotFirebase: React.FC = () => {
 
 	const deleteSong = (song: ISong) => {
 		setLoading(true);
-		if (song.id !== '') {
+		if (song.id !== "") {
 			ref.doc(song.id)
 				.delete()
 				.then(() => {
-					goToPage('song-list');
+					goToPage("song-list");
 				}).then(() => {
 					setLoading(false);
 				})
@@ -163,7 +163,7 @@ const SnapshotFirebase: React.FC = () => {
 	/**
 	 * Searching
 	 */
-	const [searchTerm, setSearchTerm] = useState('');
+	const [searchTerm, setSearchTerm] = useState("");
 	const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
 		const modifiedSearch = greeklishToGreek(event.target.value).toLowerCase();
 		setSearchTerm(modifiedSearch);
@@ -171,13 +171,13 @@ const SnapshotFirebase: React.FC = () => {
 
 	const renderPages = (page: string) => {
 		switch (page) {
-		case 'song-list':
+		case "song-list":
 			return <SongList searchTerm={searchTerm}/>;
-		case 'song':
-			return <Song song={selectedSong} setShowDeletePopup={() => { setShowDeletePopup (true);}} />;
-		case 'new-song':
+		case "song":
+			return <Song song={selectedSong as ISong} setShowDeletePopup={() => { setShowDeletePopup (true);}} />;
+		case "new-song":
 			return <SongForm handleSubmit={handleAddSong} handleSuccess={handleSuccess} />;
-		case 'edit-song':
+		case "edit-song":
 			return <SongForm handleSubmit={handleEditSong} handleSuccess={handleSuccess} />;
 		}
 	};
@@ -196,7 +196,7 @@ const SnapshotFirebase: React.FC = () => {
 	return (
 		<React.Fragment>
 			<Grid container direction="row" justifyContent="center" alignItems="center">
-				<Header logout={logout} handleSearchChange={handleSearchChange} showSearch={page === 'song-list'}/>
+				<Header logout={logout} handleSearchChange={handleSearchChange} showSearch={page === "song-list"}/>
 			</Grid>
 			<React.Suspense fallback={<Backdrop className={classes.backdrop} open={true} ><CircularProgress color="inherit" /></Backdrop>}>
 				<Grid item xs={12}>
@@ -206,8 +206,8 @@ const SnapshotFirebase: React.FC = () => {
 
 			<Snackbar
 				anchorOrigin={{
-					vertical: 'bottom',
-					horizontal: 'center',
+					vertical: "bottom",
+					horizontal: "center",
 				}}
 				open={openSnackBar}
 				autoHideDuration={2000}
@@ -227,7 +227,7 @@ const SnapshotFirebase: React.FC = () => {
 				aria-labelledby="alert-dialog-title"
 				aria-describedby="alert-dialog-description"
 			>
-				<DialogTitle id="alert-dialog-title">{'Are you sure you want to delete this song?'}</DialogTitle>
+				<DialogTitle id="alert-dialog-title">{"Are you sure you want to delete this song?"}</DialogTitle>
 				<DialogContent>
 					<DialogContentText id="alert-dialog-description">
 						All of this song data will be FOREVER lost!!!

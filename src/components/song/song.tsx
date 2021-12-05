@@ -1,59 +1,70 @@
-import React, { useEffect, useRef, useState } from 'react';
-import { ISong } from 'interfaces/interfaces';
-import useStore from 'store/globalStore';
-import { Button, Chip, Typography, Container, Box, Popover, Drawer } from '@material-ui/core';
-import { makeStyles, createStyles, Theme } from '@material-ui/core/styles';
-import { rythmoi } from 'data/data';
-import FabMenu from 'components/ui/fab-menu';
-import InfoIcon from '@material-ui/icons/Info';
-import EditIcon from '@material-ui/icons/Edit';
-import DeleteIcon from '@material-ui/icons/Delete';
-import './song.scss';
+import React, { BaseSyntheticEvent, useEffect, useRef, useState } from "react";
+import { AllKeys, AllScales, ISong } from "interfaces/interfaces";
+import useStore from "store/globalStore";
+import { 
+	Button, Chip, Typography, Container, Box, Popover, Drawer, FormControl, Select, MenuItem, Dialog, DialogContent, DialogActions 
+} from "@material-ui/core";
+import { makeStyles, createStyles, Theme } from "@material-ui/core/styles";
+import { rythmoi, scales, keys } from "data/data";
+import FabMenu from "components/ui/fab-menu";
+import InfoIcon from "@material-ui/icons/Info";
+import EditIcon from "@material-ui/icons/Edit";
+import DeleteIcon from "@material-ui/icons/Delete";
+import { scaleToKey, transposeChord } from "utils/transpose";
+import { crossLangSafeguard } from "utils/characterMap";
+import "./song.scss";
 
 interface IProps {
-	song: ISong | null;
+	song: ISong;
 	setShowDeletePopup: () => void;
 }
 
 const useStyles = makeStyles((theme: Theme) => {
 	return createStyles({
 		root: {
-			display: 'flex',
-			flexDirection: 'column',
+			display: "flex",
+			flexDirection: "column",
 			paddingBottom: theme.spacing(5),
 		},
 		chips: {
-			display: 'flex',
-			justifyContent: 'center',
-			flexWrap: 'wrap',
-			listStyle: 'none',
+			display: "flex",
+			justifyContent: "center",
+			flexWrap: "wrap",
+			listStyle: "none",
 			padding: theme.spacing(0.5),
 			margin: 0,
 		},
 		chip: {
 			margin: theme.spacing(0.5),
 		},
+		clickable: {
+			cursor: "pointer",
+		},
 		titleLink: {
-			textDecoration: 'none',
+			textDecoration: "none",
 			color: theme.palette.primary.main,		
 		},
 		title: {
-			margin: theme.spacing(1, 0),
+			margin: theme.spacing(2, 0),
 		},
 		inline: {
-			margin: '0.5rem 0.5rem 0 0',
-			display: 'inline-block',
+			margin: "0.5rem 0.5rem 0 0",
+			display: "inline-block",
 		},
 		notes: {
-			margin: '0.5rem 0.5rem 0 0',
-			display: 'block',
+			margin: "0.5rem 0.5rem 0 0",
+			display: "block",
 		},
 		popPad: {
 			padding: theme.spacing(2),
 		},
+		formControl: {
+			margin: theme.spacing(1),
+			minWidth: 120,
+		},
 		mainContent: {
 			padding: theme.spacing(2, 0),
-			whiteSpace: 'pre-line',
+			whiteSpace: "pre-line",
 
 		},
 		btn: {
@@ -81,19 +92,20 @@ const Song: React.FC<IProps> = ({ song, setShowDeletePopup }: IProps) => {
 		setShowDeletePopup();
 	};
 
-	const [anchorEl, setAnchorEl] = React.useState<Element | ((_element: Element) => Element) | null | undefined>(null);
+	const [rhythmAnchorEl, setRhythmAnchorEl] = React.useState<Element | ((_element: Element) => Element) | null | undefined>(null);
 
-	const handleClick = (event: React.MouseEvent<HTMLDivElement>) => {
-		setAnchorEl(event.currentTarget);
+	const handleRhythmClick = (event: React.MouseEvent<HTMLDivElement>) => {
+		setRhythmAnchorEl(event.currentTarget);
 	};
   
-	const handleClose = () => {
-		setAnchorEl(null);
+	const handleRhythmClose = () => {
+		setRhythmAnchorEl(null);
 	};
   
-	const open = Boolean(anchorEl);
-	const id = open ? 'simple-popover' : undefined;
+	const openRhythm = Boolean(rhythmAnchorEl);
 
+
+	const idRhythm = openRhythm ? "simple-popover" : undefined;
 
 	const [showDrawer, setShowDrawer] = useState(false);
 	const toggleDrawer = () => {
@@ -102,22 +114,102 @@ const Song: React.FC<IProps> = ({ song, setShowDeletePopup }: IProps) => {
 
 	const strongRef = useRef<HTMLElement>(null);
 
+	const [currentKey, setCurrentKey] = useState<AllKeys>();
+	const [currentScale, setCurrentScale] = useState<AllScales>();
+	
 	useEffect(() => {
-		if (strongRef.current) {
-			strongRef.current.innerHTML = (song?.body as string).replace(
-				/\[\[(.*?)\]\]/g,
-				'<strong>$1</strong>'
-			).replace(
-				/\{\{(.*?)\}\}/g,
-				'<em>$1</em>'
-			);
+		if (strongRef.current && song.key) {
+			if (currentKey) {
+				strongRef.current.innerHTML = (song.body as string).replace(
+					/\[\[(.*?)\]\]/g,
+					(_match, text, _offset, _string) => { 
+						return `<strong>${transposeChord(
+							crossLangSafeguard(text), song.key, currentKey
+						)}</strong>`; 
+					}
+				).replace(
+					/\{\{(.*?)\}\}/g,
+					(_match, text, _offset, _string) => { 
+						return `<em>${transposeChord(
+							crossLangSafeguard(text), song.key, currentKey 
+						)}</em>`; 
+					}
+				).replace(
+					/\%\%(.*?)\%\%/g,
+					(_match, text, _offset, _string) => { 
+						return `<span class=\"perasma\">${transposeChord(
+							crossLangSafeguard(text), song.key, currentKey 
+						)}</span>`; 
+					}
+				);
+			} else {
+				strongRef.current.innerHTML = (song.body as string).replace(
+					/\[\[(.*?)\]\]/g,
+					"<strong>$1</strong>"
+				).replace(
+					/\{\{(.*?)\}\}/g,
+					"<em>$1</em>"
+				).replace(
+					/\%\%(.*?)\%\%/g,
+					"<span class=\"perasma\">$1</span>"
+				);
+			}
 		}
-	}, [song?.body, strongRef]);
+	}, [currentKey, song, song.body, strongRef]);
+
+
+
+	useEffect(() => {
+		if (song && song.key) {
+			setCurrentKey(scaleToKey(song.key));
+			setCurrentScale(song.key);
+		}
+		const tempScale = scales.find((scale) => { return scale.value === song.key; });
+		setTempKey({ 
+			key: tempScale?.key as AllKeys,
+			type: tempScale?.type as "major" | "minor"
+		});
+	}, [song, song.key]);
+
+
+	const [openTranspose, setOpenTranspose] = useState(false);
+	const [tempKey, setTempKey] = useState<{key: AllKeys, type: "major" | "minor"}>({ 
+		key: scales.find((scale) => { return scale.value === currentKey; })?.key as AllKeys,
+		type: scales.find((scale) => { return scale.value === currentKey; })?.type as "major" | "minor"
+	});
+
+	const handleKeyChange = (key: AllKeys) => {
+		setTempKey((oldTempKey) => {
+			return { 
+				key: scales.find((scale) => { return scale.value === key; })?.key as AllKeys,
+				type: oldTempKey.type
+			};
+		});
+	};
+
+	const handleClickScale = () => {
+		setOpenTranspose(true);
+	};
+  
+	const handleCancelTranspose = (event: React.SyntheticEvent<unknown>, reason?: string) => {
+		if (reason !== "backdropClick") {
+			setOpenTranspose(false);
+		}
+	};
+
+	const handleSaveTranspose = (event: React.SyntheticEvent<unknown>, reason?: string) => {
+		const tempScale = scales.find((scale) => { return scale.key === tempKey.key && scale.type === tempKey.type; })?.value as AllScales;
+		setCurrentKey(tempKey.key); 
+		setCurrentScale(tempScale);
+		if (reason !== "backdropClick") {
+			setOpenTranspose(false);
+		}
+	};
 
 	return (
 		<div className={classes.root}>
 			<Container maxWidth="md">
-				<a href={song?.youtube ? song?.youtube : '#'} rel="noreferrer" target={song?.youtube ? '_blank' : '_self'} className={classes.titleLink}>
+				<a href={song?.youtube ? song?.youtube : "#"} rel="noreferrer" target={song?.youtube ? "_blank" : "_self"} className={classes.titleLink}>
 					<Typography variant="h6" component="h1" className={classes.title} >
 						{song?.title}
 					</Typography>
@@ -125,33 +217,33 @@ const Song: React.FC<IProps> = ({ song, setShowDeletePopup }: IProps) => {
 
 				{song?.rhythm && (
 					<Box className={classes.inline}>
-
 						<label>Rhythm: </label>
 						{song?.rhythm.map((rhythm) => {
-							const currentRhythm:string = rythmoi.find((rhythmObj) => {
-								return rhythmObj.label === rhythm;
-							})?.value.rhythm ?? '';
+							const currentRhythm:string = rythmoi.find((rythmObj) => {
+								return rythmObj.label === rhythm;
+							})?.value.rhythm ?? "";
 							return (
 								<span key={`${song.id}-${rhythm}`} >
 									<Popover
-										id={id}
-										open={open}
-										anchorEl={anchorEl}
-										onClose={handleClose}
+										id={idRhythm}
+										open={openRhythm}
+										anchorEl={rhythmAnchorEl}
+										onClose={handleRhythmClose}
 										anchorOrigin={{
-											vertical: 'bottom',
-											horizontal: 'center',
+											vertical: "bottom",
+											horizontal: "center",
 										}}
 										transformOrigin={{
-											vertical: 'top',
-											horizontal: 'center',
+											vertical: "top",
+											horizontal: "center",
 										}}
 									><Typography className={classes.popPad}>{currentRhythm}</Typography></Popover>
 									<Chip
 										size="small"
-										onClick={handleClick}
+										onClick={handleRhythmClick}
 										icon={<InfoIcon/>}
 										label={`${rhythm}`}
+										className={classes.clickable}
 									/>
 								</span>
 							);
@@ -166,12 +258,40 @@ const Song: React.FC<IProps> = ({ song, setShowDeletePopup }: IProps) => {
 						})}
 					</Box>
 				)}
-				{song?.key && (
+				{ song.key && (
 					<Box className={classes.inline}>
 						<label>Key: </label>
-						{song?.key.map((musicKey) => {
-							return <Chip className={classes.chip} key={`${song.id}-${musicKey}`} color="secondary" size="small" label={musicKey} />;
-						})}
+						<Chip
+							className={classes.chip} 
+							color="secondary" 
+							size="small" 
+							label={currentScale || song.key}
+							onClick={handleClickScale}
+						/>
+						<Dialog disableEscapeKeyDown open={openTranspose} onClose={handleCancelTranspose}>
+							<DialogContent>
+								<Box component="form" sx={{ display: "flex", flexWrap: "wrap" }}>
+									<FormControl variant="standard">
+										<Select
+											value={tempKey.key}
+											onChange={(selection: BaseSyntheticEvent) => {
+												handleKeyChange(selection.target.value);
+											}}
+										>
+											{keys.map((key) => { 
+												return (
+													<MenuItem key={key.label} value={key.label}>{key.label}</MenuItem>
+												);
+											})}
+										</Select>
+									</FormControl>
+								</Box>
+							</DialogContent>
+							<DialogActions>
+								<Button onClick={handleCancelTranspose}>Cancel</Button>
+								<Button onClick={handleSaveTranspose}>Ok</Button>
+							</DialogActions>
+						</Dialog>
 					</Box>
 				)}
 				{song?.tempo && (
@@ -196,7 +316,7 @@ const Song: React.FC<IProps> = ({ song, setShowDeletePopup }: IProps) => {
 					className={classes.btn} 
 					onClick={()=>{
 						song && setSelectedSong(song);
-						goToPage('edit-song');
+						goToPage("edit-song");
 					}} 
 					variant="contained" 
 					color="primary"
