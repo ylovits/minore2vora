@@ -5,7 +5,7 @@ import Paper from "@material-ui/core/Paper";
 import { alpha, makeStyles, createStyles, Theme } from "@material-ui/core/styles";
 import Grid from "@material-ui/core/Grid";
 import { ISong } from "interfaces/interfaces";
-import { removeAccents } from "utils/characterMap";
+import { reduceToGreeklish, removeAccents } from "utils/characterMap";
 import "./song-list.scss";
 
 const useStyles = makeStyles((theme: Theme) => {
@@ -60,7 +60,7 @@ const SongList: React.FC<IProps> = ({searchTerm}:IProps) => {
 	
 	useEffect(() => {
 		const results = initSongs.current.filter((song: ISong) => {
-			return removeAccents(song.title).toLowerCase().includes(searchTerm);
+			return reduceToGreeklish(removeAccents(song.title)).toLowerCase().includes(searchTerm);
 		});
 		setSearchResults(results);
 	}, [searchTerm]);

@@ -12,6 +12,7 @@ import EditIcon from "@material-ui/icons/Edit";
 import DeleteIcon from "@material-ui/icons/Delete";
 import { scaleToKey, transposeChord } from "utils/transpose";
 import { crossLangSafeguard } from "utils/characterMap";
+// import ChordSVG from "components/song/ChordSVG";
 import "./song.scss";
 
 interface IProps {
@@ -213,7 +214,7 @@ const Song: React.FC<IProps> = ({ song, setShowDeletePopup }: IProps) => {
 						{song?.title}
 					</Typography>
 				</a>
-
+				{/* <ChordSVG/> */}
 				{song?.rhythm && (
 					<Box className={classes.inline}>
 						<label>Rhythm: </label>
