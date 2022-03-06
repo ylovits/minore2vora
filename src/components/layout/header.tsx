@@ -1,9 +1,8 @@
 import React from "react";
-import useStore from "store/globalStore";
 import ExitToAppIcon from "@material-ui/icons/ExitToApp";
 import Typography from "@material-ui/core/Typography";
 import "./header.scss";
-
+import { useNavigate } from "react-router-dom";
 import { alpha, makeStyles, Theme, createStyles } from "@material-ui/core/styles";
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
@@ -86,13 +85,7 @@ const useStyles = makeStyles((theme: Theme) => {
 	});
 });
 const Header: React.FC<IProps> = ({ logout, handleSearchChange, showSearch }: IProps) => {
-	/**
-	 * Import global state parts needed
-	 */
-	const [goToPage] = useStore((state) => {
-		return [state.goToPage];
-	});
-
+	const navigate = useNavigate();
 	const classes = useStyles();
 
 	return (
@@ -101,7 +94,7 @@ const Header: React.FC<IProps> = ({ logout, handleSearchChange, showSearch }: IP
 				<Toolbar>
 					<Typography
 						onClick={() => {
-							goToPage("song-list");
+							navigate("/song-list");
 						}}
 						className={classes.title}
 						variant="h6"
@@ -112,7 +105,7 @@ const Header: React.FC<IProps> = ({ logout, handleSearchChange, showSearch }: IP
 					<img 
 						src={HomeIcon}
 						onClick={() => {
-							goToPage("song-list");
+							navigate("/song-list");
 						}}
 						className={classes.homeBtn}
 					/>

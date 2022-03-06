@@ -1,7 +1,11 @@
-import React, { useState, useEffect, lazy } from "react";
+import React, { useState, useEffect, lazy, useContext } from "react";
+import { AuthContext } from "auth/auth";
+import Login from "auth/login";
 import firebase from "../../firebase";
 import { ISong } from "../../interfaces/interfaces";
 import useStore from "store/globalStore";
+import { useLocation, useNavigate } from "react-router-dom";
+import { Routes, Route, Navigate } from "react-router-dom";
 import Header from "components/layout/header";
 import {
 	Snackbar,
@@ -16,13 +20,9 @@ import {
 	DialogContentText,
 	DialogTitle,
 } from "@material-ui/core";
-
-
-
-
 import { makeStyles, createStyles, Theme } from "@material-ui/core/styles";
 import CloseIcon from "@material-ui/icons/Close";
-import { reduceToGreeklish } from "utils/characterMap";
+import { reduceToGreeklish, stringToSlug } from "utils/characterMap";
 
 
 /* Styles */
@@ -50,16 +50,20 @@ const SongForm = lazy(() => {
 
 const SnapshotFirebase: React.FC = () => {
 
+	const navigate = useNavigate();
+	const location = useLocation();
+	const { user } = useContext(AuthContext);
+
 	/* load styles */
 	const classes = useStyles();
 	
 	/* Import global state parts needed */
-	const [_glob, page, selectedSong, setSongs, goToPage] = useStore((state) => {
-		return [state, state.page, state.selectedSong, state.setSongs, state.goToPage];
+	const [_glob, selectedSong, setSelectedSong, songs, setSongs, setTempUrl, tempUrl] = useStore((state) => {
+		return [state, state.selectedSong, state.setSelectedSong, state.songs, state.setSongs, state.setTempUrl, state.tempUrl];
 	});
 
 	// Uncomment those lines to get global state logging, also the appConfig import
-	// console.log('Global state:', _glob.songs);
+	// console.log('Global state:', _glob.selectedSong);
 
 	/* loading */ 
 	const [loading, setLoading] = useState(false);
@@ -83,7 +87,7 @@ const SnapshotFirebase: React.FC = () => {
 		setLoading(true);
 		ref.add(song)
 			.then(() => {
-				goToPage("song-list");
+				navigate("/song-list");
 			}).then(() => {
 				setLoading(false);
 			})
@@ -98,7 +102,7 @@ const SnapshotFirebase: React.FC = () => {
 			ref.doc(song.id)
 				.update(song)
 				.then(() => {
-					goToPage("song-list");
+					navigate("/song-list");
 				}).then(() => {
 					setLoading(false);
 				})
@@ -145,7 +149,7 @@ const SnapshotFirebase: React.FC = () => {
 			ref.doc(song.id)
 				.delete()
 				.then(() => {
-					goToPage("song-list");
+					navigate("/song-list");
 				}).then(() => {
 					setLoading(false);
 				})
@@ -169,23 +173,27 @@ const SnapshotFirebase: React.FC = () => {
 		setSearchTerm(modifiedSearch);
 	};
 
-	useEffect(()=>{
-		setSearchTerm("");
-	}, [page]);
-
-	const renderPages = (page: string) => {
-		switch (page) {
-		case "song-list":
-			return <SongList searchTerm={searchTerm}/>;
-		case "song":
-			return <Song song={selectedSong as ISong} setShowDeletePopup={() => { setShowDeletePopup (true);}} />;
-		case "new-song":
-			return <SongForm handleSubmit={handleAddSong} handleSuccess={handleSuccess} />;
-		case "edit-song":
-			return <SongForm handleSubmit={handleEditSong} handleSuccess={handleSuccess} />;
+	// "Routing"
+	useEffect(() => {
+		const locationBase = (location.pathname.match(/\/(.*?)\//) || [""])[1];
+		if (locationBase === "song") {
+			const currentSong = songs.find((song) => {
+				return stringToSlug(song.title) === location.pathname.split("song/").pop();
+			});
+			currentSong ? setSelectedSong(currentSong) : navigate("/song-list");
+		} else if (["login", "song-list"].includes(locationBase)) {
+			setSelectedSong(null);
+		} else {
 		}
-	};
-
+	// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [location.pathname]);
+	
+	useEffect(() => {
+		if ((location.pathname.match(/\/(.*?)\//) || [""])[1] === "song") {
+			setTempUrl(location.pathname);
+		}
+	}, []);
+	
 	/* loading screen */
 	if (loading) {
 		return (
@@ -198,11 +206,31 @@ const SnapshotFirebase: React.FC = () => {
 	return (
 		<React.Fragment>
 			<Grid container direction="row" justifyContent="center" alignItems="center">
-				<Header logout={logout} handleSearchChange={handleSearchChange} showSearch={page === "song-list"}/>
+				<Header logout={logout} handleSearchChange={handleSearchChange} showSearch={location.pathname === "song-list"}/>
 			</Grid>
 			<React.Suspense fallback={<Backdrop className={classes.backdrop} open={true} ><CircularProgress color="inherit" /></Backdrop>}>
 				<Grid item xs={12}>
-					{renderPages(page)}
+					<Routes>
+						{user ? (
+							<>
+								<Route path="/" element={<Navigate to="song-list"/>} />
+								<Route path="/song/:title" element={<Song song={selectedSong as ISong} 
+									setShowDeletePopup={() => { setShowDeletePopup (true);}} />} 
+								/>
+								<Route path="/song-list" element={<SongList searchTerm={searchTerm}/>} />
+								<Route path="/new-song" element={<SongForm handleSubmit={handleAddSong} handleSuccess={handleSuccess} />} />
+								<Route path="/edit-song" element={<SongForm handleSubmit={handleEditSong} handleSuccess={handleSuccess} />} />
+								<Route path="*" element={<Navigate to={tempUrl ? tempUrl : "song-list"}/>} />	
+							</>
+						) : (
+							<>
+								<Route path="/" element={<Navigate to="login" />} />
+								<Route path="/login" element={<Login />} />
+								<Route path="*" element={<Navigate to="login" />} />	
+							</>
+						)}		
+
+					</Routes>
 				</Grid>
 			</React.Suspense>
 

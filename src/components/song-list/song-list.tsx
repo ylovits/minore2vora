@@ -5,8 +5,10 @@ import Paper from "@material-ui/core/Paper";
 import { alpha, makeStyles, createStyles, Theme } from "@material-ui/core/styles";
 import Grid from "@material-ui/core/Grid";
 import { ISong } from "interfaces/interfaces";
-import { reduceToGreeklish, removeAccents } from "utils/characterMap";
+import { reduceToGreeklish, removeAccents, stringToSlug } from "utils/characterMap";
 import "./song-list.scss";
+import SearchSettings from "components/search-settings/SearchSettings";
+import { useNavigate } from "react-router-dom";
 
 const useStyles = makeStyles((theme: Theme) => {
 	return createStyles({
@@ -40,11 +42,13 @@ interface IProps {
 }
 
 const SongList: React.FC<IProps> = ({searchTerm}:IProps) => {
+	const navigate = useNavigate();
+	
 	/**
 	 * Import global state parts needed
 	 */
-	const [goToPage, setSelectedSong, songs] = useStore((state) => {
-		return [state.goToPage, state.setSelectedSong, state.songs];
+	const [setSelectedSong, songs, showOnlyReady] = useStore((state) => {
+		return [state.setSelectedSong, state.songs, state.showOnlyReady];
 	});
 
 	const classes = useStyles();
@@ -62,11 +66,16 @@ const SongList: React.FC<IProps> = ({searchTerm}:IProps) => {
 		const results = initSongs.current.filter((song: ISong) => {
 			return reduceToGreeklish(removeAccents(song.title)).toLowerCase().includes(searchTerm);
 		});
-		setSearchResults(results);
-	}, [searchTerm]);
+
+		const filteredResults = showOnlyReady ? results.filter((song: ISong) => {
+			return song.presentable;
+		}) : results;
+		setSearchResults(filteredResults);
+	}, [searchTerm, showOnlyReady]);
 
 	return (
 		<div className={classes.root}>
+			<SearchSettings />
 			{searchResults.sort((a:ISong, b:ISong) => { return ("" + a.title).localeCompare(b.title); }).map((song: ISong) => {
 				return (
 					<Paper
@@ -74,7 +83,7 @@ const SongList: React.FC<IProps> = ({searchTerm}:IProps) => {
 						key={`song-${song.title}`}
 						onClick={() => {
 							setSelectedSong(song);
-							goToPage("song");
+							navigate(`/song/${stringToSlug(song.title)}`);
 						}}
 					>
 						<Grid container wrap="nowrap" spacing={2}>
@@ -89,7 +98,7 @@ const SongList: React.FC<IProps> = ({searchTerm}:IProps) => {
 					type="submit"
 					onClick={() => {
 						setSelectedSong(null);
-						goToPage("new-song");
+						navigate("/new-song");
 					}}
 					variant="contained"
 					color="primary"

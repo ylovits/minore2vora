@@ -7,10 +7,12 @@ import { persist } from "zustand/middleware";
 import { ISong } from "interfaces/interfaces";
 
 const initialState = {		
-	page: "login",
 	isLoading: true,
 	selectedSong: null,
-	songs: []
+	songs: [],
+	showComments: false,
+	showOnlyReady: false,
+	tempUrl: ""
 };
 
 const useStore = create<globalTypes.IGlobalSate>(
@@ -22,7 +24,7 @@ const useStore = create<globalTypes.IGlobalSate>(
 				logOut: () => {
 					firebase.auth().signOut();
 					set((_state) => {
-						return { page: "login" };
+						return { songs: [] };
 					});
 				},
 
@@ -42,13 +44,21 @@ const useStore = create<globalTypes.IGlobalSate>(
 						return { songs: songs };
 					});
 				},
-
-				goToPage: (page: string) => {
+				setShowOnlyReady: (show: boolean) => {
 					set((_state) => {
-						return { page: page };
+						return { showOnlyReady: show };
 					});
 				},
-
+				setShowComments: (show: boolean) => {
+					set((_state) => {
+						return { showComments: show };
+					});
+				},
+				setTempUrl: (url: string) => {
+					set((_state) => {
+						return { tempUrl: url };
+					});
+				},
 				setGlobalState: (newState: globalTypes.IGlobalSate) => {
 					set((state) => {
 						return { ...state, ...newState };
