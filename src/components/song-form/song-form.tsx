@@ -1,7 +1,7 @@
 import React, { useState, useEffect, BaseSyntheticEvent } from "react";
 import { rythmoi, scales, dromoi } from "data/data";
 import useStore from "store/globalStore";
-import { AllDromoi, ISong } from "interfaces/interfaces";
+import { AllDromoi, AllRythms, ISong } from "interfaces/interfaces";
 import Button from "@material-ui/core/Button";
 import { makeStyles, createStyles, Theme } from "@material-ui/core/styles";
 import { FormControlLabel, Checkbox, Container, TextField, MenuItem, FormControl, Input, Select, InputLabel, ListItemText} from "@material-ui/core";
@@ -239,7 +239,7 @@ const SongForm: React.FC<IProps> = ({ handleSubmit, handleSuccess }: IProps) => 
 						{rythmoi.map((rhythm) => { 
 							return (
 								<MenuItem key={rhythm.label} value={rhythm.label} >
-									<Checkbox checked={rhythm.label in song.rhythm} />
+									<Checkbox checked={!!rhythm.label && song.rhythm.includes(rhythm.label as AllRythms)} />
 									<ListItemText primary={rhythm.label} />
 								</MenuItem>
 							);
