@@ -173,6 +173,8 @@ const SnapshotFirebase: React.FC = () => {
 		setSearchTerm(modifiedSearch);
 	};
 
+	const [showSearch, setShowSearch] = useState(false);
+
 	// "Routing"
 	useEffect(() => {
 		const locationBase = (location.pathname.match(/\/(.*?)\//) || [""])[1];
@@ -181,10 +183,16 @@ const SnapshotFirebase: React.FC = () => {
 				return stringToSlug(song.title) === location.pathname.split("song/").pop();
 			});
 			currentSong ? setSelectedSong(currentSong) : navigate("/song-list");
-		} else if (["login", "song-list"].includes(locationBase)) {
+		} else if (["/login", "/song-list"].includes(location.pathname)) {
 			setSelectedSong(null);
-		} else {
 		}
+			
+		if (location.pathname === "/song-list") {
+			setShowSearch(true);
+		} else {
+			setShowSearch(false);
+		}
+
 	// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [location.pathname]);
 	
@@ -206,7 +214,7 @@ const SnapshotFirebase: React.FC = () => {
 	return (
 		<React.Fragment>
 			<Grid container direction="row" justifyContent="center" alignItems="center">
-				<Header logout={logout} handleSearchChange={handleSearchChange} showSearch={location.pathname === "song-list"}/>
+				<Header logout={logout} handleSearchChange={handleSearchChange} showSearch={showSearch}/>
 			</Grid>
 			<React.Suspense fallback={<Backdrop className={classes.backdrop} open={true} ><CircularProgress color="inherit" /></Backdrop>}>
 				<Grid item xs={12}>
