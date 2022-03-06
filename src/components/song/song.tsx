@@ -12,6 +12,7 @@ import EditIcon from "@material-ui/icons/Edit";
 import DeleteIcon from "@material-ui/icons/Delete";
 import { scaleToKey, transposeChord } from "utils/transpose";
 import { crossLangSafeguard } from "utils/characterMap";
+import { useNavigate } from "react-router-dom";
 // import ChordSVG from "components/song/ChordSVG";
 import "./song.scss";
 
@@ -55,6 +56,9 @@ const useStyles = makeStyles((theme: Theme) => {
 		notes: {
 			margin: "0.5rem 0.5rem 0 0",
 			display: "block",
+			fontStyle: "italic",
+			fontSize: "0.8rem;",
+			color: "#aaa"
 		},
 		popPad: {
 			padding: theme.spacing(2),
@@ -78,14 +82,14 @@ const useStyles = makeStyles((theme: Theme) => {
 
 
 const Song: React.FC<IProps> = ({ song, setShowDeletePopup }: IProps) => {
-
+	const navigate = useNavigate();
 	const classes = useStyles();
 
 	/**
 	 * Import global state parts needed
 	 */
-	const [goToPage, setSelectedSong] = useStore((state) => {
-		return [state.goToPage, state.setSelectedSong];
+	const [setSelectedSong] = useStore((state) => {
+		return [state.setSelectedSong];
 	});
 
 	const handleShowDeletePopup = (_song: ISong | null) => {
@@ -316,7 +320,7 @@ const Song: React.FC<IProps> = ({ song, setShowDeletePopup }: IProps) => {
 					className={classes.btn} 
 					onClick={()=>{
 						song && setSelectedSong(song);
-						goToPage("edit-song");
+						navigate("/edit-song");
 					}} 
 					variant="contained" 
 					color="primary"

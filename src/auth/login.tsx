@@ -1,11 +1,12 @@
 import React, { useState } from "react";
 import firebase from "../firebase";
-import useStore from "store/globalStore";
 import "firebase/auth";
+import useStore from "store/globalStore";
 import Button from "@material-ui/core/Button";
 import TextField from "@material-ui/core/TextField";
 import Typography from "@material-ui/core/Typography";
 import Box from "@material-ui/core/Box";
+import { useNavigate } from "react-router-dom";
 
 interface UserData {
 	email: string;
@@ -13,10 +14,11 @@ interface UserData {
 }
 
 const Login: React.FC = () => {
-
-	const [goToPage] = useStore((state) => {
-		return [state.goToPage];
+	/* Import global state parts needed */
+	const [tempUrl] = useStore((state) => {
+		return [state.tempUrl];
 	});
+	const navigate = useNavigate();
 
 	const [values, setValues] = useState({
 		email: "",
@@ -28,7 +30,7 @@ const Login: React.FC = () => {
 			.auth()
 			.signInWithEmailAndPassword(values.email, values.password)
 			.then(() => {
-				goToPage("song-list");
+				navigate( tempUrl ? tempUrl : "/song-list");
 				resetInput();
 			})
 			.catch((err) => {

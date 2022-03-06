@@ -3,11 +3,14 @@ import * as ReactDOM from "react-dom";
 import App from "./components/app";
 import AuthProvider from "./auth/auth";
 import reportWebVitals from "./reportWebVitals";
+import { BrowserRouter } from "react-router-dom";
 
 ReactDOM.render(
-	<AuthProvider>
-		<App />
-	</AuthProvider>,
+	<BrowserRouter>
+		<AuthProvider>
+			<App />
+		</AuthProvider>
+	</BrowserRouter>,
 	document.getElementById("root")
 );
 

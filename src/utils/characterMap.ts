@@ -155,3 +155,14 @@ export const crossLangSafeguard = (text:string):string => {
 	}
 	return returnString;
 };
+
+
+export const stringToSlug = (text:string):string => {
+	let returnString = text;
+	returnString = returnString.replace(/^\s+|\s+$/g, "").toLowerCase();
+	returnString = removeAccents(returnString);
+	returnString = crossLangSafeguard(returnString);
+	returnString = reduceToGreeklish(returnString);
+	returnString = returnString.replace(/[^a-z0-9 -]/g, "").replace(/\s+/g, "-").replace(/-+/g, "-");
+	return returnString;
+};
