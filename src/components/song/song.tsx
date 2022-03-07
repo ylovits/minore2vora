@@ -1,18 +1,18 @@
 import React, { BaseSyntheticEvent, useEffect, useRef, useState } from "react";
-import { AllKeys, AllScales, ISong } from "interfaces/interfaces";
+import { AllKeys, AllRythms, AllScales, ISong } from "interfaces/interfaces";
 import useStore from "store/globalStore";
 import { 
-	Button, Chip, Typography, Container, Box, Popover, Drawer, FormControl, Select, MenuItem, Dialog, DialogContent, DialogActions 
+	Button, Chip, Typography, Container, Box,  Drawer, FormControl, Select, MenuItem, Dialog, DialogContent, DialogActions 
 } from "@material-ui/core";
 import { makeStyles, createStyles, Theme } from "@material-ui/core/styles";
 import { rythmoi, scales, keys } from "data/data";
 import FabMenu from "components/ui/fab-menu";
-import InfoIcon from "@material-ui/icons/Info";
 import EditIcon from "@material-ui/icons/Edit";
 import DeleteIcon from "@material-ui/icons/Delete";
 import { scaleToKey, transposeChord } from "utils/transpose";
 import { crossLangSafeguard } from "utils/characterMap";
 import { useNavigate } from "react-router-dom";
+import RhythmPopover from "components/rhythm-popover/RhythmPopover";
 // import ChordSVG from "components/song/ChordSVG";
 import "./song.scss";
 
@@ -96,20 +96,6 @@ const Song: React.FC<IProps> = ({ song, setShowDeletePopup }: IProps) => {
 		setShowDeletePopup();
 	};
 
-	const [rhythmAnchorEl, setRhythmAnchorEl] = React.useState<Element | ((_element: Element) => Element) | null | undefined>(null);
-
-	const handleRhythmClick = (event: React.MouseEvent<HTMLDivElement>) => {
-		setRhythmAnchorEl(event.currentTarget);
-	};
-  
-	const handleRhythmClose = () => {
-		setRhythmAnchorEl(null);
-	};
-  
-	const openRhythm = Boolean(rhythmAnchorEl);
-
-
-	const idRhythm = openRhythm ? "simple-popover" : undefined;
 
 	const [showDrawer, setShowDrawer] = useState(false);
 	const toggleDrawer = () => {
@@ -219,42 +205,18 @@ const Song: React.FC<IProps> = ({ song, setShowDeletePopup }: IProps) => {
 					</Typography>
 				</a>
 				{/* <ChordSVG/> */}
-				{song?.rhythm && (
+				{(song.rhythm && song.rhythm.length > 0) && (
 					<Box className={classes.inline}>
 						<label>Rhythm: </label>
-						{song?.rhythm.map((rhythm) => {
-							const currentRhythm:string = rythmoi.find((rythmObj) => {
+						{song.rhythm.map((rhythm) => {
+							const currentRhythm:AllRythms = rythmoi.find((rythmObj) => {
 								return rythmObj.label === rhythm;
-							})?.value.rhythm ?? "";
-							return (
-								<span key={`${song.id}-${rhythm}`} >
-									<Popover
-										id={idRhythm}
-										open={openRhythm}
-										anchorEl={rhythmAnchorEl}
-										onClose={handleRhythmClose}
-										anchorOrigin={{
-											vertical: "bottom",
-											horizontal: "center",
-										}}
-										transformOrigin={{
-											vertical: "top",
-											horizontal: "center",
-										}}
-									><Typography className={classes.popPad}>{currentRhythm}</Typography></Popover>
-									<Chip
-										size="small"
-										onClick={handleRhythmClick}
-										icon={<InfoIcon/>}
-										label={`${rhythm}`}
-										className={classes.clickable}
-									/>
-								</span>
-							);
+							})?.value.rhythm as AllRythms ?? "";
+							return <RhythmPopover key={`${song.id}-${rhythm}`} rhythmName={rhythm} rhythmDesription={currentRhythm}/>;
 						})}
 					</Box>
 				)}
-				{song?.dromos && (
+				{(song.dromos && song.dromos.length > 0) && (
 					<Box className={classes.inline}>
 						<label>Dromos: </label>
 						{song?.dromos.map((dromos) => {
@@ -298,16 +260,16 @@ const Song: React.FC<IProps> = ({ song, setShowDeletePopup }: IProps) => {
 						</Dialog>
 					</Box>
 				)}
-				{song?.tempo && (
+				{(song.tempo && song.tempo > 1) && (
 					<Box className={classes.inline}>
 						<label>Tempo: </label>
-						<Chip className={classes.chip} variant="outlined" color="primary" size="small" label={song?.tempo} />
+						<Chip className={classes.chip} variant="outlined" color="primary" size="small" label={song.tempo} />
 					</Box>
 				)}
-				{song?.notes && (
+				{song.notes && (
 					<Box className={classes.notes}>
 						<label>Notes: </label>
-						{song?.notes}
+						{song.notes}
 					</Box>
 				)}
 				{song?.body && 

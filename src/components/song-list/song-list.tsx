@@ -9,6 +9,7 @@ import { reduceToGreeklish, removeAccents, stringToSlug } from "utils/characterM
 import "./song-list.scss";
 import SearchSettings from "components/search-settings/SearchSettings";
 import { useNavigate } from "react-router-dom";
+import StarIcon from '@material-ui/icons/Star';
 
 const useStyles = makeStyles((theme: Theme) => {
 	return createStyles({
@@ -17,6 +18,7 @@ const useStyles = makeStyles((theme: Theme) => {
 			overflow: "hidden",
 			padding: theme.spacing(0, 3),
 			paddingTop: "1rem",
+			marginBottom: "4rem",
 		},
 		paper: {
 			maxWidth: "100%",
@@ -34,6 +36,29 @@ const useStyles = makeStyles((theme: Theme) => {
 				backgroundColor: alpha(theme.palette.common.white, 0.25),
 			},
 		},
+		alignLeft: {
+			color: "#E64A19",
+			padding: "0.2rem",
+			margin: "0",
+			display: "flex",
+			alignItems: "center",
+			justifyContent: "center",
+			background: "#FFCCBC",
+			borderRadius: "50%",
+		},
+		title: {
+			flexGrow: 1,
+			margin:0,
+			color:"#607D8B",
+			fontWeight: "bold",
+		},
+		wrapper: {
+			display: "flex",
+			justifyContent: "space-between",
+			alignItems: "center",
+			width: "100%",
+			paddingTop:0
+		}
 	});
 });
 
@@ -53,11 +78,9 @@ const SongList: React.FC<IProps> = ({searchTerm}:IProps) => {
 
 	const classes = useStyles();
 
-
 	/**
 	 * Searching
 	 */
-
 	const [searchResults, setSearchResults] = useState(JSON.parse(JSON.stringify(songs)));
 	
 	const initSongs = useRef(JSON.parse(JSON.stringify(songs)));
@@ -87,7 +110,9 @@ const SongList: React.FC<IProps> = ({searchTerm}:IProps) => {
 						}}
 					>
 						<Grid container wrap="nowrap" spacing={2}>
-							<Grid item>{song.title}</Grid>
+							<Grid className={classes.wrapper} item>
+								<p className={classes.title}>{song.title}</p>{song.presentable && <span className={classes.alignLeft}><StarIcon /></span>}
+							</Grid>
 						</Grid>
 					</Paper>
 				);
