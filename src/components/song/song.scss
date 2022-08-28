@@ -32,8 +32,10 @@
 }
 
 .SongBody{
-    white-space: pre-line;
+    white-space: pre;
     font-family: "Roboto Condensed", sans-serif;
+    font-size:1.1rem;
+    line-height: 1rem;
     strong {
         font-family: monospace;
         line-height: 2.3em;

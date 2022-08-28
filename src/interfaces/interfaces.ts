@@ -104,3 +104,15 @@ export interface ISong {
   presentable: boolean;
   notes: string;
 }
+
+export interface IKeyFilter {
+  type: "key",
+  value: AllKeys
+}
+
+export interface IRhythmFilter{
+  type: "rhythm",
+  value: AllRythms
+}
+
+export type IFilter = IRhythmFilter | IKeyFilter;

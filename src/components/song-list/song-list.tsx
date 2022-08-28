@@ -9,7 +9,7 @@ import { reduceToGreeklish, removeAccents, stringToSlug } from "utils/characterM
 import "./song-list.scss";
 import SearchSettings from "components/search-settings/SearchSettings";
 import { useNavigate } from "react-router-dom";
-import StarIcon from '@material-ui/icons/Star';
+import StarIcon from "@material-ui/icons/Star";
 
 const useStyles = makeStyles((theme: Theme) => {
 	return createStyles({

@@ -54,6 +54,7 @@
   "devDependencies": {
     "@typescript-eslint/eslint-plugin": "^5.13.0",
     "@typescript-eslint/parser": "^5.13.0",
+    "chordsheetjs": "^7.6.0",
     "react-app-rewired": "^2.2.1",
     "sass-resources-loader": "^2.2.4",
     "typescript": "^4.6.2"

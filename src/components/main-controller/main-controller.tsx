@@ -37,7 +37,7 @@ const useStyles = makeStyles((theme: Theme) => {
 
 
 /* Lazy load all "page" components for code splitting */
-const SongList = lazy(() => { 
+const SongList = lazy(() => {
 	return import("components/song-list/song-list");
 });
 const Song = lazy(() => {
@@ -56,7 +56,7 @@ const SnapshotFirebase: React.FC = () => {
 
 	/* load styles */
 	const classes = useStyles();
-	
+
 	/* Import global state parts needed */
 	const [_glob, selectedSong, setSelectedSong, songs, setSongs, setTempUrl, tempUrl] = useStore((state) => {
 		return [state, state.selectedSong, state.setSelectedSong, state.songs, state.setSongs, state.setTempUrl, state.tempUrl];
@@ -65,7 +65,7 @@ const SnapshotFirebase: React.FC = () => {
 	// Uncomment those lines to get global state logging, also the appConfig import
 	// console.log('Global state:', _glob.selectedSong);
 
-	/* loading */ 
+	/* loading */
 	const [loading, setLoading] = useState(false);
 
 
@@ -122,12 +122,12 @@ const SnapshotFirebase: React.FC = () => {
 	};
 
 
-	
+
 	/**
 	 * snackbar
 	 */
 	const [openSnackBar, setOpenSnackBar] = useState(false);
-		
+
 	const handleSuccess = () => {
 		setOpenSnackBar(true);
 	};
@@ -136,7 +136,7 @@ const SnapshotFirebase: React.FC = () => {
 		if (reason === "clickaway") {
 			return;
 		}
-		
+
 		setOpenSnackBar(false);
 	};
 
@@ -186,7 +186,7 @@ const SnapshotFirebase: React.FC = () => {
 		} else if (["/login", "/song-list"].includes(location.pathname)) {
 			setSelectedSong(null);
 		}
-			
+
 		if (location.pathname === "/song-list") {
 			setShowSearch(true);
 		} else {
@@ -195,13 +195,14 @@ const SnapshotFirebase: React.FC = () => {
 
 	// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [location.pathname]);
-	
+
 	useEffect(() => {
 		if ((location.pathname.match(/\/(.*?)\//) || [""])[1] === "song") {
 			setTempUrl(location.pathname);
 		}
+	// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
-	
+
 	/* loading screen */
 	if (loading) {
 		return (
@@ -222,21 +223,21 @@ const SnapshotFirebase: React.FC = () => {
 						{user ? (
 							<>
 								<Route path="/" element={<Navigate to="song-list"/>} />
-								<Route path="/song/:title" element={<Song song={selectedSong as ISong} 
-									setShowDeletePopup={() => { setShowDeletePopup (true);}} />} 
+								<Route path="/song/:title" element={<Song song={selectedSong as ISong}
+									setShowDeletePopup={() => { setShowDeletePopup (true);}} />}
 								/>
 								<Route path="/song-list" element={<SongList searchTerm={searchTerm}/>} />
 								<Route path="/new-song" element={<SongForm handleSubmit={handleAddSong} handleSuccess={handleSuccess} />} />
 								<Route path="/edit-song" element={<SongForm handleSubmit={handleEditSong} handleSuccess={handleSuccess} />} />
-								<Route path="*" element={<Navigate to={tempUrl ? tempUrl : "song-list"}/>} />	
+								<Route path="*" element={<Navigate to={tempUrl ? tempUrl : "song-list"}/>} />
 							</>
 						) : (
 							<>
 								<Route path="/" element={<Navigate to="login" />} />
 								<Route path="/login" element={<Login />} />
-								<Route path="*" element={<Navigate to="login" />} />	
+								<Route path="*" element={<Navigate to="login" />} />
 							</>
-						)}		
+						)}
 
 					</Routes>
 				</Grid>

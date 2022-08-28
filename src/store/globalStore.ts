@@ -4,7 +4,7 @@ import firebase from "firebase/compat/app";
 import "firebase/compat/auth";
 import "firebase/compat/firestore";
 import { persist } from "zustand/middleware";
-import { ISong } from "interfaces/interfaces";
+import { IFilter, ISong } from "interfaces/interfaces";
 
 const initialState = {		
 	isLoading: true,
@@ -12,7 +12,8 @@ const initialState = {
 	songs: [],
 	showComments: false,
 	showOnlyReady: false,
-	tempUrl: ""
+	tempUrl: "",
+	filteredBy: []
 };
 
 const useStore = create<globalTypes.IGlobalSate>(
@@ -57,6 +58,11 @@ const useStore = create<globalTypes.IGlobalSate>(
 				setTempUrl: (url: string) => {
 					set((_state) => {
 						return { tempUrl: url };
+					});
+				},
+				setFilteredBy: (filters: IFilter[] | []) => {
+					set((_state) => {
+						return { filteredBy: filters };
 					});
 				},
 				setGlobalState: (newState: globalTypes.IGlobalSate) => {

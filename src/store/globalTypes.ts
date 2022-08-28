@@ -1,4 +1,4 @@
-import { ISong } from 'interfaces/interfaces';
+import { IFilter, ISong } from 'interfaces/interfaces';
 import { State } from 'zustand';
 
 export interface IGlobalSate extends State {
@@ -8,6 +8,7 @@ export interface IGlobalSate extends State {
 	showComments: boolean,
 	showOnlyReady: boolean,
 	tempUrl: string;
+	filteredBy:IFilter[] | [];
 	setSelectedSong:(_song:ISong | null)=>void;
 	setSongs:(_songs:ISong[] | [])=>void;
 	logOut: () => void;
@@ -15,5 +16,6 @@ export interface IGlobalSate extends State {
 	setGlobalState: (_newState: IGlobalSate) => void;
 	setShowOnlyReady: (_bool: boolean) => void;
 	setShowComments: (_bool: boolean) => void;
+	setFilteredBy: (_filters: IFilter[] | []) => void;
 	setTempUrl: (_url: string) => void;
 }
