@@ -1,5 +1,9 @@
-.fabMenu {
-	position:fixed;
-    bottom:1em;
-    left:1em;
+body{
+	#root{
+		.fabMenu {
+			position:fixed;
+			bottom:1em;
+			left:1em;
+		}
+	}
 }

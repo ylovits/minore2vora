@@ -106,6 +106,24 @@ const SongForm: React.FC<IProps> = ({ handleSubmit, handleSuccess }: IProps) => 
 							return { ...song, body: e.target.value };
 						});
 					}}
+					onKeyDown={(e) => {
+						if (e.target) {
+							const target = e.target as HTMLTextAreaElement;
+							const { value } = target;
+							if (e.key === "Tab") {
+								e.preventDefault();
+								const cursorPosition = target.selectionStart;
+								const cursorEndPosition = target.selectionEnd;
+								const tab = "\t";
+								target.value =
+								value.substring(0, cursorPosition) +
+								tab +
+								value.substring(cursorEndPosition);
+								target.selectionStart = cursorPosition + 1;
+								target.selectionEnd = cursorPosition + 1;
+							}
+						}
+					}}
 					value={song.body}
 					autoComplete="off"
 					variant="outlined"

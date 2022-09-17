@@ -1,25 +1,23 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, {  useEffect, useState } from "react";
 import { AllKeys, AllRythms, AllScales, ISong } from "interfaces/interfaces";
 import useStore from "store/globalStore";
-import { 
-	Button, Chip, Typography, Container, Box,  Drawer, FormControl, Select, MenuItem, Dialog, DialogContent, DialogActions, SelectChangeEvent
+import {
+	Button, Chip, Typography, Container, Box, Drawer, FormControl, Select, MenuItem, Dialog, DialogContent, DialogActions, SelectChangeEvent
 } from "@mui/material";
 import { rythmoi, scales, keys } from "data/data";
 import FabMenu from "components/ui/fab-menu";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
-import { scaleToKey, transposeChord } from "utils/transpose";
-import { crossLangSafeguard } from "utils/characterMap";
+import { scaleToKey } from "utils/transpose";
 import { useNavigate } from "react-router-dom";
 import RhythmPopover from "components/rhythm-popover/RhythmPopover";
-// import ChordSVG from "components/song/ChordSVG";
+import SVGIntroducer, { Instruments } from "./svg-introducer";
 import "./song.scss";
 
 interface IProps {
 	song: ISong;
 	setShowDeletePopup: () => void;
 }
-
 
 const Song: React.FC<IProps> = ({ song, setShowDeletePopup }: IProps) => {
 	const navigate = useNavigate();
@@ -41,52 +39,8 @@ const Song: React.FC<IProps> = ({ song, setShowDeletePopup }: IProps) => {
 		setShowDrawer((show) => { return !show; });
 	};
 
-	const strongRef = useRef<HTMLElement>(null);
-
 	const [currentKey, setCurrentKey] = useState<AllKeys>();
 	const [currentScale, setCurrentScale] = useState<AllScales>();
-	
-	useEffect(() => {
-		if (strongRef.current && song.key) {
-			if (currentKey) {
-				strongRef.current.innerHTML = (song.body as string).replace(
-					/\[\[(.*?)\]\]/g,
-					(_match, text, _offset, _string) => { 
-						return `<strong>${transposeChord(
-							crossLangSafeguard(text), song.key, currentKey
-						)}</strong>`; 
-					}
-				).replace(
-					/\{\{(.*?)\}\}/g,
-					(_match, text, _offset, _string) => { 
-						return `<em>${transposeChord(
-							crossLangSafeguard(text), song.key, currentKey 
-						)}</em>`; 
-					}
-				).replace(
-					/\%\%(.*?)\%\%/g,
-					(_match, text, _offset, _string) => { 
-						return `<span class=\"perasma\">${transposeChord(
-							crossLangSafeguard(text), song.key, currentKey 
-						)}</span>`; 
-					}
-				);
-			} else {
-				strongRef.current.innerHTML = (song.body as string).replace(
-					/\[\[(.*?)\]\]/g,
-					"<strong>$1</strong>"
-				).replace(
-					/\{\{(.*?)\}\}/g,
-					"<em>$1</em>"
-				).replace(
-					/\%\%(.*?)\%\%/g,
-					"<span class=\"perasma\">$1</span>"
-				);
-			}
-		}
-	}, [currentKey, song, song.body, strongRef]);
-
-
 
 	useEffect(() => {
 		if (song && song.key) {
@@ -94,7 +48,7 @@ const Song: React.FC<IProps> = ({ song, setShowDeletePopup }: IProps) => {
 			setCurrentScale(song.key);
 		}
 		const tempScale = scales.find((scale) => { return scale.value === song.key; });
-		setTempKey({ 
+		setTempKey({
 			key: tempScale?.key as AllKeys,
 			type: tempScale?.type as "major" | "minor"
 		});
@@ -102,14 +56,14 @@ const Song: React.FC<IProps> = ({ song, setShowDeletePopup }: IProps) => {
 
 
 	const [openTranspose, setOpenTranspose] = useState(false);
-	const [tempKey, setTempKey] = useState<{key: AllKeys, type: "major" | "minor"}>({ 
+	const [tempKey, setTempKey] = useState<{ key: AllKeys, type: "major" | "minor" }>({
 		key: scales.find((scale) => { return scale.value === currentKey; })?.key as AllKeys,
 		type: scales.find((scale) => { return scale.value === currentKey; })?.type as "major" | "minor"
 	});
 
 	const handleKeyChange = (key: AllKeys) => {
 		setTempKey((oldTempKey) => {
-			return { 
+			return {
 				key: scales.find((scale) => { return scale.value === key; })?.key as AllKeys,
 				type: oldTempKey.type
 			};
@@ -119,7 +73,7 @@ const Song: React.FC<IProps> = ({ song, setShowDeletePopup }: IProps) => {
 	const handleClickScale = () => {
 		setOpenTranspose(true);
 	};
-  
+
 	const handleCancelTranspose = (event: React.SyntheticEvent<unknown>, reason?: string) => {
 		if (reason !== "backdropClick") {
 			setOpenTranspose(false);
@@ -128,12 +82,14 @@ const Song: React.FC<IProps> = ({ song, setShowDeletePopup }: IProps) => {
 
 	const handleSaveTranspose = (event: React.SyntheticEvent<unknown>, reason?: string) => {
 		const tempScale = scales.find((scale) => { return scale.key === tempKey.key && scale.type === tempKey.type; })?.value as AllScales;
-		setCurrentKey(tempKey.key); 
+		setCurrentKey(tempKey.key);
 		setCurrentScale(tempScale);
 		if (reason !== "backdropClick") {
 			setOpenTranspose(false);
 		}
 	};
+
+	const [selectedInstrument, _setSelectedInstrument] = useState<Instruments>(Instruments._guitar);
 
 	return (
 		<div className="Song">
@@ -143,7 +99,6 @@ const Song: React.FC<IProps> = ({ song, setShowDeletePopup }: IProps) => {
 						{song?.title}
 					</Typography>
 				</a>
-				{/* <ChordSVG/> */}
 				{(song.rhythm && song.rhythm.length > 0) && (
 					<Box className="inline">
 						<label>Rhythm: </label>
@@ -212,10 +167,9 @@ const Song: React.FC<IProps> = ({ song, setShowDeletePopup }: IProps) => {
 					</Box>
 				)}
 				{song?.body &&
-					// <div className="mainContent SongBody" >
-					// 	<SVGIntroducer song={song} selectedInstrument={selectedInstrument} currentKey={currentKey}/>
-					// </div>
-					<Typography ref={strongRef} variant="body1" className="mainContent SongBody"></Typography>
+					<div className="mainContent SongBody" >
+						<SVGIntroducer song={song} selectedInstrument={selectedInstrument} currentKey={currentKey}/>
+					</div>
 				}
 			</Container>
 			<FabMenu toggleDrawer={toggleDrawer} />
