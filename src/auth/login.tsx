@@ -2,10 +2,10 @@ import React, { useState } from "react";
 import firebase from "../firebase";
 import "firebase/auth";
 import useStore from "store/globalStore";
-import Button from "@material-ui/core/Button";
-import TextField from "@material-ui/core/TextField";
-import Typography from "@material-ui/core/Typography";
-import Box from "@material-ui/core/Box";
+import Button from "@mui/material/Button";
+import TextField from "@mui/material/TextField";
+import Typography from "@mui/material/Typography";
+import Box from "@mui/material/Box";
 import { useNavigate } from "react-router-dom";
 
 interface UserData {

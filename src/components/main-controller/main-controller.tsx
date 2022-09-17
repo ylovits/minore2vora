@@ -1,4 +1,4 @@
-import React, { useState, useEffect, lazy, useContext } from "react";
+import React, { useState, useEffect, lazy, useContext, SyntheticEvent } from "react";
 import { AuthContext } from "auth/auth";
 import Login from "auth/login";
 import firebase from "../../firebase";
@@ -19,22 +19,11 @@ import {
 	DialogContent,
 	DialogContentText,
 	DialogTitle,
-} from "@material-ui/core";
-import { makeStyles, createStyles, Theme } from "@material-ui/core/styles";
-import CloseIcon from "@material-ui/icons/Close";
+	SnackbarCloseReason,
+} from "@mui/material";
+import CloseIcon from "@mui/icons-material/Close";
 import { reduceToGreeklish, stringToSlug } from "utils/characterMap";
-
-
-/* Styles */
-const useStyles = makeStyles((theme: Theme) => {
-	return createStyles({
-		backdrop: {
-			zIndex: theme.zIndex.drawer + 1,
-			color: "#fff",
-		},
-	});
-});
-
+import "./main-controller.scss";
 
 /* Lazy load all "page" components for code splitting */
 const SongList = lazy(() => {
@@ -55,7 +44,6 @@ const SnapshotFirebase: React.FC = () => {
 	const { user } = useContext(AuthContext);
 
 	/* load styles */
-	const classes = useStyles();
 
 	/* Import global state parts needed */
 	const [_glob, selectedSong, setSelectedSong, songs, setSongs, setTempUrl, tempUrl] = useStore((state) => {
@@ -132,7 +120,7 @@ const SnapshotFirebase: React.FC = () => {
 		setOpenSnackBar(true);
 	};
 
-	const handleCloseSnackBar = (event?: React.SyntheticEvent, reason?: string) => {
+	const handleCloseSnackBar = (event?: Event | SyntheticEvent<any, Event>, reason?: SnackbarCloseReason) => {
 		if (reason === "clickaway") {
 			return;
 		}
@@ -193,20 +181,20 @@ const SnapshotFirebase: React.FC = () => {
 			setShowSearch(false);
 		}
 
-	// eslint-disable-next-line react-hooks/exhaustive-deps
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [location.pathname]);
 
 	useEffect(() => {
 		if ((location.pathname.match(/\/(.*?)\//) || [""])[1] === "song") {
 			setTempUrl(location.pathname);
 		}
-	// eslint-disable-next-line react-hooks/exhaustive-deps
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
 	/* loading screen */
 	if (loading) {
 		return (
-			<Backdrop className={classes.backdrop} open={true} >
+			<Backdrop className="backdrop" open={true} >
 				<CircularProgress color="inherit" />
 			</Backdrop>
 		);
@@ -215,21 +203,21 @@ const SnapshotFirebase: React.FC = () => {
 	return (
 		<React.Fragment>
 			<Grid container direction="row" justifyContent="center" alignItems="center">
-				<Header logout={logout} handleSearchChange={handleSearchChange} showSearch={showSearch}/>
+				<Header logout={logout} handleSearchChange={handleSearchChange} showSearch={showSearch} />
 			</Grid>
-			<React.Suspense fallback={<Backdrop className={classes.backdrop} open={true} ><CircularProgress color="inherit" /></Backdrop>}>
+			<React.Suspense fallback={<Backdrop className="backdrop" open={true} ><CircularProgress color="inherit" /></Backdrop>}>
 				<Grid item xs={12}>
 					<Routes>
 						{user ? (
 							<>
-								<Route path="/" element={<Navigate to="song-list"/>} />
+								<Route path="/" element={<Navigate to="song-list" />} />
 								<Route path="/song/:title" element={<Song song={selectedSong as ISong}
-									setShowDeletePopup={() => { setShowDeletePopup (true);}} />}
+									setShowDeletePopup={() => { setShowDeletePopup(true); }} />}
 								/>
-								<Route path="/song-list" element={<SongList searchTerm={searchTerm}/>} />
+								<Route path="/song-list" element={<SongList searchTerm={searchTerm} />} />
 								<Route path="/new-song" element={<SongForm handleSubmit={handleAddSong} handleSuccess={handleSuccess} />} />
 								<Route path="/edit-song" element={<SongForm handleSubmit={handleEditSong} handleSuccess={handleSuccess} />} />
-								<Route path="*" element={<Navigate to={tempUrl ? tempUrl : "song-list"}/>} />
+								<Route path="*" element={<Navigate to={tempUrl ? tempUrl : "song-list"} />} />
 							</>
 						) : (
 							<>

@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import React from "react";
-import { useTheme, createTheme, ThemeProvider as MuiThemeProvider, Theme } from "@material-ui/core/styles";
+import { useTheme, createTheme, ThemeProvider as MuiThemeProvider, Theme } from "@mui/material/styles";
 
 interface IProps {
 	children: React.ReactNode;
@@ -29,15 +29,17 @@ const ThemeProvider: React.FC<IProps> = ({ children, theme }:IProps) => {
 	const memoizedTheme = React.useMemo(() => {
 		return createTheme({
 			...theme,
-			overrides: {
+			components: {
 				MuiPopover: {
-					root: {
-						zIndex: 35003,
-					}
+					styleOverrides: {
+						root: {
+							zIndex: 35003,
+						}
+					},
 				},
 			},
 			palette: {
-				type: themeOptions.paletteType,
+				mode: themeOptions.paletteType,
 				primary: {
 					main: "#546e7a",
 				},
@@ -61,8 +63,8 @@ export const useChangeTheme = (): any => {
 	const dispatch = React.useContext(ThemeDispatchContext);
 	const theme = useTheme();
 	const changeTheme = React.useCallback(() => {
-		dispatch({ type: "changeTheme", payload: theme.palette.type === "light" ? "dark" : "light" });
-	}, [theme.palette.type, dispatch]);	
+		dispatch({ type: "changeTheme", payload: theme.palette.mode === "light" ? "dark" : "light" });
+	}, [theme.palette.mode, dispatch]);	
 	return changeTheme;
 };
 

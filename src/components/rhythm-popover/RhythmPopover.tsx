@@ -1,46 +1,30 @@
 import React from "react";
 import { AllRythms } from "interfaces/interfaces";
-import { Chip, Typography, Popover } from "@material-ui/core";
-import { makeStyles, createStyles, Theme } from "@material-ui/core/styles";
-import InfoIcon from "@material-ui/icons/Info";
+import { Chip, Typography, Popover } from "@mui/material";
+import InfoIcon from "@mui/icons-material/Info";
+import "./RhythmPopover.scss";
 
 interface IProps {
 	rhythmName: AllRythms;
 	rhythmDesription: string;
 }
 
-const useStyles = makeStyles((theme: Theme) => {
-	return createStyles({
-		clickable: {
-			cursor: "pointer",
-		},
-		popPad: {
-			padding: theme.spacing(2),
-		},
-		breather: {
-			marginRight:"0.5rem"
-		}
-	});
-});
-
-const RhythmPopover = ({rhythmName, rhythmDesription}:IProps) => {
-
-	const classes = useStyles();
+const RhythmPopover = ({ rhythmName, rhythmDesription }: IProps) => {
 
 	const [rhythmAnchorEl, setRhythmAnchorEl] = React.useState<Element | ((_element: Element) => Element) | null | undefined>(null);
 
 	const handleRhythmClick = (event: React.MouseEvent<HTMLDivElement>) => {
 		setRhythmAnchorEl(event.currentTarget);
 	};
-  
+
 	const handleRhythmClose = () => {
 		setRhythmAnchorEl(null);
 	};
-  
+
 	const openRhythm = Boolean(rhythmAnchorEl);
 
 	return (
-		<span className={classes.breather}>
+		<span className="RhythmPopover">
 			<Popover
 				id={rhythmName}
 				open={openRhythm}
@@ -55,14 +39,14 @@ const RhythmPopover = ({rhythmName, rhythmDesription}:IProps) => {
 					horizontal: "center",
 				}}
 			>
-				<Typography className={classes.popPad}>{rhythmDesription}</Typography>
+				<Typography className="popPad">{rhythmDesription}</Typography>
 			</Popover>
 			<Chip
 				size="small"
 				onClick={handleRhythmClick}
 				icon={<InfoIcon />}
 				label={`${rhythmName}`}
-				className={classes.clickable}
+				className="clickable"
 			/>
 		</span>
 	);

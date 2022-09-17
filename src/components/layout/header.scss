@@ -13,3 +13,69 @@
 		height: auto;
 	}
 }
+
+.Header{
+	flex-grow: 1;
+	.title {
+			display: none;
+			@media screen and (min-width:700px) {
+				display: block;
+			}
+			cursor: pointer;
+			&:hover{
+				color: rgba(255,255,255,0.85);
+			}
+	}
+
+	.homeBtn {
+		margin-right: 2rem;
+		display: block;
+		width: 2rem;
+		@media screen and (min-width:700px) {
+			display: none;
+		}
+		cursor: pointer;
+		&:hover {
+			color: rgba(255,255,255,0.85);
+		}
+	}
+
+	.search {
+		position: relative;
+		border-radius: 0.3rem;
+		background-color: rgba(255,255,255,0.15);
+		&:hover {
+			background-color: rgba(255,255,255,0.25);
+		}
+		margin-right: 2rem;
+		margin-left: 0;
+		width: 100%;
+		@media screen and (min-width:700px) {
+			margin-left: 3rem;
+			width: auto;
+		}
+		flex-grow: 1;
+	}
+
+	.searchIcon {
+		padding: 0 2rem;
+		height: 100%;
+		position: absolute;
+		pointer-events: none;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+	}
+
+	.inputRoot {
+		color: inherit;
+		width: 100%;
+	}
+
+	.inputInput {
+		padding:1rem 1rem 1rem 0;
+		padding-left: 5rem;
+		transition: width 0.5s;
+		width: 100%;
+	}
+}

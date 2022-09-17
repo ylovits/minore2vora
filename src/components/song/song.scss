@@ -29,6 +29,42 @@
             color:#361847;
         }
     }
+	display: flex;
+	flex-direction: column;
+	padding-bottom: 5rem;
+	.titleLink {
+		text-decoration: none;
+		color: #607D8B;
+	}
+	.title {
+		margin: 2rem 0;
+	}
+	.inline {
+		margin: 0.5rem 0.5rem 0 0;
+		display: inline-block;
+	}
+
+	.chip {
+		margin: 0.5rem;
+	}
+
+	.notes {
+		margin: 0.5rem 0.5rem 0 0;
+		display: block;
+		font-style: italic;
+		font-size: 0.8rem;;
+		color: #aaa;
+	}
+
+	.btn {
+		border-radius: 0;
+		padding: 3rem 0;
+	}
+
+	.mainContent{
+			padding:2rem 0;
+			white-space: pre-line;
+	}
 }
 
 .SongBody{
@@ -37,14 +73,20 @@
     font-size:1.1rem;
     line-height: 1rem;
     strong {
-        font-family: monospace;
-        line-height: 2.3em;
-        position: relative;
+        // font-family: monospace;
+        // line-height: 2.3em;
+        // position: relative;
+        // top: -1em;
+        // display: inline-block;
+        // width: 0;
+        // white-space: nowrap;
         color: $accent;
-        top: -1em;
-        display: inline-block;
-        width: 0;
-        white-space: nowrap;
+		overflow: visible;
+		display: block;
+		text-align: center;
+		width: 4rem;
+		transform: translate(-1.3rem, 0);
+		background: #fff;
     }
     em {
         font-family: monospace;

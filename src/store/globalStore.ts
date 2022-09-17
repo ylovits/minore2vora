@@ -6,7 +6,7 @@ import "firebase/compat/firestore";
 import { persist } from "zustand/middleware";
 import { IFilter, ISong } from "interfaces/interfaces";
 
-const initialState = {		
+const initialState = {
 	isLoading: true,
 	selectedSong: null,
 	songs: [],
@@ -16,9 +16,9 @@ const initialState = {
 	filteredBy: []
 };
 
-const useStore = create<globalTypes.IGlobalSate>(
+const useStore = create<globalTypes.IGlobalState>()(
 	persist(
-		(set, _get) => { 
+		(set) => {
 			return {
 				...initialState,
 
@@ -65,7 +65,7 @@ const useStore = create<globalTypes.IGlobalSate>(
 						return { filteredBy: filters };
 					});
 				},
-				setGlobalState: (newState: globalTypes.IGlobalSate) => {
+				setGlobalState: (newState: globalTypes.IGlobalState) => {
 					set((state) => {
 						return { ...state, ...newState };
 					});

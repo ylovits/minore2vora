@@ -1,3 +1,18 @@
 .showSettings{
     text-align:center;
 }
+
+.SearchSettings{
+	display: flex;
+	flex-direction: column;
+	.filters {
+		position: fixed;
+		bottom: 1em;
+		right: 5em;
+		background-color: #E64A19;
+	}
+	.formControl {
+		margin: 1rem;
+		min-width: 120px;
+	}
+}

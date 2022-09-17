@@ -11,15 +11,15 @@ import {
 	ListItemText,
 	MenuItem,
 	Select,
-} from "@material-ui/core";
-import FilterListIcon from "@material-ui/icons/FilterList";
+	SelectChangeEvent,
+} from "@mui/material";
+import FilterListIcon from "@mui/icons-material/FilterList";
 import useStore from "store/globalStore";
-import { makeStyles, createStyles, Theme } from "@material-ui/core/styles";
-import Fab from "@material-ui/core/Fab";
-import "./SearchSettings.scss";
+import Fab from "@mui/material/Fab";
 import { useEffect } from "react";
 import { scales, rythmoi } from "data/data";
 import { AllKeys, AllRythms } from "interfaces/interfaces";
+import "./SearchSettings.scss";
 
 const style = {
 	position: "absolute",
@@ -33,36 +33,12 @@ const style = {
 	p: 4,
 };
 
-const useStyles = makeStyles((theme: Theme) => {
-	return createStyles({
-		filters: {
-			position: "fixed",
-			bottom: "1em",
-			right: "5em",
-			backgroundColor: "#E64A19",
-		},
-		root: {
-			display: "flex",
-			flexDirection: "column",
-		},
-		form: {
-			flexGrow: 1,
-			overflow: "hidden",
-			paddingTop: "1rem",
-		},
-		formControl: {
-			margin: theme.spacing(1),
-			minWidth: 120,
-		},
-	});
-});
-
 interface MappedFilters {
 	rhythm: AllRythms[],
 	key: AllKeys,
 }
 
-export default function BasicModal() {
+export default function SearchSettings() {
 	const [open, setOpen] = React.useState(false);
 	const handleOpen = () => {
 		setOpen(true);
@@ -70,7 +46,6 @@ export default function BasicModal() {
 	const handleClose = () => {
 		setOpen(false);
 	};
-	const classes = useStyles();
 
 	/* Import global state parts needed */
 	const [_glob, setShowOnlyReady, showOnlyReady, _setFilteredBy, filteredBy] =
@@ -92,7 +67,7 @@ export default function BasicModal() {
 
 	useEffect(() => {
 		setShowOnlyReady(checked);
-	// eslint-disable-next-line react-hooks/exhaustive-deps
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [checked]);
 
 	const [mappedFilters, setMappedFilters] = React.useState<MappedFilters>({
@@ -117,22 +92,22 @@ export default function BasicModal() {
 		setMappedFilters(newMappedFilters);
 
 	}, [filteredBy]);
-	
+
 	const onChangeSelect = (option: string | string[], attribute: string) => {
 		console.log("option:", option, "attribute", attribute);
-		
+
 		// setSong((song) => {
 		// 	return { ...song, [attribute]: option };
 		// });
 	};
 
 	return (
-		<div>
+		<div className="SearchSettings">
 			<Fab
 				onClick={handleOpen}
 				color="primary"
 				aria-label="add"
-				className={classes.filters}
+				className="filters"
 				size="small"
 			>
 				<FilterListIcon />
@@ -158,15 +133,15 @@ export default function BasicModal() {
 
 					<FormControl
 						style={{ margin: "0.5rem 0", color: "#000" }}
-						className={classes.formControl}
+						className="formControl"
 						fullWidth
 					>
 						<InputLabel>Κλειδί</InputLabel>
 						<Select
 							value={mappedFilters.key}
-							onChange={(selection: React.BaseSyntheticEvent) => {
+							onChange={(selection: SelectChangeEvent) => {
 								console.log(selection);
-								
+
 								// setSong((song) => {
 								// 	return { ...song, key: selection.target.value };
 								// });
@@ -194,7 +169,7 @@ export default function BasicModal() {
 
 					<FormControl
 						style={{ margin: "0.5rem 0", color: "#000" }}
-						className={classes.formControl}
+						className="formControl"
 						fullWidth
 					>
 						<InputLabel>Ρυθμός</InputLabel>

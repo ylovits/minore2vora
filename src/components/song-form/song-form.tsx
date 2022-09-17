@@ -1,38 +1,16 @@
-import React, { useState, useEffect, BaseSyntheticEvent } from "react";
+import React, { useState, useEffect } from "react";
 import { rythmoi, scales, dromoi } from "data/data";
 import useStore from "store/globalStore";
 import { AllDromoi, AllRythms, ISong } from "interfaces/interfaces";
-import Button from "@material-ui/core/Button";
-import { makeStyles, createStyles, Theme } from "@material-ui/core/styles";
-import { FormControlLabel, Checkbox, Container, TextField, MenuItem, FormControl, Input, Select, InputLabel, ListItemText} from "@material-ui/core";
+import Button from "@mui/material/Button";
+import { FormControlLabel, Checkbox, Container, TextField, MenuItem, FormControl, Input, Select, InputLabel, ListItemText, SelectChangeEvent } from "@mui/material";
+import "./song-form.scss";
 interface IProps {
 	handleSubmit: (_sng: ISong) => void;
 	handleSuccess: () => void;
 }
 
-
-const useStyles = makeStyles((theme: Theme) => {
-	return createStyles({
-		root: {
-			display: "flex",
-			flexDirection: "column",
-		},
-		form: {
-			flexGrow: 1,
-			overflow: "hidden",
-			paddingTop: "1rem",
-		},
-		formControl: {
-			margin: theme.spacing(1),
-			minWidth: 120,
-		},
-	});
-});
-
-
 const SongForm: React.FC<IProps> = ({ handleSubmit, handleSuccess }: IProps) => {
-
-	const classes = useStyles();
 
 	/**
 	 * Import global state parts needed
@@ -68,7 +46,7 @@ const SongForm: React.FC<IProps> = ({ handleSubmit, handleSuccess }: IProps) => 
 	}, []);
 
 	return (
-		<div className={classes.form}>
+		<div className="SongForm">
 			<Container maxWidth="md">
 				<TextField
 					id="title"
@@ -133,20 +111,20 @@ const SongForm: React.FC<IProps> = ({ handleSubmit, handleSuccess }: IProps) => 
 					variant="outlined"
 				/>
 
-				<FormControl 
-					style={{ margin: "0.5rem 0", color:"#000" }}
-					className={classes.formControl}
+				<FormControl
+					style={{ margin: "0.5rem 0", color: "#000" }}
+					className="formControl"
 					fullWidth
 				>
 					<InputLabel >Κλειδί</InputLabel>
 					<Select
 						value={song.key}
-						onChange={(selection: BaseSyntheticEvent) => {
+						onChange={(selection: SelectChangeEvent) => {
 							setSong((song) => {
-								return { ...song, key: selection.target.value };
+								return { ...song, key: selection.target.value } as ISong;
 							});
 						}}
-						MenuProps={{ 
+						MenuProps={{
 							PaperProps: {
 								style: {
 									maxHeight: 260,
@@ -157,7 +135,7 @@ const SongForm: React.FC<IProps> = ({ handleSubmit, handleSuccess }: IProps) => 
 						}}
 						input={<Input />}
 					>
-						{scales.map((scale) => { 
+						{scales.map((scale) => {
 							return (
 								<MenuItem key={scale.label} value={scale.label} >{scale.label}</MenuItem>
 							);
@@ -165,9 +143,9 @@ const SongForm: React.FC<IProps> = ({ handleSubmit, handleSuccess }: IProps) => 
 					</Select>
 				</FormControl>
 
-				<FormControl 
-					style={{ margin: "0.5rem 0", color:"#000" }}
-					className={classes.formControl}
+				<FormControl
+					style={{ margin: "0.5rem 0", color: "#000" }}
+					className="formControl"
 					fullWidth
 				>
 					<InputLabel >Δρόμοι</InputLabel>
@@ -184,7 +162,7 @@ const SongForm: React.FC<IProps> = ({ handleSubmit, handleSuccess }: IProps) => 
 							onChangeSelect(values, "dromos");
 						}}
 						renderValue={(selected) => { return (selected as string[]).join(", "); }}
-						MenuProps={{ 
+						MenuProps={{
 							PaperProps: {
 								style: {
 									maxHeight: 260,
@@ -195,7 +173,7 @@ const SongForm: React.FC<IProps> = ({ handleSubmit, handleSuccess }: IProps) => 
 						}}
 						input={<Input />}
 					>
-						{dromoi.map((dromos) => { 
+						{dromoi.map((dromos) => {
 							return (
 								<MenuItem key={dromos.label} value={dromos.label} >
 									<Checkbox checked={!!dromos.label && song.dromos.includes(dromos.label as AllDromoi)} />
@@ -206,9 +184,9 @@ const SongForm: React.FC<IProps> = ({ handleSubmit, handleSuccess }: IProps) => 
 					</Select>
 				</FormControl>
 
-				<FormControl 
-					style={{ margin: "0.5rem 0", color:"#000" }}
-					className={classes.formControl}
+				<FormControl
+					style={{ margin: "0.5rem 0", color: "#000" }}
+					className="formControl"
 					fullWidth
 				>
 					<InputLabel >Ρυθμός</InputLabel>
@@ -225,7 +203,7 @@ const SongForm: React.FC<IProps> = ({ handleSubmit, handleSuccess }: IProps) => 
 							onChangeSelect(values, "rhythm");
 						}}
 						renderValue={(selected) => { return (selected as string[]).join(", "); }}
-						MenuProps={{ 
+						MenuProps={{
 							PaperProps: {
 								style: {
 									maxHeight: 260,
@@ -236,7 +214,7 @@ const SongForm: React.FC<IProps> = ({ handleSubmit, handleSuccess }: IProps) => 
 						}}
 						input={<Input />}
 					>
-						{rythmoi.map((rhythm) => { 
+						{rythmoi.map((rhythm) => {
 							return (
 								<MenuItem key={rhythm.label} value={rhythm.label} >
 									<Checkbox checked={!!rhythm.label && song.rhythm.includes(rhythm.label as AllRythms)} />
@@ -320,7 +298,7 @@ const SongForm: React.FC<IProps> = ({ handleSubmit, handleSuccess }: IProps) => 
 							name="submit"
 							type="submit"
 							onClick={() => {
-								handleSuccess();								
+								handleSuccess();
 								return handleSubmit(song);
 							}}
 							variant="contained"

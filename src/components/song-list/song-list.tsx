@@ -1,74 +1,25 @@
 import React, { useEffect, useState, useRef } from "react";
 import useStore from "store/globalStore";
-import Button from "@material-ui/core/Button";
-import Paper from "@material-ui/core/Paper";
-import { alpha, makeStyles, createStyles, Theme } from "@material-ui/core/styles";
-import Grid from "@material-ui/core/Grid";
+import Button from "@mui/material/Button";
+import Paper from "@mui/material/Paper";
+import Grid from "@mui/material/Grid";
 import { ISong } from "interfaces/interfaces";
-import { reduceToGreeklish, removeAccents, stringToSlug } from "utils/characterMap";
+import {
+	reduceToGreeklish,
+	removeAccents,
+	stringToSlug,
+} from "utils/characterMap";
 import "./song-list.scss";
 import SearchSettings from "components/search-settings/SearchSettings";
 import { useNavigate } from "react-router-dom";
-import StarIcon from "@material-ui/icons/Star";
-
-const useStyles = makeStyles((theme: Theme) => {
-	return createStyles({
-		root: {
-			flexGrow: 1,
-			overflow: "hidden",
-			padding: theme.spacing(0, 3),
-			paddingTop: "1rem",
-			marginBottom: "4rem",
-		},
-		paper: {
-			maxWidth: "100%",
-			[theme.breakpoints.up("sm")]: {
-				width: "90%",
-				maxWidth: "90%",
-			},
-			[theme.breakpoints.up("md")]: {
-				maxWidth: "600px",
-			},
-			margin: `${theme.spacing(1)}px auto`,
-			padding: theme.spacing(2),
-			cursor: "pointer",
-			"&:hover": {
-				backgroundColor: alpha(theme.palette.common.white, 0.25),
-			},
-		},
-		alignLeft: {
-			color: "#E64A19",
-			padding: "0.2rem",
-			margin: "0",
-			display: "flex",
-			alignItems: "center",
-			justifyContent: "center",
-			background: "#FFCCBC",
-			borderRadius: "50%",
-		},
-		title: {
-			flexGrow: 1,
-			margin:0,
-			color:"#607D8B",
-			fontWeight: "bold",
-		},
-		wrapper: {
-			display: "flex",
-			justifyContent: "space-between",
-			alignItems: "center",
-			width: "100%",
-			paddingTop:0
-		}
-	});
-});
-
+import StarIcon from "@mui/icons-material/Star";
 interface IProps {
-	searchTerm:string;
+	searchTerm: string;
 }
 
-const SongList: React.FC<IProps> = ({searchTerm}:IProps) => {
+const SongList: React.FC<IProps> = ({ searchTerm }: IProps) => {
 	const navigate = useNavigate();
-	
+
 	/**
 	 * Import global state parts needed
 	 */
@@ -76,47 +27,59 @@ const SongList: React.FC<IProps> = ({searchTerm}:IProps) => {
 		return [state.setSelectedSong, state.songs, state.showOnlyReady];
 	});
 
-	const classes = useStyles();
-
 	/**
 	 * Searching
 	 */
-	const [searchResults, setSearchResults] = useState(JSON.parse(JSON.stringify(songs)));
-	
+	const [searchResults, setSearchResults] = useState(
+		JSON.parse(JSON.stringify(songs))
+	);
+
 	const initSongs = useRef(JSON.parse(JSON.stringify(songs)));
-	
+
 	useEffect(() => {
 		const results = initSongs.current.filter((song: ISong) => {
-			return reduceToGreeklish(removeAccents(song.title)).toLowerCase().includes(searchTerm);
+			return reduceToGreeklish(removeAccents(song.title))
+				.toLowerCase()
+				.includes(searchTerm);
 		});
 
-		const filteredResults = showOnlyReady ? results.filter((song: ISong) => {
-			return song.presentable;
-		}) : results;
+		const filteredResults = showOnlyReady
+			? results.filter((song: ISong) => {
+				return song.presentable;
+			})
+			: results;
 		setSearchResults(filteredResults);
 	}, [searchTerm, showOnlyReady]);
 
 	return (
-		<div className={classes.root}>
+		<div className="SongList">
 			<SearchSettings />
-			{searchResults.sort((a:ISong, b:ISong) => { return ("" + a.title).localeCompare(b.title); }).map((song: ISong) => {
-				return (
-					<Paper
-						className={classes.paper}
-						key={`song-${song.title}`}
-						onClick={() => {
-							setSelectedSong(song);
-							navigate(`/song/${stringToSlug(song.title)}`);
-						}}
-					>
-						<Grid container wrap="nowrap" spacing={2}>
-							<Grid className={classes.wrapper} item>
-								<p className={classes.title}>{song.title}</p>{song.presentable && <span className={classes.alignLeft}><StarIcon /></span>}
+			{searchResults
+				.sort((a: ISong, b: ISong) => {
+					return ("" + a.title).localeCompare(b.title);
+				})
+				.map((song: ISong) => {
+					return (
+						<Paper
+							className="paper"
+							key={`song-${song.title}`}
+							onClick={() => {
+								setSelectedSong(song);
+								navigate(`/song/${stringToSlug(song.title)}`);
+							}}>
+							<Grid container wrap="nowrap" spacing={2}>
+								<Grid className="wrapper" item>
+									<p className="title">{song.title}</p>
+									{song.presentable && (
+										<span className="alignLeft">
+											<StarIcon />
+										</span>
+									)}
+								</Grid>
 							</Grid>
-						</Grid>
-					</Paper>
-				);
-			})}
+						</Paper>
+					);
+				})}
 			<div className="AddSong">
 				<Button
 					name="submit"
@@ -126,8 +89,7 @@ const SongList: React.FC<IProps> = ({searchTerm}:IProps) => {
 						navigate("/new-song");
 					}}
 					variant="contained"
-					color="primary"
-				>
+					color="primary">
 					Add song
 				</Button>
 			</div>
