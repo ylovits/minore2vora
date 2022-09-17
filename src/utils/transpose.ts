@@ -41,8 +41,8 @@ const keysArray = ["C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "
 
 export const transposeChord = (
 	chord: string,
-	oldKey: string,
-	newKey: string
+	oldKey: AllKeys,
+	newKey: AllKeys
 ): string => {
 	const amount = (keysArray.indexOf(newKey) - keysArray.indexOf(oldKey));
 	return chord.replace(/[CDEFGAB]#?/g,
@@ -53,16 +53,12 @@ export const transposeChord = (
 };
 
 export const scaleToKey = (text: AllScales): AllKeys => {
-	let regexString, regex;
 	let returnString = "";
 	if (typeof text === "string" && text.length > 0) {
 		scaleToKeyMap.forEach((replacementItem) => {
-			regexString = replacementItem.find;
-			regex = new RegExp(regexString, "g");
-			returnString = returnString.replace(
-				regex,
-				replacementItem.replace
-			) as AllKeys;
+			if (replacementItem.find === text) {
+				returnString = replacementItem.replace;
+			}
 		});
 	}
 	return returnString as AllKeys;

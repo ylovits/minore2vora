@@ -1,0 +1,9 @@
+.SongForm {
+	flex-grow: 1;
+	overflow: hidden;
+	padding-top: 1rem;
+	.formControl {
+		margin: 1rem;
+		min-width: 120px;
+	}
+}

@@ -1,28 +1,33 @@
-import React, { ReactElement, useEffect, useRef } from "react";
-import { SVGuitarChord } from "svguitar";
-const ChordSVG = (): ReactElement => {
-	const test = useRef(null);
-	useEffect(() => {
-		if (test.current) {
-			const chart = new SVGuitarChord("#testt");
-			chart.chord({
-				fingers: [
-					[1, 2, "2"],
-					[2, 3, "3"],
-					[3, 3],
-					[6, "x"]
-				],
-				barres: [
-					{ fromString: 5, toString: 1, fret: 1, text: "1" },
-				]
-			})
-				.draw();
-		}
-	}, [test]);
-	
+import React from "react";
+import Chord from "@tombatossals/react-chords/lib/Chord";
+export interface Instrument {
+	strings: number;
+	fretsOnChord: number;
+	name: string;
+	keys: any[];
+	tunings: {
+		standard: string[];
+	};
+}
+
+interface IChord {
+	frets: number[];
+	fingers: number[];
+	barres: number[];
+	capo: boolean;
+	baseFret: number;
+}
+interface IProps {
+	chord: IChord;
+	instrument: Instrument;
+	lite: boolean;
+	title: string;
+}
+
+const ChordSVG = ({ chord, instrument, lite, title }: IProps) => {
+
 	return (
-		<div id="testt" ref={test}></div>
+		<Chord chord={chord} instrument={instrument} lite={lite} title={title} />
 	);
 };
-
 export default ChordSVG;
