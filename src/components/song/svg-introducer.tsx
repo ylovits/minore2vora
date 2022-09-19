@@ -238,6 +238,7 @@ const SVGIntroducer = ({ song, selectedInstrument, currentKey}: IProps) => {
 						</div>
 					);
 				}
+				return <React.Fragment key={`line-${i}`}><br></br></React.Fragment>;
 			})}
 		</div>
 	);

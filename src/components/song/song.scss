@@ -69,14 +69,14 @@
 
 .SongBody{
     white-space: pre;
-    font-family: "Roboto Condensed", sans-serif;
+    font-family: $mono-family;
     font-size:1.1rem;
     line-height: 1rem;
 	.songLine{
 		line-height: 1.3rem;
 	}
     strong {
-        font-family: monospace;
+        font-family: $mono-family;
         color: $accent;
 		margin-right: 0.3rem;
     }
@@ -99,7 +99,7 @@
 		}
 	}
     em {
-        font-family: monospace;
+        font-family: $mono-family;
         line-height: 2.3em;
         position: relative;
         color: $accent;
@@ -110,7 +110,7 @@
         white-space: nowrap;
     }
     .perasma {
-        font-family: monospace;
+        font-family: $mono-family;
         line-height: 2.3em;
         position: relative;
         color: $accent;
@@ -121,7 +121,7 @@
         font-weight: 900;
         font-size: 0.7em;
         strong{
-            font-family: monospace;
+            font-family: $mono-family;
             font-size: 1rem;
             top:auto
         }
