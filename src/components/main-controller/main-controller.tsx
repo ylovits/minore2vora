@@ -23,6 +23,7 @@ import {
 } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import { reduceToGreeklish, stringToSlug } from "utils/characterMap";
+import SpeedDialComp from "../ui/speed-dial";
 import "./main-controller.scss";
 
 /* Lazy load all "page" components for code splitting */
@@ -228,9 +229,9 @@ const SnapshotFirebase: React.FC = () => {
 						)}
 
 					</Routes>
+					{user && <SpeedDialComp />}
 				</Grid>
 			</React.Suspense>
-
 			<Snackbar
 				anchorOrigin={{
 					vertical: "bottom",

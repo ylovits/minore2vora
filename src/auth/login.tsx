@@ -51,34 +51,39 @@ const Login: React.FC = () => {
 				<Typography variant="h3" component="h4" gutterBottom>
 					Login
 				</Typography>
-				<TextField
-					required
-					id="standard-required"
-					label="Required"
-					defaultValue={values.email}
-					placeholder="Enter your Email"
-					type="text"
-					name="email"
-					onChange={(e) => {
-						return setValues((values) => {
-							return { ...values, email: e.target.value };
-						});
-					}}
-				/>
-				<TextField
-					type="password"
-					name="password"
-					value={values.password}
-					id="standard-password-input"
-					label="Password"
-					autoComplete="current-password"
-					placeholder="Enter your Password"
-					onChange={(e) => {
-						return setValues((values) => {
-							return { ...values, password: e.target.value };
-						});
-					}}
-				/>
+				<Box mt="2rem">
+					<TextField
+						required
+						id="standard-required"
+						label="Required"
+						defaultValue={values.email}
+						placeholder="Enter your Email"
+						type="text"
+						name="email"
+						onChange={(e) => {
+							return setValues((values) => {
+								return { ...values, email: e.target.value };
+							});
+						}}
+					/>
+
+				</Box>
+				<Box mt="2rem">
+					<TextField
+						type="password"
+						name="password"
+						value={values.password}
+						id="standard-password-input"
+						label="Password"
+						autoComplete="current-password"
+						placeholder="Enter your Password"
+						onChange={(e) => {
+							return setValues((values) => {
+								return { ...values, password: e.target.value };
+							});
+						}}
+					/>
+				</Box>
 				<Box mt="3rem">
 					<Button
 						onClick={() => {

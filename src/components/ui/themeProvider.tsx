@@ -11,7 +11,7 @@ const ThemeDispatchContext = React.createContext<any>(null);
 
 const ThemeProvider: React.FC<IProps> = ({ children, theme }:IProps) => {
 	const themeInitialOptions = {
-		paletteType: "light",
+		paletteType: "dark",
 	};
 
 	const [themeOptions, dispatch] = React.useReducer((state: any, action: any) => {
