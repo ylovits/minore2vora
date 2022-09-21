@@ -10,9 +10,11 @@ import {
 	stringToSlug,
 } from "utils/characterMap";
 import "./song-list.scss";
-import SearchSettings from "components/search-settings/SearchSettings";
+
+
 import { useNavigate } from "react-router-dom";
 import StarIcon from "@mui/icons-material/Star";
+import Filters from "components/ui/filters";
 interface IProps {
 	searchTerm: string;
 }
@@ -23,8 +25,8 @@ const SongList: React.FC<IProps> = ({ searchTerm }: IProps) => {
 	/**
 	 * Import global state parts needed
 	 */
-	const [setSelectedSong, songs, showOnlyReady] = useStore((state) => {
-		return [state.setSelectedSong, state.songs, state.showOnlyReady];
+	const [setSelectedSong, songs, showOnlyReady, setShowFilters, showFilters] = useStore((state) => {
+		return [state.setSelectedSong, state.songs, state.showOnlyReady, state.setShowFilters, state.showFilters,];
 	});
 
 	/**
@@ -51,9 +53,14 @@ const SongList: React.FC<IProps> = ({ searchTerm }: IProps) => {
 		setSearchResults(filteredResults);
 	}, [searchTerm, showOnlyReady]);
 
+	useEffect(() => {
+		setShowFilters(false);
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, []);
+
 	return (
 		<div className="SongList">
-			<SearchSettings />
+			{showFilters && <Filters />}
 			{searchResults
 				.sort((a: ISong, b: ISong) => {
 					return ("" + a.title).localeCompare(b.title);
@@ -67,7 +74,7 @@ const SongList: React.FC<IProps> = ({ searchTerm }: IProps) => {
 								setSelectedSong(song);
 								navigate(`/song/${stringToSlug(song.title)}`);
 							}}>
-							<Grid container wrap="nowrap" spacing={2}>
+							<Grid container wrap="nowrap">
 								<Grid className="wrapper" item>
 									<p className="title">{song.title}</p>
 									{song.presentable && (

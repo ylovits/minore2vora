@@ -114,13 +114,13 @@ const SongForm: React.FC<IProps> = ({ handleSubmit, handleSuccess }: IProps) => 
 								e.preventDefault();
 								const cursorPosition = target.selectionStart;
 								const cursorEndPosition = target.selectionEnd;
-								const tab = "\t";
+								const tab = "      ";
 								target.value =
 								value.substring(0, cursorPosition) +
 								tab +
 								value.substring(cursorEndPosition);
-								target.selectionStart = cursorPosition + 1;
-								target.selectionEnd = cursorPosition + 1;
+								target.selectionStart = cursorPosition + 6;
+								target.selectionEnd = cursorPosition + 6;
 							}
 						}
 					}}
@@ -236,7 +236,7 @@ const SongForm: React.FC<IProps> = ({ handleSubmit, handleSuccess }: IProps) => 
 							return (
 								<MenuItem key={rhythm.label} value={rhythm.label} >
 									<Checkbox checked={!!rhythm.label && song.rhythm.includes(rhythm.label as AllRythms)} />
-									<ListItemText primary={rhythm.label} />
+									<ListItemText primary={rhythm.label + " ---- " + rhythm.value.rhythm} />
 								</MenuItem>
 							);
 						})}

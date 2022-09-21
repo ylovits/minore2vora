@@ -1,6 +1,6 @@
 import React from "react";
 import SnapshotFirebase from "./main-controller/main-controller";
-import FabThemeSelector from "./ui/fab-theme-selector";
+// import FabThemeSelector from "./ui/fab-theme-selector";
 import { createTheme } from "@mui/material/styles";
 import ThemeProvider from "components/ui/themeProvider";
 import CssBaseline from "@mui/material/CssBaseline";
@@ -13,7 +13,6 @@ const App: React.FC = () => {
 		<ThemeProvider theme={initialTheme}>
 			<CssBaseline />
 			<div className="App"><SnapshotFirebase /></div>
-			<FabThemeSelector />
 		</ThemeProvider>
 	);
 };

@@ -13,7 +13,10 @@ const initialState = {
 	showComments: false,
 	showOnlyReady: false,
 	tempUrl: "",
-	filteredBy: []
+	filteredBy: [],
+	showChords: false,
+	showDrawer: false,
+	showFilters: false,
 };
 
 const useStore = create<globalTypes.IGlobalState>()(
@@ -63,6 +66,21 @@ const useStore = create<globalTypes.IGlobalState>()(
 				setFilteredBy: (filters: IFilter[] | []) => {
 					set((_state) => {
 						return { filteredBy: filters };
+					});
+				},
+				setShowChords: (showChords: boolean) => {
+					set((_state) => {
+						return { showChords: showChords };
+					});
+				},
+				setShowDrawer: (showDrawer: boolean) => {
+					set((_state) => {
+						return { showDrawer: showDrawer };
+					});
+				},
+				setShowFilters: (showFilters: boolean) => {
+					set((_state) => {
+						return { showFilters: showFilters };
 					});
 				},
 				setGlobalState: (newState: globalTypes.IGlobalState) => {

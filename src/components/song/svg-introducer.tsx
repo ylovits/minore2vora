@@ -6,7 +6,7 @@ import UkuleleDB from "assets/chords-db/ukulele.json";
 import { AllKeys, ISong } from "interfaces/interfaces";
 import { transposeChord, scaleToKey } from "utils/transpose";
 import { crossLangSafeguard } from "utils/characterMap";
-import FabShowChordBoxes from "components/ui/fab-show-chord-boxes";
+import useStore from "store/globalStore";
 
 export enum Instruments { _ukulele = "ukulele",  _guitar = "guitar"}
 export interface Instrument {
@@ -38,18 +38,15 @@ interface IProps {
 
 const SVGIntroducer = ({ song, selectedInstrument, currentKey}: IProps) => {
 
+	/* Import global state parts needed */
+	const [showChords] = useStore((state) => { return [	state.showChords ]; }) ;
+
 	const [chordSheet, setChordSheet] = useState<Song>();
 	const [serializedSong, setSerializedSong] = useState<{
 		type: string;
 		lines: Line[];
 	}>();
 	const [db, setDb] = useState<any>(GuitarDB);
-	const [showChords, setShowChords] = useState<"showChords" | "">("");
-	const toggleBoxes = () => {
-		setShowChords((show) => { 
-			return !!show ? "" : "showChords"; 
-		});
-	};
 
 	const [instrument, setInstrument] = useState<Instrument>({
 		strings: 6,
@@ -146,7 +143,6 @@ const SVGIntroducer = ({ song, selectedInstrument, currentKey}: IProps) => {
 
 	return (
 		<div>
-			<FabShowChordBoxes toggleBoxes={toggleBoxes} />
 			{serializedSong && serializedSong.lines.map((line, i) => {
 				if (!!line.items.length) {
 					return (
@@ -218,8 +214,8 @@ const SVGIntroducer = ({ song, selectedInstrument, currentKey}: IProps) => {
 
 								return (
 									<span key={`line-${i}-group-${y}`} className="mt-2">
-										<div className={`text-xs text-red-600 chord ${showChords}`}>
-											{(!!chordSchema && !!showChords) && <ChordSVG
+										<div className={`text-xs text-red-600 chord ${showChords ? "showChords" : ""}`}>
+											{(!!chordSchema && showChords) && <ChordSVG
 												chord={chordSchema}
 												instrument={instrument}
 												lite={lite}

@@ -5,7 +5,6 @@ import {
 	Button, Chip, Typography, Container, Box, Drawer, FormControl, Select, MenuItem, Dialog, DialogContent, DialogActions, SelectChangeEvent
 } from "@mui/material";
 import { rythmoi, scales, keys } from "data/data";
-import FabMenu from "components/ui/fab-menu";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { scaleToKey } from "utils/transpose";
@@ -25,18 +24,22 @@ const Song: React.FC<IProps> = ({ song, setShowDeletePopup }: IProps) => {
 	/**
 	 * Import global state parts needed
 	 */
-	const [setSelectedSong] = useStore((state) => {
-		return [state.setSelectedSong];
+	const [setSelectedSong, setShowDrawer, showDrawer] = useStore((state) => {
+		return [state.setSelectedSong, state.setShowDrawer, state.showDrawer];
 	});
+
+	const toggleDrawer = () => {
+		setShowDrawer(!setShowDrawer);
+	};
+
+	useEffect(() => {
+		setShowDrawer(false);
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, []);
+
 
 	const handleShowDeletePopup = (_song: ISong | null) => {
 		setShowDeletePopup();
-	};
-
-
-	const [showDrawer, setShowDrawer] = useState(false);
-	const toggleDrawer = () => {
-		setShowDrawer((show) => { return !show; });
 	};
 
 	const [currentKey, setCurrentKey] = useState<AllKeys>();
@@ -103,10 +106,10 @@ const Song: React.FC<IProps> = ({ song, setShowDeletePopup }: IProps) => {
 					<Box className="inline">
 						<label>Rhythm: </label>
 						{song.rhythm.map((rhythm) => {
-							const currentRhythm: AllRythms = rythmoi.find((rythmObj) => {
+							const currentRhythmDescription: AllRythms = rythmoi.find((rythmObj) => {
 								return rythmObj.label === rhythm;
 							})?.value.rhythm as AllRythms ?? "";
-							return <RhythmPopover key={`${song.id}-${rhythm}`} rhythmName={rhythm} rhythmDesription={currentRhythm} />;
+							return <RhythmPopover key={`${song.id}-${rhythm}`} rhythmName={rhythm} rhythmDesription={currentRhythmDescription} />;
 						})}
 					</Box>
 				)}
@@ -172,7 +175,6 @@ const Song: React.FC<IProps> = ({ song, setShowDeletePopup }: IProps) => {
 					</div>
 				}
 			</Container>
-			<FabMenu toggleDrawer={toggleDrawer} />
 			<Drawer anchor='bottom' open={showDrawer} onClose={toggleDrawer}>
 				<Button
 					className="btn"
