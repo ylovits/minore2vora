@@ -35,7 +35,9 @@ const AuthProvider:React.FC<IProps> = ({children}: IProps) => {
 
 	if (loadingAuthState) {
 		return (
-			<h1>Loading...</h1>
+			<div className="loading">
+				<h1>Loading...</h1>
+			</div>
 		);
 	}
 

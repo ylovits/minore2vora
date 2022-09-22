@@ -88,47 +88,49 @@ const SongForm: React.FC<IProps> = ({ handleSubmit, handleSuccess }: IProps) => 
 					autoComplete="off"
 				/>
 
-				<TextField
-					multiline
-					rows={15}
-					id="stixoi"
-					label="Στίχοι"
-					style={{ margin: "0.5rem 0" }}
-					placeholder="Εδώ μπαίνουν οι στίχοι - ακόρντα"
-					fullWidth
-					margin="normal"
-					type="text"
-					InputLabelProps={{
-						shrink: true,
-					}}
-					onChange={(e) => {
-						setSong((song) => {
-							return { ...song, body: e.target.value };
-						});
-					}}
-					onKeyDown={(e) => {
-						if (e.target) {
-							const target = e.target as HTMLTextAreaElement;
-							const { value } = target;
-							if (e.key === "Tab") {
-								e.preventDefault();
-								const cursorPosition = target.selectionStart;
-								const cursorEndPosition = target.selectionEnd;
-								const tab = "      ";
-								target.value =
-								value.substring(0, cursorPosition) +
-								tab +
-								value.substring(cursorEndPosition);
-								target.selectionStart = cursorPosition + 6;
-								target.selectionEnd = cursorPosition + 6;
+				<span className="phoneIndicator">	
+					<span className="phoneWidth"></span>
+					<TextField
+						multiline
+						rows={25}
+						id="stixoi"
+						label="Στίχοι"
+						style={{ margin: "0.5rem 0" }}
+						placeholder="Εδώ μπαίνουν οι στίχοι - ακόρντα"
+						fullWidth
+						margin="normal"
+						type="text"
+						InputLabelProps={{
+							shrink: true,
+						}}
+						onChange={(e) => {
+							setSong((song) => {
+								return { ...song, body: e.target.value };
+							});
+						}}
+						onKeyDown={(e) => {
+							if (e.target) {
+								const target = e.target as HTMLTextAreaElement;
+								const { value } = target;
+								if (e.key === "Tab") {
+									e.preventDefault();
+									const cursorPosition = target.selectionStart;
+									const cursorEndPosition = target.selectionEnd;
+									const tab = "      ";
+									target.value =
+									value.substring(0, cursorPosition) +
+									tab +
+									value.substring(cursorEndPosition);
+									target.selectionStart = cursorPosition + 6;
+									target.selectionEnd = cursorPosition + 6;
+								}
 							}
-						}
-					}}
-					value={song.body}
-					autoComplete="off"
-					variant="outlined"
-				/>
-
+						}}
+						value={song.body}
+						autoComplete="off"
+						variant="outlined"
+					/>
+				</span>
 				<FormControl
 					style={{ margin: "0.5rem 0", color: "#000" }}
 					className="formControl"
