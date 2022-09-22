@@ -1,6 +1,5 @@
 import React, { useEffect, useState, useRef } from "react";
 import useStore from "store/globalStore";
-import Button from "@mui/material/Button";
 import Paper from "@mui/material/Paper";
 import Grid from "@mui/material/Grid";
 import { ISong } from "interfaces/interfaces";
@@ -87,19 +86,6 @@ const SongList: React.FC<IProps> = ({ searchTerm }: IProps) => {
 						</Paper>
 					);
 				})}
-			<div className="AddSong">
-				<Button
-					name="submit"
-					type="submit"
-					onClick={() => {
-						setSelectedSong(null);
-						navigate("/new-song");
-					}}
-					variant="contained"
-					color="primary">
-					Add song
-				</Button>
-			</div>
 		</div>
 	);
 };

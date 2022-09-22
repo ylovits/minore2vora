@@ -196,11 +196,13 @@ const SVGIntroducer = ({ song, selectedInstrument, currentKey}: IProps) => {
 									suf = "major";
 								}
 
+								let chord = null;
 
-								const chord = db.chords[key as keyof typeof db.chords].find((suffix:any) => {
-									return suffix.suffix === suf;
-								});
-								// console.log(chord, suf, key);
+								if (db.chords[key as keyof typeof db.chords]) {
+									chord = db.chords[key as keyof typeof db.chords].find((suffix:any) => {
+										return suffix.suffix === suf;
+									});
+								}
 
 								let positions =  null;
 								if (chord && chord.positions) {

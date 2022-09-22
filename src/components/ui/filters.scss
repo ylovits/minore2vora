@@ -1,0 +1,18 @@
+.showSettings{
+    text-align:center;
+}
+
+.filters{
+	display: flex;
+	flex-direction: column;
+}
+.modalContainer {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	width:400px;
+	max-width: 90vw;
+	box-shadow: 24;
+	padding: 1rem;
+}

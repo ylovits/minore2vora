@@ -19,19 +19,8 @@ import useStore from "store/globalStore";
 import { useEffect } from "react";
 import { scales, rythmoi } from "data/data";
 import { AllKeys, AllRythms } from "interfaces/interfaces";
-import "./SearchSettings.scss";
+import "./filters.scss";
 
-const style = {
-	position: "absolute",
-	top: "50%",
-	left: "50%",
-	transform: "translate(-50%, -50%)",
-	width: 400,
-	bgcolor: "background.paper",
-	border: "2px solid #000",
-	boxShadow: 24,
-	p: 4,
-};
 
 interface MappedFilters {
 	rhythm: AllRythms[],
@@ -100,14 +89,15 @@ export default function Filters() {
 	};
 
 	return (
-		<div className="SearchSettings">
+		<div className="filters">
 			<Modal
+				className="modal"
 				open={true}
 				onClose={handleClose}
 				aria-labelledby="modal-modal-title"
 				aria-describedby="modal-modal-description"
 			>
-				<Box sx={style}>
+				<Box className="modalContainer" sx={{backgroundColor: "background.paper"}}>
 					<FormGroup>
 						<FormControlLabel
 							control={
