@@ -97,7 +97,7 @@ const SpeedDialComp = () => {
 						show = false;
 					}
 
-					if (location.pathname === "/song-list" && action.name === ACTION_NAMES.ADD_SONG) {
+					if (location.pathname !== "/song-list" && action.name === ACTION_NAMES.ADD_SONG) {
 						show = false;
 					}
 
