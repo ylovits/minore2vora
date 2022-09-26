@@ -5,21 +5,21 @@
 	padding-top: 1rem;
 	margin-bottom: 4rem;
 	.paper{
-
 		max-width: 100%;
 		@media screen and (min-width:700px) {
-			width: 90%;
-			max-width: 90%;
+			width: 100%;
+			max-width: 100%;
 		}
 		@media screen and (min-width:900px) {
 			max-width: 600px;
 		}
-		margin: 1rem auto;
-		padding: 1rem 2rem;
+		margin: 1rem 0 0 0;
+		padding: 1rem;
 		cursor: pointer;
 		&:hover {
-			background-color: rgba(255,255,255,0.25),
+			background-color: rgba(255,255,255,0.1),
 		}
+		background-color: transparent;
 		.wrapper{
 			display: flex;
 			justify-content: space-between;
@@ -32,6 +32,31 @@
 				color: #607D8B;
 				font-weight: bold;
 			}
+		}
+		.dragHandle{
+			flex-shrink: 0;
+			background:$primary-black;
+			height:2rem;
+			width:2rem;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			padding:1rem;
+			margin-right:1rem;
+		}
+		.numbering{
+			flex-shrink: 0;
+			padding:1rem 1rem 1rem 0;
+			margin-right:1rem;
+			background-color: $primary;
+			border-radius: 50%;
+			height:2rem;
+			width:2rem;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			padding:1rem;
+			margin-right:1rem;
 		}
 	}
 	.remove-song{
@@ -47,6 +72,7 @@
 		display: flex;
 		align-items: center;
 		justify-content: center;
+		flex-shrink: 0;
 		&:hover{
 			background-color: $accent-light;
 			cursor: pointer;
