@@ -40,3 +40,14 @@ body, html {font-size:14px;}
 	color: $accent;
 	font-weight: 600;
 }
+
+.dialog-list-item{
+	cursor: pointer;
+	border-radius: 0.3rem;
+	background-color: $primary-dark;
+	color:#fff;
+	padding:1rem;
+	&:hover{
+		background-color: $primary;
+	}
+}

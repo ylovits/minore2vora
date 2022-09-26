@@ -105,6 +105,12 @@ export interface ISong {
   notes: string;
 }
 
+
+export interface IPlaylist {
+	id: string;
+	name: string;
+	songs: string[];
+}
 export interface IKeyFilter {
   type: "key",
   value: AllKeys

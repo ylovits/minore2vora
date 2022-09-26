@@ -1,0 +1,17 @@
+.PlaylistForm {
+	flex-grow: 1;
+	overflow: hidden;
+	padding-top: 1rem;
+	.container{
+		display: flex;
+		flex-direction: column;
+		height: calc(100vh - 8rem);
+		.formControl {
+			margin: 1rem;
+			min-width: 120px;
+			overflow-y: scroll;
+			height: 10rem;
+			flex-grow: 1;
+		}
+	}
+}

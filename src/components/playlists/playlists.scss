@@ -1,0 +1,60 @@
+.Playlists{
+	flex-grow: 1;
+	overflow: hidden;
+	padding: 0 3rem;
+	padding-top: 1rem;
+	margin-bottom: 4rem;
+	.paper{
+
+		max-width: 100%;
+		@media screen and (min-width:700px) {
+			width: 90%;
+			max-width: 90%;
+		}
+		@media screen and (min-width:900px) {
+			max-width: 600px;
+		}
+		margin: 1rem auto;
+		padding: 1rem 2rem;
+		cursor: pointer;
+		&:hover {
+			background-color: rgba(255,255,255,0.25),
+		}
+		.wrapper{
+			display: flex;
+			justify-content: space-between;
+			align-items: center;
+			width: 100%;
+			padding-top: 0;
+			.title{
+				flex-grow: 1;
+				margin: 0;
+				color: #607D8B;
+				font-weight: bold;
+			}
+		}
+	}
+	.remove-song{
+		background:$accent;
+		color:#fff;
+		border-radius: 50%;
+		border:none;
+		width:2rem;
+		height:2rem;
+		padding:0.3rem;
+		font-weight: bold;
+		font-family: $mono-family;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		&:hover{
+			background-color: $accent-light;
+			cursor: pointer;
+		}
+	}
+}
+.saveOrder{
+	position: fixed;
+	bottom: 1rem;
+	left:1rem;
+}
