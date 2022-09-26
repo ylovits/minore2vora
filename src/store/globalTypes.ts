@@ -1,8 +1,10 @@
-import { IFilter, ISong } from "interfaces/interfaces";
+import { IFilter, IPlaylist, ISong } from "interfaces/interfaces";
 export interface IGlobalState {
   isLoading: boolean;
   selectedSong: ISong | null;
   songs: ISong[] | [];
+  playlists: IPlaylist[] | [];
+  activePlaylist: string;
   showComments: boolean;
   showOnlyReady: boolean;
   tempUrl: string;
@@ -10,8 +12,11 @@ export interface IGlobalState {
   showChords: boolean;
   showDrawer: boolean;
   showFilters: boolean;
+  showAvailableLists: boolean;
   setSelectedSong: (_song: ISong | null) => void;
   setSongs: (_songs: ISong[] | []) => void;
+  setPlaylists: (_playlists: IPlaylist[] | []) => void;
+  setActivePlaylist: (_activePlaylist: string) => void;
   logOut: () => void;
   setIsLoading: (_bool: boolean) => void;
   setGlobalState: (_newState: IGlobalState) => void;
@@ -22,4 +27,5 @@ export interface IGlobalState {
   setShowDrawer: (_showDrawer: boolean) => void;
   setShowFilters: (_showFilters: boolean) => void;
   setTempUrl: (_url: string) => void;
+  setShowAvailableLists: (_bool: boolean) => void;
 }

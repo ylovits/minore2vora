@@ -40,6 +40,36 @@
 		}
 	}
 
+	.playlistBtn{
+		margin-right: 2rem;
+		display: block;
+		width: 2.2rem;
+		height: 2.2rem;
+		padding:0.3rem; 
+		border-radius: 50%;;
+		background: $accent;
+		@media screen and (min-width:700px) {
+			display: none;
+		}
+		cursor: pointer;
+		&:hover {
+			color: $accent-light;
+		}
+	}
+
+	.playlistTitle{
+		margin:0 1rem;
+		display: none;
+		color: $accent;
+		@media screen and (min-width:700px) {
+			display: block;
+		}
+		cursor: pointer;
+		&:hover{
+			color: $accent-light;
+		}
+	}
+
 	.search {
 		position: relative;
 		border-radius: 0.3rem;

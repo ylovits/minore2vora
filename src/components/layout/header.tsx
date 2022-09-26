@@ -8,7 +8,10 @@ import InputBase from "@mui/material/InputBase";
 import IconButton from "@mui/material/IconButton";
 import SearchIcon from "@mui/icons-material/Search";
 import HomeIcon from "assets/img/logo.png";
+import ListIcon from "@mui/icons-material/List";
+import useStore from "store/globalStore";
 import "./header.scss";
+import { stringToSlug } from "utils/characterMap";
 
 interface IProps {
 	logout: () => void;
@@ -18,6 +21,12 @@ interface IProps {
 
 const Header: React.FC<IProps> = ({ logout, handleSearchChange, showSearch }: IProps) => {
 	const navigate = useNavigate();
+	/**
+	 * Import global state parts needed
+	 */
+	const [activePlaylist] = useStore((state) => {
+		return [state.activePlaylist];
+	});
 
 	return (
 		<div className="Header">
@@ -40,6 +49,22 @@ const Header: React.FC<IProps> = ({ logout, handleSearchChange, showSearch }: IP
 						}}
 						className="homeBtn"
 					/>
+					{activePlaylist && <Typography
+						onClick={() => {
+							navigate(`/playlist/${stringToSlug(activePlaylist)}`);
+						}}
+						className="playlistTitle"
+						variant="h6"
+						noWrap
+					>
+						{activePlaylist}
+					</Typography>}
+					{activePlaylist && 	<ListIcon
+						onClick={() => {
+							navigate(`/playlist/${stringToSlug(activePlaylist)}`);
+						}}
+						className="playlistBtn"
+					/>}
 
 					<div className="search">
 						{showSearch && (

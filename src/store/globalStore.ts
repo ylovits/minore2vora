@@ -4,12 +4,14 @@ import firebase from "firebase/compat/app";
 import "firebase/compat/auth";
 import "firebase/compat/firestore";
 import { persist } from "zustand/middleware";
-import { IFilter, ISong } from "interfaces/interfaces";
+import { IFilter, IPlaylist, ISong } from "interfaces/interfaces";
 
 const initialState = {
 	isLoading: true,
 	selectedSong: null,
 	songs: [],
+	playlists: [],
+	activePlaylist: "",
 	showComments: false,
 	showOnlyReady: false,
 	tempUrl: "",
@@ -17,6 +19,7 @@ const initialState = {
 	showChords: false,
 	showDrawer: false,
 	showFilters: false,
+	showAvailableLists: false
 };
 
 const useStore = create<globalTypes.IGlobalState>()(
@@ -46,6 +49,16 @@ const useStore = create<globalTypes.IGlobalState>()(
 				setSongs: (songs: ISong[] | []) => {
 					set((_state) => {
 						return { songs: songs };
+					});
+				},
+				setPlaylists: (playlists: IPlaylist[] | []) => {
+					set((_state) => {
+						return { playlists: playlists };
+					});
+				},
+				setActivePlaylist: (activePlaylist: string) => {
+					set((_state) => {
+						return { activePlaylist: activePlaylist };
 					});
 				},
 				setShowOnlyReady: (show: boolean) => {
@@ -81,6 +94,11 @@ const useStore = create<globalTypes.IGlobalState>()(
 				setShowFilters: (showFilters: boolean) => {
 					set((_state) => {
 						return { showFilters: showFilters };
+					});
+				},
+				setShowAvailableLists: (showAvailableLists: boolean) => {
+					set((_state) => {
+						return { showAvailableLists: showAvailableLists };
 					});
 				},
 				setGlobalState: (newState: globalTypes.IGlobalState) => {
