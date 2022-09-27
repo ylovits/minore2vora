@@ -1,0 +1,87 @@
+.PrintList {
+	display: none;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	flex-direction: column;
+	z-index: -1;
+	@media print {
+		position: relative;
+		display: block;
+		width: 21cm;
+		padding: 1cm;
+		.printMessage {
+			display: none;
+		}
+	}
+	.playlistName{
+		display: none;
+		color: $accent;
+		@media print {
+			display: block;
+		}
+	}
+	.contents {
+		display: none;
+		@media print {
+			display: block;
+		}
+		width:100%;
+		padding: 1cm 0;
+		page-break-after: always;
+		.song {
+			display: flex;
+			align-items: baseline;
+			justify-content: stretch;
+			font-family: $mono-family;
+			font-size: 1.2rem;
+			.name {
+				flex-grow: 0;
+				margin:0;
+				margin-right: 1rem;
+				padding:0; 
+			}
+			.dots {
+				height: 1px;
+				flex-grow: 1;
+				border-bottom:1px dotted #000;
+			}
+			.page {
+				flex-grow: 0;
+				font-size: 1.4rem;
+				margin:0;
+				margin-left: 1rem;
+			}
+		}
+	}
+	.songPage:nth-last-child(1) {
+		@media print {
+			page-break-after: unset;
+		}
+	}
+	.songPage {
+		display: none;
+		@media print {
+			min-height: 28.6cm;
+			position: relative;
+			display: block;
+			width:100%;
+			padding: 1cm 0 1cm 0;
+			page-break-after: always;
+			.titleLink{
+				color: $accent;
+				margin:0;
+				padding:0;
+			}
+			.inline, .notes {
+				display: none;
+			}
+			.pageNo {
+				background-color: #222;
+				position: absolute;
+				right:0rem;
+				bottom: 0rem;
+			}
+		}
+	}
+}

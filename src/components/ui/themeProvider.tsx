@@ -7,7 +7,7 @@ interface IProps {
 	theme: Theme;
 }
 
-const ThemeDispatchContext = React.createContext<any>(null);
+export const ThemeDispatchContext = React.createContext<any>(null);
 
 const ThemeProvider: React.FC<IProps> = ({ children, theme }:IProps) => {
 	const themeInitialOptions = {

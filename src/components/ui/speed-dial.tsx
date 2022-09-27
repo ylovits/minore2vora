@@ -15,6 +15,7 @@ import AddIcon from "@mui/icons-material/Add";
 import ListIcon from "@mui/icons-material/List";
 import PlaylistAddIcon from "@mui/icons-material/PlaylistAdd";
 import PlaylistAddCircleIcon from "@mui/icons-material/PlaylistAddCircle";
+import PrintIcon from "@mui/icons-material/Print";
 import useStore from "store/globalStore";
 import { useLocation, useNavigate } from "react-router-dom";
 import "./speed-dial.scss";
@@ -34,7 +35,7 @@ const SpeedDialComp = () => {
 		setSelectedSong,
 		setActivePlaylist,
 		showAvailableLists,
-		setShowAvailableLists,
+		setShowAvailableLists
 	] =
 		useStore((state) => {
 			return [
@@ -47,7 +48,7 @@ const SpeedDialComp = () => {
 				state.setSelectedSong,
 				state.setActivePlaylist,
 				state.showAvailableLists,
-				state.setShowAvailableLists,
+				state.setShowAvailableLists
 			];
 		});
 
@@ -68,7 +69,8 @@ const SpeedDialComp = () => {
 		MANAGE_PLAYLIST: "Manage Playlist",
 		CREATE_PLAYLIST: "New Playlist",
 		ADD_SONG_TO_PLAYLIST: "Add To Playlist",
-		ADD_SONGS_TO_PLAYLIST: "Add Songs"
+		ADD_SONGS_TO_PLAYLIST: "Add Songs",
+		PRINT_LIST: "Print Playlist"
 	};
 
 	const actions = [
@@ -89,7 +91,7 @@ const SpeedDialComp = () => {
 		{
 			icon: <ListIcon />,
 			name: ACTION_NAMES.SHOW_PLAYLISTS,
-			action: () => { navigate("/playlists"); } ,
+			action: () => { navigate("/playlists"); },
 			fabProps: {
 				sx: {
 					bgcolor: "primary.main",
@@ -103,7 +105,7 @@ const SpeedDialComp = () => {
 		{
 			icon: <SettingsIcon />,
 			name: ACTION_NAMES.MANGE_SONG,
-			action: () => { setShowDrawer(!showDrawer); } ,
+			action: () => { setShowDrawer(!showDrawer); },
 			fabProps: {
 				sx: {
 					bgcolor: "warning.main",
@@ -165,7 +167,7 @@ const SpeedDialComp = () => {
 		{
 			icon: <BorderAllIcon />,
 			name: ACTION_NAMES.SHOW_CHORDS,
-			action: () => { setShowChords(!showChords); } ,
+			action: () => { setShowChords(!showChords); },
 			fabProps: {
 				sx: {
 					bgcolor: "secondary.main",
@@ -193,7 +195,7 @@ const SpeedDialComp = () => {
 		{
 			icon: <PlaylistAddIcon />,
 			name: ACTION_NAMES.ADD_SONG_TO_PLAYLIST,
-			action: () => { setShowAvailableLists(!showAvailableLists); } ,
+			action: () => { setShowAvailableLists(!showAvailableLists); },
 			fabProps: {
 				sx: {
 					bgcolor: "secondary.main",
@@ -204,14 +206,32 @@ const SpeedDialComp = () => {
 				}
 			}
 		},
-
+		{
+			icon: <PrintIcon />,
+			name: ACTION_NAMES.PRINT_LIST,
+			action: () => { 
+				setOpen(false);
+				setTimeout(() => {
+					window.print();
+				}, 200);
+			},
+			fabProps: {
+				sx: {
+					bgcolor: "secondary.main",
+					"&:hover": {
+						bgcolor: "secondary.main",
+					},
+					color:"#fff"
+				}
+			}
+		},
 	];
 
 
 
-	return (
+	return (<>
+		<Backdrop open={open} />
 		<Box className="speedDial" sx={{ height: 700, transform: "translateZ(0px)", flexGrow: 1 }}>
-			<Backdrop open={open} />
 			<SpeedDial
 				ariaLabel="SpeedDial tooltip example"
 				sx={{
@@ -278,6 +298,10 @@ const SpeedDialComp = () => {
 						show = false;
 					}
 
+					if (!location.pathname.startsWith("/playlist/") && action.name === ACTION_NAMES.PRINT_LIST) {
+						show = false;
+					}
+
 					if (show) {
 						return (
 							<SpeedDialAction
@@ -296,7 +320,7 @@ const SpeedDialComp = () => {
 				})}
 			</SpeedDial>
 		</Box>
-	);
+	</>);
 };
 
 export default SpeedDialComp;

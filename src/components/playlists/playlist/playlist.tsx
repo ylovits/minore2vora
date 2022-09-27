@@ -15,7 +15,6 @@ interface IProps {
 	handleSuccess: () => void;
 }
 
-
 const Playlist: React.FC<IProps> = ({ addRemovePlaylistSong, handleSubmit, handleSuccess }: IProps) => {
 	const location = useLocation();
 	const navigate = useNavigate();
@@ -50,7 +49,6 @@ const Playlist: React.FC<IProps> = ({ addRemovePlaylistSong, handleSubmit, handl
 	const [orderChanged, setOrderChanged] = useState(false);
 
 	const updated = () => {
-		console.log("Updated", playlist.songs);
 		setOrderChanged(true);
 	};
 
@@ -68,7 +66,7 @@ const Playlist: React.FC<IProps> = ({ addRemovePlaylistSong, handleSubmit, handl
 					}}
 				>
 					<div className="ListContainer">
-						<h1>The List</h1>
+						<h1>{playlist.name}</h1>
 						<Droppable droppableId="droppable-1">
 							{(provided, _) => { 
 								return (
