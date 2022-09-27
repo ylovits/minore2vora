@@ -214,7 +214,8 @@ const SnapshotFirebase: React.FC = () => {
 			songsRef.doc(song.id)
 				.update(song)
 				.then(() => {
-					navigate("/song-list");
+					setSelectedSong(song);
+					navigate(`/song/${stringToSlug(song.title)}`);
 				}).then(() => {
 					setLoading(false);
 				})
