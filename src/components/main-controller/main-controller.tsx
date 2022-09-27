@@ -33,8 +33,8 @@ const SongForm = lazy(() => { return import("components/song-form/song-form"); }
 const Playlists = lazy(() => { return import("components/playlists/playlists"); });
 const Playlist = lazy(() => { return import( "components/playlists/playlist/playlist"); });
 const PlaylistForm = lazy(() => { return import("components/playlist-form/playlist-form"); });
+const PrintList = lazy(() => { return import("components/print-list/print-list"); });
 const Login = lazy(() => { return import("auth/login"); });
-
 
 const SnapshotFirebase: React.FC = () => {
 
@@ -214,7 +214,8 @@ const SnapshotFirebase: React.FC = () => {
 			songsRef.doc(song.id)
 				.update(song)
 				.then(() => {
-					navigate("/song-list");
+					setSelectedSong(song);
+					navigate(`/song/${stringToSlug(song.title)}`);
 				}).then(() => {
 					setLoading(false);
 				})
@@ -347,11 +348,14 @@ const SnapshotFirebase: React.FC = () => {
 								<Route path="/edit-song" element={<SongForm handleSubmit={handleEditSong} handleSuccess={handleSuccess} />} />
 								<Route path="/playlists" element={<Playlists />} />
 								<Route path="/playlist/:listName" element={
-									<Playlist
-										addRemovePlaylistSong={addRemovePlaylistSong}
-										handleSubmit={handleEditPlaylist} 
-										handleSuccess={handleSuccess} 
-									/>
+									<>
+										<Playlist
+											addRemovePlaylistSong={addRemovePlaylistSong}
+											handleSubmit={handleEditPlaylist} 
+											handleSuccess={handleSuccess} 
+										/>
+										<PrintList />
+									</>
 								} />
 								<Route path="/new-playlist" element={
 									<PlaylistForm setShowDeletePlaylistPopup={setShowDeletePlaylistPopup} 
