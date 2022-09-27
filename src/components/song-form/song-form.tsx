@@ -50,9 +50,23 @@ const SongForm: React.FC<IProps> = ({ handleSubmit, handleSuccess }: IProps) => 
 		});
 	};
 
+	const validateYoutube = (url:string) => {
+		if (url !== undefined || url !== '') {
+			const regExp = /^(https?\:\/\/)?(www\.youtube\.com|youtu\.be)\/.+$/;
+			if (url.match(regExp)) {
+				setYoutubeError(false);
+				return;
+			}
+			setYoutubeError(true);
+		}
+	};
+
+	const [youtubeError, setYoutubeError] = useState<boolean>();
+
 	useEffect(() => {
 		if (selectedSong !== null) {
 			setSong(selectedSong);
+			validateYoutube(selectedSong.youtube);
 		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
@@ -93,9 +107,11 @@ const SongForm: React.FC<IProps> = ({ handleSubmit, handleSuccess }: IProps) => 
 					}}
 					onChange={(e) => {
 						return setSong((song) => {
+							validateYoutube(e.target.value);
 							return { ...song, youtube: e.target.value };
 						});
 					}}
+					error={youtubeError}
 					value={song.youtube}
 					autoComplete="off"
 				/>
