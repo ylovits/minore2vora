@@ -77,56 +77,76 @@ const SpeedDialComp = () => {
 		{
 			icon: theme.palette.mode === "light" ? <Brightness4Icon /> : <Brightness7Icon />,
 			name: ACTION_NAMES.SWITCH_THEME,
-			action: () => { changeTheme(); },
+			action: () => {
+				setOpen(false);
+				setTimeout(() => {
+					changeTheme();
+				}, 200);
+			},
 			fabProps: {
 				sx: {
 					bgcolor: "primary.main",
 					"&:hover": {
 						bgcolor: "primary.main",
 					},
-					color:"#fff"
+					color: "#fff"
 				}
 			}
 		},
 		{
 			icon: <ListIcon />,
 			name: ACTION_NAMES.SHOW_PLAYLISTS,
-			action: () => { navigate("/playlists"); },
+			action: () => {
+				setOpen(false);
+				setTimeout(() => {
+					navigate("/playlists");
+				}, 200);
+			},
 			fabProps: {
 				sx: {
 					bgcolor: "primary.main",
 					"&:hover": {
 						bgcolor: "primary.main",
 					},
-					color:"#fff"
+					color: "#fff"
 				}
 			}
 		},
 		{
 			icon: <SettingsIcon />,
 			name: ACTION_NAMES.MANGE_SONG,
-			action: () => { setShowDrawer(!showDrawer); },
+			action: () => {
+				setOpen(false);
+				setTimeout(() => {
+					setShowDrawer(!showDrawer);
+				}, 200);
+			},
 			fabProps: {
 				sx: {
 					bgcolor: "warning.main",
 					"&:hover": {
 						bgcolor: "warning.main",
 					},
-					color:"#fff"
+					color: "#fff"
 				}
 			}
 		},
 		{
 			icon: <SettingsIcon />,
 			name: ACTION_NAMES.MANAGE_PLAYLIST,
-			action: () => { navigate("/edit-playlist");},
+			action: () => {
+				setOpen(false);
+				setTimeout(() => {
+					navigate("/edit-playlist");
+				}, 200);
+			},
 			fabProps: {
 				sx: {
 					bgcolor: "warning.main",
 					"&:hover": {
 						bgcolor: "warning.main",
 					},
-					color:"#fff"
+					color: "#fff"
 				}
 			}
 		},
@@ -134,8 +154,11 @@ const SpeedDialComp = () => {
 			icon: <PlaylistAddCircleIcon />,
 			name: ACTION_NAMES.CREATE_PLAYLIST,
 			action: () => {
-				setActivePlaylist("");
-				navigate("/new-playlist");
+				setOpen(false);
+				setTimeout(() => {
+					setActivePlaylist("");
+					navigate("/new-playlist");
+				}, 200);
 			},
 			fabProps: {
 				sx: {
@@ -143,7 +166,7 @@ const SpeedDialComp = () => {
 					"&:hover": {
 						bgcolor: "success.main",
 					},
-					color:"#fff"
+					color: "#fff"
 				}
 			}
 		},
@@ -151,8 +174,11 @@ const SpeedDialComp = () => {
 			icon: <AddIcon />,
 			name: ACTION_NAMES.CREATE_SONG,
 			action: () => {
-				setSelectedSong(null);
-				navigate("/new-song");
+				setOpen(false);
+				setTimeout(() => {
+					setSelectedSong(null);
+					navigate("/new-song");
+				}, 200);
 			},
 			fabProps: {
 				sx: {
@@ -160,56 +186,71 @@ const SpeedDialComp = () => {
 					"&:hover": {
 						bgcolor: "success.main",
 					},
-					color:"#fff"
+					color: "#fff"
 				}
 			}
 		},
 		{
 			icon: <BorderAllIcon />,
 			name: ACTION_NAMES.SHOW_CHORDS,
-			action: () => { setShowChords(!showChords); },
+			action: () => { 
+				setOpen(false);
+				setTimeout(() => {
+					setShowChords(!showChords); 
+				}, 200);
+			},
 			fabProps: {
 				sx: {
 					bgcolor: "secondary.main",
 					"&:hover": {
 						bgcolor: "secondary.main",
 					},
-					color:"#fff"
+					color: "#fff"
 				}
 			}
 		},
 		{
 			icon: <FilterListIcon />,
 			name: ACTION_NAMES.FILTER,
-			action: () => { setShowFilters(!showFilters); handleClose(); },
-			fabProps:{
-				sx: {
-					bgcolor: "secondary.main",
-					"&:hover": {
-						bgcolor: "secondary.main",
-					},
-					color:"#fff"
-				}
-			}
-		},
-		{
-			icon: <PlaylistAddIcon />,
-			name: ACTION_NAMES.ADD_SONG_TO_PLAYLIST,
-			action: () => { setShowAvailableLists(!showAvailableLists); },
+			action: () => { 
+				setOpen(false);
+				setTimeout(() => {
+					setShowFilters(!showFilters); 
+				}, 200);
+			},
 			fabProps: {
 				sx: {
 					bgcolor: "secondary.main",
 					"&:hover": {
 						bgcolor: "secondary.main",
 					},
-					color:"#fff"
+					color: "#fff"
+				}
+			}
+		},
+		{
+			icon: <PlaylistAddIcon />,
+			name: ACTION_NAMES.ADD_SONG_TO_PLAYLIST,
+			action: () => {
+				setOpen(false);
+				setTimeout(() => {
+					setShowAvailableLists(!showAvailableLists);
+				}, 200);
+			},
+			fabProps: {
+				sx: {
+					bgcolor: "secondary.main",
+					"&:hover": {
+						bgcolor: "secondary.main",
+					},
+					color: "#fff"
 				}
 			}
 		},
 		{
 			icon: <PrintIcon />,
 			name: ACTION_NAMES.PRINT_LIST,
-			action: () => { 
+			action: () => {
 				setOpen(false);
 				setTimeout(() => {
 					window.print();
@@ -221,7 +262,7 @@ const SpeedDialComp = () => {
 					"&:hover": {
 						bgcolor: "secondary.main",
 					},
-					color:"#fff"
+					color: "#fff"
 				}
 			}
 		},
@@ -246,7 +287,8 @@ const SpeedDialComp = () => {
 						"&:hover": {
 							bgcolor: "info.main",
 						}
-					}}
+					}
+				}
 				}
 				icon={<SpeedDialIcon />}
 				onClose={handleClose}
@@ -283,10 +325,6 @@ const SpeedDialComp = () => {
 					}
 
 					if (location.pathname !== "/playlists" && action.name === ACTION_NAMES.CREATE_PLAYLIST) {
-						show = false;
-					}
-
-					if (!location.pathname.startsWith("/playlist/") && action.name === ACTION_NAMES.CREATE_PLAYLIST) {
 						show = false;
 					}
 

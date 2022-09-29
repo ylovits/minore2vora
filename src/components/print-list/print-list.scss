@@ -20,6 +20,7 @@
 		@media print {
 			display: block;
 		}
+		margin:0;
 	}
 	.contents {
 		display: none;
@@ -28,6 +29,8 @@
 		}
 		width:100%;
 		padding: 1cm 0;
+		margin:0;
+		list-style: none;
 		page-break-after: always;
 		.song {
 			display: flex;
@@ -35,6 +38,9 @@
 			justify-content: stretch;
 			font-family: $mono-family;
 			font-size: 1.2rem;
+			list-style: none;
+			margin:0;
+			padding:0;
 			.name {
 				flex-grow: 0;
 				margin:0;

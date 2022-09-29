@@ -17,6 +17,7 @@ import {
 	SelectChangeEvent 
 } from "@mui/material";
 import "./song-form.scss";
+import { updateSongLinks } from "utils/dbUtils";
 interface IProps {
 	handleSubmit: (_sng: ISong) => void;
 	handleSuccess: () => void;
@@ -27,8 +28,8 @@ const SongForm: React.FC<IProps> = ({ handleSubmit, handleSuccess }: IProps) => 
 	/**
 	 * Import global state parts needed
 	 */
-	const [selectedSong] = useStore((state) => {
-		return [state.selectedSong];
+	const [selectedSong, playlists] = useStore((state) => {
+		return [state.selectedSong, state.playlists];
 	});
 
 	const [song, setSong] = useState<ISong>({
@@ -70,6 +71,20 @@ const SongForm: React.FC<IProps> = ({ handleSubmit, handleSuccess }: IProps) => 
 		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
+
+
+	const [updatePlaylists, setUpdatePlaylists] = useState(false);
+
+	useEffect(() => {
+		if (song.title && selectedSong) {
+			if (song.title !== selectedSong.title) {
+				setUpdatePlaylists(true);
+			} else {
+				setUpdatePlaylists(false);
+			}
+		} 
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [song.title]);
 
 	return (
 		<div className="SongForm">
@@ -347,6 +362,7 @@ const SongForm: React.FC<IProps> = ({ handleSubmit, handleSuccess }: IProps) => 
 							type="submit"
 							onClick={() => {
 								handleSuccess();
+								(updatePlaylists && selectedSong) && updateSongLinks(playlists, selectedSong.title, "renamed", song.title);
 								return handleSubmit(song);
 							}}
 							variant="contained"
