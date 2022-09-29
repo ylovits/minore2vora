@@ -260,6 +260,23 @@ const SnapshotFirebase: React.FC = () => {
 	const deleteSong = (song: ISong) => {
 		setLoading(true);
 		if (song.id !== "") {
+			playlists.forEach((playlist:IPlaylist) => {
+				if (playlist.id !== "") {
+					const index = playlist.songs.indexOf(song.title);
+					if (~index) {
+						playlist.songs.splice(index, 1);
+						playlistsRef.doc(playlist.id)
+							.update(playlist)
+							.then(() => {
+								return true;
+							})
+							.catch((err: Error) => {
+								console.error(err);
+								return false;
+							});
+					}
+				}
+			});
 			songsRef.doc(song.id)
 				.delete()
 				.then(() => {

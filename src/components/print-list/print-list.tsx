@@ -49,25 +49,27 @@ const PrintList = () => {
 			<ul className="contents">
 				{playlist.songs && playlist.songs.map((songName, i) => {
 					return (
-						<div className="song" key={`song-content-${i}`}>
+						<li className="song" key={`song-content-${i}`}>
 							<p className="name">{songName}</p>
 							<span className="dots"></span>
 							<span className="page">{i + 1}</span>
-						</div>
+						</li>
 					);
 				})}
 			</ul>
 			{playlist.songs && playlist.songs.map((songName, i) => {
 				const selectedSong = songs.find((song) => { return song.title === songName; });
-				return (
-					<div className="songPage" key={`song-content-${i}`}>
-						<Song 
-							song={selectedSong as ISong}
-							setShowDeletePopup={() => { return; }}
-						/>
-						<span className="pageNo">{i + 1}</span>
-					</div>
-				);
+				if (selectedSong) {
+					return (
+						<div className="songPage" key={`song-content-${i}`}>
+							<Song 
+								song={selectedSong as ISong}
+								setShowDeletePopup={() => { return; }}
+							/>
+							<span className="pageNo">{i + 1}</span>
+						</div>
+					);
+				}
 			})}
 		</div>
 	);
