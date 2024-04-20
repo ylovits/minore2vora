@@ -4,12 +4,11 @@ import { stringToSlug } from "utils/characterMap";
 import { useLocation } from "react-router-dom";
 import useStore from "store/globalStore";
 import Song from "components/song/song";
-import { ThemeDispatchContext } from "components/ui/themeProvider";
 import "./print-list.scss";
 
 const PrintList = () => {
 	const location = useLocation();
-	const dispatch = React.useContext(ThemeDispatchContext);
+
 
 	/**
 	 * Import global state parts needed
@@ -25,7 +24,7 @@ const PrintList = () => {
 	});
 
 	useEffect(() => {
-		dispatch({ type: "changeTheme", payload: "light"});
+
 		if (playlists) {
 			const currentPlaylist = playlists.find((playlistItem: IPlaylist) => {
 				if (location.pathname.includes(stringToSlug(playlistItem.name))) {

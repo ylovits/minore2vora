@@ -1,4 +1,4 @@
-import React, {  useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { AllKeys, AllRythms, AllScales, ISong } from "interfaces/interfaces";
 import useStore from "store/globalStore";
 import {
@@ -12,11 +12,19 @@ import { useNavigate } from "react-router-dom";
 import RhythmPopover from "components/rhythm-popover/RhythmPopover";
 import SVGIntroducer, { Instruments } from "./svg-introducer";
 import "./song.scss";
+import { stringToSlug } from "utils/characterMap";
 
 interface IProps {
 	song: ISong;
 	setShowDeletePopup: () => void;
 }
+
+interface SongNoInfo {
+	songNo: number | null;
+	previousSong: string | null;
+	nextSong: string | null;
+}
+
 
 const Song: React.FC<IProps> = ({ song, setShowDeletePopup }: IProps) => {
 	const navigate = useNavigate();
@@ -24,9 +32,11 @@ const Song: React.FC<IProps> = ({ song, setShowDeletePopup }: IProps) => {
 	/**
 	 * Import global state parts needed
 	 */
-	const [setSelectedSong, setShowDrawer, showDrawer] = useStore((state) => {
-		return [state.setSelectedSong, state.setShowDrawer, state.showDrawer];
+	const [setSelectedSong, setShowDrawer, showDrawer, activePlaylist, playlists] = useStore((state) => {
+		return [state.setSelectedSong, state.setShowDrawer, state.showDrawer, state.activePlaylist, state.playlists];
 	});
+
+
 
 	const toggleDrawer = () => {
 		setShowDrawer(!setShowDrawer);
@@ -44,6 +54,11 @@ const Song: React.FC<IProps> = ({ song, setShowDeletePopup }: IProps) => {
 
 	const [currentKey, setCurrentKey] = useState<AllKeys>();
 	const [currentScale, setCurrentScale] = useState<AllScales>();
+	const [songNoInfo, setSongNoInfo] = useState<SongNoInfo>({
+		songNo: null,
+		previousSong: null,
+		nextSong: null
+	});
 
 	useEffect(() => {
 		if (song && song.key) {
@@ -94,14 +109,59 @@ const Song: React.FC<IProps> = ({ song, setShowDeletePopup }: IProps) => {
 
 	const [selectedInstrument, _setSelectedInstrument] = useState<Instruments>(Instruments._guitar);
 
+	useEffect(() => {
+		let songNo = null;
+		if (playlists) {
+			const pl = playlists.find((pl) => {
+				return pl.name === activePlaylist;
+			});
+
+			if (pl) {
+				songNo = pl.songs?.findIndex((sng) => { return sng === song.title; }) + 1 || null;
+				if (songNo) {
+					setSongNoInfo({
+						songNo,
+						previousSong: pl.songs[songNo - 2] || null,
+						nextSong: pl.songs[songNo] || null,
+					});
+				}
+			}
+		}
+	}, [song]);
+
 	return (
 		<div className="Song">
 			<Container maxWidth="md">
-				<a href={song?.youtube ? song?.youtube : "#"} rel="noreferrer" target={song?.youtube ? "_blank" : "_self"} className="titleLink">
-					<Typography variant="h6" component="h1" className="title" >
+				<Typography variant="h6" component="h1" className="title" >
+					{(songNoInfo.songNo && !!songNoInfo.previousSong) && <Chip
+						className="chip"
+						color="secondary"
+						size="small"
+						label={"<"}
+						onClick={() => {
+							navigate(`/song/${stringToSlug(songNoInfo.previousSong || "")}`);
+						}}
+					/>}
+					{songNoInfo.songNo && <Chip
+						className="chip"
+						color="primary"
+						size="small"
+						label={songNoInfo.songNo}
+					/>}
+					<a href={song?.youtube ? song?.youtube : "#"} rel="noreferrer" target={song?.youtube ? "_blank" : "_self"} className="titleLink">
 						{song?.title}
-					</Typography>
-				</a>
+					</a>
+					{(songNoInfo.songNo && !!songNoInfo.nextSong) && <Chip
+						className="chip"
+						color="secondary"
+						size="small"
+						label={">"}
+						onClick={() => {
+							navigate(`/song/${stringToSlug(songNoInfo.nextSong || "")}`);
+						}}
+					/>}
+				</Typography>
+
 				{(song.rhythm && song.rhythm.length > 0) && (
 					<Box className="inline">
 						<label>Rhythm: </label>
@@ -171,7 +231,7 @@ const Song: React.FC<IProps> = ({ song, setShowDeletePopup }: IProps) => {
 				)}
 				{song?.body &&
 					<div className="mainContent SongBody" >
-						<SVGIntroducer song={song} selectedInstrument={selectedInstrument} currentKey={currentKey}/>
+						<SVGIntroducer song={song} selectedInstrument={selectedInstrument} currentKey={currentKey} />
 					</div>
 				}
 			</Container>
