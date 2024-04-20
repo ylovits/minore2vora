@@ -18,9 +18,12 @@ import PlaylistAddCircleIcon from "@mui/icons-material/PlaylistAddCircle";
 import PrintIcon from "@mui/icons-material/Print";
 import useStore from "store/globalStore";
 import { useLocation, useNavigate } from "react-router-dom";
+import { ThemeDispatchContext } from "components/ui/themeProvider";
 import "./speed-dial.scss";
 
 const SpeedDialComp = () => {
+
+	const dispatch = React.useContext(ThemeDispatchContext);
 	const location = useLocation();
 	const navigate = useNavigate();
 
@@ -253,8 +256,11 @@ const SpeedDialComp = () => {
 			action: () => {
 				setOpen(false);
 				setTimeout(() => {
-					window.print();
+					dispatch({ type: "changeTheme", payload: "light"});
 				}, 200);
+				setTimeout(() => {
+					window.print();
+				}, 300);
 			},
 			fabProps: {
 				sx: {
