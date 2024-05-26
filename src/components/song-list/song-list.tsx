@@ -64,11 +64,11 @@ const SongList: React.FC<IProps> = ({ searchTerm }: IProps) => {
 				.sort((a: ISong, b: ISong) => {
 					return ("" + a.title).localeCompare(b.title);
 				})
-				.map((song: ISong) => {
+				.map((song: ISong, i:number) => {
 					return (
 						<Paper
 							className="paper"
-							key={`song-${song.title}`}
+							key={`song-${song.title}=${i}`}
 							onClick={() => {
 								setSelectedSong(song);
 								navigate(`/song/${stringToSlug(song.title)}`);
