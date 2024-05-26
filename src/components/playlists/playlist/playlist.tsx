@@ -92,7 +92,7 @@ const Playlist: React.FC<IProps> = ({ addRemovePlaylistSong, handleSubmit, handl
 																			: "none",
 																	}}
 																	className="paper"
-																	key={`song-${songTitle}`}
+																	key={`song-${songTitle}-${i}`}
 																	onClick={() => {
 																		navigate(`/song/${stringToSlug(songTitle)}`);
 																	}}>
