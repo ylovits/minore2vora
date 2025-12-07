@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { IPlaylist, ISong } from "interfaces/interfaces";
 import { stringToSlug } from "utils/characterMap";
 import { useLocation } from "react-router-dom";

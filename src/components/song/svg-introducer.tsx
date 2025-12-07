@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from "react";
-import ChordSheetJS, { Line, Song } from "chordsheetjs";
+import { Fragment, useEffect, useState } from "react";
+import ChordSheetJS, { Song } from "chordsheetjs";
 // import ChordSVG from "components/song/ChordSVG";
 import { AllKeys, ISong } from "interfaces/interfaces";
 import { transposeChord, scaleToKey } from "utils/transpose";
@@ -40,10 +40,7 @@ const SVGIntroducer = ({ song, selectedInstrument: _selectedInstrument, currentK
 	const showChords = useStore((state) => { return state.showChords; });
 
 	const [chordSheet, setChordSheet] = useState<Song>();
-	const [serializedSong, setSerializedSong] = useState<{
-		type: string;
-		lines: Line[];
-	}>();
+	const [serializedSong, setSerializedSong] = useState<any>();
 
 	useEffect(() => {
 		if (!!song && typeof song.body === "string") {
@@ -104,11 +101,11 @@ const SVGIntroducer = ({ song, selectedInstrument: _selectedInstrument, currentK
 
 	return (
 		<div>
-			{serializedSong && serializedSong.lines.map((line, i) => {
+			{serializedSong && serializedSong.lines.map((line: any, i: number) => {
 				if (!!line.items.length) {
 					return (
 						<div key={`line-${i}`} className="flex flex-wrap songLine">
-							{line.items.map((lineItem, y) => {
+							{line.items.map((lineItem: any, y: number) => {
 								const item = JSON.parse(JSON.stringify(lineItem));
 
 								if (!item.chords) {
@@ -160,7 +157,7 @@ const SVGIntroducer = ({ song, selectedInstrument: _selectedInstrument, currentK
 						</div>
 					);
 				}
-				return <React.Fragment key={`line-${i}`}><br></br></React.Fragment>;
+				return <Fragment key={`line-${i}`}><br></br></Fragment>;
 			})}
 		</div>
 	);
