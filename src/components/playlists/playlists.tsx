@@ -10,8 +10,8 @@ const Playlists = () => {
 	const navigate = useNavigate();
 
 	/* Import global state parts needed */
-	const [playlists] = useStore((state) => {
-		return [state.playlists];
+	const playlists = useStore((state) => {
+		return state.playlists;
 	});
 
 	return (
@@ -26,7 +26,7 @@ const Playlists = () => {
 								navigate(`/playlist/${stringToSlug(playlist.name)}`);
 							}}>
 							<Grid container wrap="nowrap">
-								<Grid className="wrapper" item>
+								<Grid className="wrapper">
 									<p className="title">{playlist.name}</p>
 								</Grid>
 							</Grid>

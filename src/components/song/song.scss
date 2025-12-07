@@ -1,129 +1,152 @@
-.Song{
-    &-section{
-        display: inline-block;
-        margin-right:2em;
-    }
-    &-title{
-        color:#222;
-    }
-    &-rhythm{
-        color:#222;
-    }
-    &-dromos{
-        color:#222;
-    }
-    &-key{
-        color:#222;
-    }
-    &-tempo{
-        color:#222;
-    }
+@use '../../assets/styles/style_resources.scss' as *;
 
-    &-notes{
-        color:#222;
+.Song {
+  &-section {
+    display: inline-block;
+    margin-right: 2em;
+  }
+
+  &-title {
+    color: #222;
+  }
+
+  &-rhythm {
+    color: #222;
+  }
+
+  &-dromos {
+    color: #222;
+  }
+
+  &-key {
+    color: #222;
+  }
+
+  &-tempo {
+    color: #222;
+  }
+
+  &-notes {
+    color: #222;
+  }
+
+  &-content {
+    label {
+      font-weight: normal;
+      margin-right: 0.5em;
+      color: #361847;
     }
-    &-content{
-        label{
-            font-weight: normal;
-            margin-right:0.5em;
-            color:#361847;
-        }
-    }
-	display: flex;
-	flex-direction: column;
-	padding-bottom: 5rem;
-	.titleLink {
-		text-decoration: none;
-		color: #607D8B;
-	}
-	.title {
-		margin: 2rem 0;
-	}
-	.inline {
-		margin: 0.5rem 0.5rem 0 0;
-		display: inline-block;
-	}
+  }
 
-	.chip {
-		margin: 0.5rem;
-	}
+  display: flex;
+  flex-direction: column;
+  padding-bottom: 5rem;
 
-	.notes {
-		margin: 0.5rem 0.5rem 0 0;
-		display: block;
-		font-style: italic;
-		font-size: 0.8rem;;
-		color: #aaa;
-	}
+  .titleLink {
+    text-decoration: none;
+    color: #607D8B;
+  }
 
+  .title {
+    margin: 2rem 0;
+  }
+
+  .inline {
+    margin: 0.5rem 0.5rem 0 0;
+    display: inline-block;
+  }
+
+  .chip {
+    margin: 0.5rem;
+  }
+
+  .notes {
+    margin: 0.5rem 0.5rem 0 0;
+    display: block;
+    font-style: italic;
+    font-size: 0.8rem;
+    ;
+    color: #aaa;
+  }
 
 
-	.mainContent{
-			padding:2rem 0;
-			white-space: pre;
-	}
-}
-.btn {
-	border-radius: 0;
-	padding: 3rem 0;
-}
-.SongBody{
+
+  .mainContent {
+    padding: 2rem 0;
     white-space: pre;
+  }
+}
+
+.btn {
+  border-radius: 0;
+  padding: 3rem 0;
+}
+
+.SongBody {
+  white-space: pre;
+  font-family: $mono-family;
+  font-size: 1.1rem;
+  line-height: 1rem;
+
+  .songLine {
+    line-height: 1.3rem;
+    align-items: end;
+  }
+
+  strong {
     font-family: $mono-family;
-    font-size:1.1rem;
-    line-height: 1rem;
-	.songLine{
-		line-height: 1.3rem;
-	}
+    color: $accent;
+    margin-right: 0.3rem;
+  }
+
+  .showChords {
     strong {
-        font-family: $mono-family;
-        color: $accent;
-		margin-right: 0.3rem;
+      color: $accent;
+      overflow: visible;
+      display: block;
+      text-align: center;
+      width: 4rem;
+      transform: translate(-1.3rem, 0);
+      background: #fff;
     }
-	.showChords{
-		strong {
-			color: $accent;
-			overflow: visible;
-			display: block;
-			text-align: center;
-			width: 4rem;
-			transform: translate(-1.3rem, 0);
-			background: #fff;
-		}
-		svg {
-			background: #fff;
-			width:4rem;
-			transform: translate(-1.3rem, 0);
-			margin:0 0 -0.3rem 0;
-			padding:0;
-		}
-	}
-    em {
-        font-family: $mono-family;
-        line-height: normal;
-        position: relative;
-        color: $accent;
-        display: inline-block;
-        width: 100%;
-        max-width: 100vw;
-        overflow: auto;
-        white-space: nowrap;
+
+    svg {
+      background: #fff;
+      width: 4rem;
+      transform: translate(-1.3rem, 0);
+      margin: 0 0 -0.3rem 0;
+      padding: 0;
     }
-    .perasma {
-        font-family: $mono-family;
-        line-height: normal;
-        position: relative;
-        color: $accent;
-        top: -1rem;
-        display: inline-block;
-        width: 0;
-        white-space: nowrap;
-        font-weight: 900;
-        font-size: 0.7em;
-        strong{
-            font-family: $mono-family;
-            font-size: 1rem;
-            top:auto
-        }
+  }
+
+  em {
+    font-family: $mono-family;
+    line-height: normal;
+    position: relative;
+    color: $accent;
+    display: inline-block;
+    width: 100%;
+    max-width: 100vw;
+    overflow: auto;
+    white-space: nowrap;
+  }
+
+  .perasma {
+    font-family: $mono-family;
+    line-height: normal;
+    position: relative;
+    color: $accent;
+    top: -1rem;
+    display: inline-block;
+    width: 0;
+    white-space: nowrap;
+    font-weight: 900;
+    font-size: 0.7em;
+
+    strong {
+      font-family: $mono-family;
+      font-size: 1rem;
+      top: auto
     }
+  }
 }

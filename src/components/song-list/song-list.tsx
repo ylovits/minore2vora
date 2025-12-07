@@ -24,9 +24,11 @@ const SongList: React.FC<IProps> = ({ searchTerm }: IProps) => {
 	/**
 	 * Import global state parts needed
 	 */
-	const [setSelectedSong, songs, showOnlyReady, setShowFilters, showFilters] = useStore((state) => {
-		return [state.setSelectedSong, state.songs, state.showOnlyReady, state.setShowFilters, state.showFilters,];
-	});
+	const setSelectedSong = useStore((state) => { return state.setSelectedSong; });
+	const songs = useStore((state) => { return state.songs; });
+	const showOnlyReady = useStore((state) => { return state.showOnlyReady; });
+	const setShowFilters = useStore((state) => { return state.setShowFilters; });
+	const showFilters = useStore((state) => { return state.showFilters; });
 
 	/**
 	 * Searching
@@ -74,7 +76,7 @@ const SongList: React.FC<IProps> = ({ searchTerm }: IProps) => {
 								navigate(`/song/${stringToSlug(song.title)}`);
 							}}>
 							<Grid container wrap="nowrap">
-								<Grid className="wrapper" item>
+								<Grid className="wrapper">
 									<p className="title">{song.title}</p>
 									{song.presentable && (
 										<span className="alignLeft">

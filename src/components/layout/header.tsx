@@ -24,9 +24,7 @@ const Header: React.FC<IProps> = ({ logout, handleSearchChange, showSearch }: IP
 	/**
 	 * Import global state parts needed
 	 */
-	const [activePlaylist] = useStore((state) => {
-		return [state.activePlaylist];
-	});
+	const activePlaylist = useStore((state) => { return state.activePlaylist; });
 
 	return (
 		<div className="Header">

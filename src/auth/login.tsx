@@ -15,9 +15,7 @@ interface UserData {
 
 const Login: React.FC = () => {
 	/* Import global state parts needed */
-	const [tempUrl] = useStore((state) => {
-		return [state.tempUrl];
-	});
+	const tempUrl = useStore((state) => { return state.tempUrl; });
 	const navigate = useNavigate();
 
 	const [values, setValues] = useState({

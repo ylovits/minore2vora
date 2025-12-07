@@ -13,9 +13,9 @@ const PrintList = () => {
 	/**
 	 * Import global state parts needed
 	 */
-	const [playlists, setActivePlaylist, songs] = useStore((state) => {
-		return [state.playlists, state.setActivePlaylist, state.songs];
-	});
+	const playlists = useStore((state) => { return state.playlists; });
+	const setActivePlaylist = useStore((state) => { return state.setActivePlaylist; });
+	const songs = useStore((state) => { return state.songs; });
 
 	const [playlist, setPlaylist] = useState<IPlaylist>({
 		id: "",
@@ -57,13 +57,17 @@ const PrintList = () => {
 				})}
 			</ul>
 			{playlist.songs && playlist.songs.map((songName, i) => {
-				const selectedSong = songs.find((song) => { return song.title === songName; });
+				const selectedSong = songs.find((song) => {
+					return song.title === songName;
+				});
 				if (selectedSong) {
 					return (
 						<div className="songPage" key={`song-content-${i}`}>
 							<Song 
 								song={selectedSong as ISong}
-								setShowDeletePopup={() => { return; }}
+								setShowDeletePopup={() => {
+									return;
+								}}
 							/>
 							<span className="pageNo">{i + 1}</span>
 						</div>

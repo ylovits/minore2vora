@@ -15,7 +15,6 @@ import {
 } from "@mui/material";
 
 import useStore from "store/globalStore";
-
 import { useEffect } from "react";
 import { scales, rythmoi } from "data/data";
 import { AllKeys, AllRythms } from "interfaces/interfaces";
@@ -29,17 +28,11 @@ interface MappedFilters {
 
 export default function Filters() {
 	/* Import global state parts needed */
-	const [_glob, setShowOnlyReady, showOnlyReady, _setFilteredBy, filteredBy, setShowFilters] =
-		useStore((state) => {
-			return [
-				state,
-				state.setShowOnlyReady,
-				state.showOnlyReady,
-				state.setFilteredBy,
-				state.filteredBy,
-				state.setShowFilters
-			];
-		});
+	const setShowOnlyReady = useStore((state) => { return state.setShowOnlyReady; });
+	const showOnlyReady = useStore((state) => { return state.showOnlyReady; });
+	const _setFilteredBy = useStore((state) => { return state.setFilteredBy; });
+	const filteredBy = useStore((state) => { return state.filteredBy; });
+	const setShowFilters = useStore((state) => { return state.setShowFilters; });
 
 
 	const handleClose = () => {
@@ -80,9 +73,7 @@ export default function Filters() {
 
 	}, [filteredBy]);
 
-	const onChangeSelect = (option: string | string[], attribute: string) => {
-		console.log("option:", option, "attribute", attribute);
-
+	const onChangeSelect = (_option: string | string[], _attribute: string) => {
 		// setSong((song) => {
 		// 	return { ...song, [attribute]: option };
 		// });
@@ -118,9 +109,7 @@ export default function Filters() {
 							<InputLabel>Κλειδί</InputLabel>
 							<Select
 								value={mappedFilters.key}
-								onChange={(selection: SelectChangeEvent) => {
-									console.log(selection);
-
+								onChange={(_selection: SelectChangeEvent) => {
 									// setSong((song) => {
 									// 	return { ...song, key: selection.target.value };
 									// });

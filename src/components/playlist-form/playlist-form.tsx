@@ -21,9 +21,9 @@ const PlaylistForm: React.FC<IProps> = ({ handleSubmit, handleSuccess, setShowDe
 	/**
 	 * Import global state parts needed
 	 */
-	const [activePlaylist, playlists, songs] = useStore((state) => {
-		return [state.activePlaylist, state.playlists, state.songs];
-	});
+	const activePlaylist = useStore((state) => { return state.activePlaylist; });
+	const playlists = useStore((state) => { return state.playlists; });
+	const songs = useStore((state) => { return state.songs; });
 
 	const [playlist, setPlaylist] = useState<IPlaylist>({
 		id: "",
@@ -66,7 +66,9 @@ const PlaylistForm: React.FC<IProps> = ({ handleSubmit, handleSuccess, setShowDe
 					if (!!playlist.songs.length) {
 						return {
 							...playlist,
-							songs: playlist.songs.filter((song) => { return song !== event.target.value; })
+							songs: playlist.songs.filter((song) => {
+								return song !== event.target.value;
+							})
 						};
 					}
 					return {

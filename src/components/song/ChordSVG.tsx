@@ -4,7 +4,7 @@ export interface Instrument {
 	strings: number;
 	fretsOnChord: number;
 	name: string;
-	keys: any[];
+	keys: string[];
 	tunings: {
 		standard: string[];
 	};
