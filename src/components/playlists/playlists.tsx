@@ -1,4 +1,3 @@
-import React from "react";
 import { Grid, Paper } from "@mui/material";
 import { IPlaylist } from "interfaces/interfaces";
 import { useNavigate } from "react-router-dom";

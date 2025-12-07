@@ -30,7 +30,6 @@ export default function Filters() {
 	/* Import global state parts needed */
 	const setShowOnlyReady = useStore((state) => { return state.setShowOnlyReady; });
 	const showOnlyReady = useStore((state) => { return state.showOnlyReady; });
-	const _setFilteredBy = useStore((state) => { return state.setFilteredBy; });
 	const filteredBy = useStore((state) => { return state.filteredBy; });
 	const setShowFilters = useStore((state) => { return state.setShowFilters; });
 

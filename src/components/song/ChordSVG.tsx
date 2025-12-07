@@ -1,4 +1,3 @@
-import React from "react";
 import Chord from "@tombatossals/react-chords/lib/Chord";
 export interface Instrument {
 	strings: number;
