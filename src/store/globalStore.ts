@@ -1,50 +1,117 @@
-import * as globalTypes from 'store/globalTypes';
-import create from 'zustand';
-import firebase from 'firebase/app';
-import 'firebase/auth';
-import 'firebase/firestore';
-import { ISong } from 'interfaces/interfaces';
+import * as globalTypes from "store/globalTypes";
+import { create } from "zustand";
+import firebase from "firebase/compat/app";
+import "firebase/compat/auth";
+import "firebase/compat/firestore";
+import { persist } from "zustand/middleware";
+import { IFilter, IPlaylist, ISong } from "interfaces/interfaces";
 
-const initialState = {		
-	page: 'login',
+const initialState = {
 	isLoading: true,
-	selectedSong: null
+	selectedSong: null,
+	songs: [],
+	playlists: [],
+	activePlaylist: "",
+	showComments: false,
+	showOnlyReady: false,
+	tempUrl: "",
+	filteredBy: [],
+	showChords: false,
+	showDrawer: false,
+	showFilters: false,
+	showAvailableLists: false
 };
 
-const useStore = create<globalTypes.IGlobalSate>((set) => {
-	return {
-		...initialState,
-		logOut: () => {
-			set((_state) => {
-				firebase.auth().signOut();
-				return { isLoggedIn: false, userId: '', userEmail: '', isSeniorTutor: false, gameId: '', page: 'login' };
-			});
-		},
+const useStore = create<globalTypes.IGlobalState>()(
+	persist(
+		(set) => {
+			return {
+				...initialState,
 
-		setIsLoading: (isLoading: boolean) => {
-			set((_state) => {
-				return { isLoading };
-			});
-		},
+				logOut: () => {
+					firebase.auth().signOut();
+					set((_state) => {
+						return { songs: [] };
+					});
+				},
 
-		setSelectedSong: (song: ISong | null) => {
-			set((_state) => {
-				return { selectedSong: song };
-			});
-		},
+				setIsLoading: (isLoading: boolean) => {
+					set((_state) => {
+						return { isLoading };
+					});
+				},
 
-		goToPage: (page: string) => {
-			set((_state) => {
-				return { page: page };
-			});
+				setSelectedSong: (song: ISong | null) => {
+					set((_state) => {
+						return { selectedSong: song };
+					});
+				},
+				setSongs: (songs: ISong[] | []) => {
+					set((_state) => {
+						return { songs: songs };
+					});
+				},
+				setPlaylists: (playlists: IPlaylist[] | []) => {
+					set((_state) => {
+						return { playlists: playlists };
+					});
+				},
+				setActivePlaylist: (activePlaylist: string) => {
+					set((_state) => {
+						return { activePlaylist: activePlaylist };
+					});
+				},
+				setShowOnlyReady: (show: boolean) => {
+					set((_state) => {
+						return { showOnlyReady: show };
+					});
+				},
+				setShowComments: (show: boolean) => {
+					set((_state) => {
+						return { showComments: show };
+					});
+				},
+				setTempUrl: (url: string) => {
+					set((_state) => {
+						return { tempUrl: url };
+					});
+				},
+				setFilteredBy: (filters: IFilter[] | []) => {
+					set((_state) => {
+						return { filteredBy: filters };
+					});
+				},
+				setShowChords: (showChords: boolean) => {
+					set((_state) => {
+						return { showChords: showChords };
+					});
+				},
+				setShowDrawer: (showDrawer: boolean) => {
+					set((_state) => {
+						return { showDrawer: showDrawer };
+					});
+				},
+				setShowFilters: (showFilters: boolean) => {
+					set((_state) => {
+						return { showFilters: showFilters };
+					});
+				},
+				setShowAvailableLists: (showAvailableLists: boolean) => {
+					set((_state) => {
+						return { showAvailableLists: showAvailableLists };
+					});
+				},
+				setGlobalState: (newState: globalTypes.IGlobalState) => {
+					set((state) => {
+						return { ...state, ...newState };
+					});
+				},
+			};
 		},
-
-		setGlobalState: (newState: globalTypes.IGlobalSate) => {
-			set((state) => {
-				return { ...state, ...newState };
-			});
-		},
-	};
-});
+		{
+			name: "userStore",
+		}
+	)
+);
 
 export default useStore;

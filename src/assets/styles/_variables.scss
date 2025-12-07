@@ -1,0 +1,26 @@
+$mono-family: 'Roboto Mono', monospace;
+
+$accent-dark:#E64A19;
+$accent-light:#FFCCBC;
+$accent:#FF5722;
+$primary-dark:#455A64;
+$primary-black:#273237;
+$primary-light:#CFD8DC;
+$primary:#607D8B;
+
+$grid-breakpoints: (
+  xs: 0,
+  sm: 700px,
+  md: 900px,
+  lg: 1200px,
+  xl: 1500px,
+  xxl: 2300px
+);
+
+$container-max-widths: (
+  sm: 600px,
+  md: 800px,
+  lg: 1100px,
+  xl: 1300px,
+  xxl: 2000px
+);

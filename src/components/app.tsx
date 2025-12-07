@@ -1,31 +1,19 @@
-import React, { useContext } from 'react';
-import SnapshotFirebase from './main-controller/main-controller';
-import { AuthContext } from '../auth/auth';
-import Login from '../auth/login';
-import './app.scss';
-// import appConfig from '../config/app-config';
-// import GetFirebase from './get-firebase';
+import React from "react";
+import SnapshotFirebase from "./main-controller/main-controller";
+// import FabThemeSelector from "./ui/fab-theme-selector";
+import { createTheme } from "@mui/material/styles";
+import ThemeProvider from "components/ui/themeProvider";
+import CssBaseline from "@mui/material/CssBaseline";
+import "./app.scss";
 
-const App:React.FC = () => {
-	const { user } = useContext(AuthContext);
+const App: React.FC = () => {
+	const initialTheme = createTheme();
 
-	if (!user) {
-		return <Login />;
-	}
-	
 	return (
-		<React.Fragment> 
-			<div className="container">
-				<SnapshotFirebase />
-				{/* ETSI EINAI AMA THELOU ME KAI ME GET METHOD APO FIREBASE 
-				{appConfig.firebaseSnapshot ? (
-					<SnapshotFirebase />
-				) : (
-					<GetFirebase />
-				)} 
-				*/}
-			</div>
-		</React.Fragment>
+		<ThemeProvider theme={initialTheme}>
+			<CssBaseline />
+			<div className="App"><SnapshotFirebase /></div>
+		</ThemeProvider>
 	);
 };
 

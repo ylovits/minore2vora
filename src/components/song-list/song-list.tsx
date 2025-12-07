@@ -1,49 +1,93 @@
-import React from 'react';
-import { ISong } from 'interfaces/interfaces';
-import useStore from 'store/globalStore';
-import './song-list.scss';
+import React, { useEffect, useState, useRef } from "react";
+import useStore from "store/globalStore";
+import Paper from "@mui/material/Paper";
+import Grid from "@mui/material/Grid";
+import { ISong } from "interfaces/interfaces";
+import {
+	reduceToGreeklish,
+	removeAccents,
+	stringToSlug,
+} from "utils/characterMap";
+import "./song-list.scss";
 
+
+import { useNavigate } from "react-router-dom";
+import StarIcon from "@mui/icons-material/Star";
+import Filters from "components/ui/filters";
 interface IProps {
-	songs: ISong[];
+	searchTerm: string;
 }
 
-const SongList: React.FC<IProps> = ({ songs }: IProps) => {
+const SongList: React.FC<IProps> = ({ searchTerm }: IProps) => {
+	const navigate = useNavigate();
 
 	/**
 	 * Import global state parts needed
 	 */
-	const [goToPage, setSelectedSong] = useStore((state) => {
-		return [state.goToPage, state.setSelectedSong];
-	});
+	const setSelectedSong = useStore((state) => { return state.setSelectedSong; });
+	const songs = useStore((state) => { return state.songs; });
+	const showOnlyReady = useStore((state) => { return state.showOnlyReady; });
+	const setShowFilters = useStore((state) => { return state.setShowFilters; });
+	const showFilters = useStore((state) => { return state.showFilters; });
+
+	/**
+	 * Searching
+	 */
+	const [searchResults, setSearchResults] = useState(
+		JSON.parse(JSON.stringify(songs))
+	);
+
+	const initSongs = useRef(JSON.parse(JSON.stringify(songs)));
+
+	useEffect(() => {
+		const results = initSongs.current.filter((song: ISong) => {
+			return reduceToGreeklish(removeAccents(song.title))
+				.toLowerCase()
+				.includes(searchTerm);
+		});
+
+		const filteredResults = showOnlyReady
+			? results.filter((song: ISong) => {
+				return song.presentable;
+			})
+			: results;
+		setSearchResults(filteredResults);
+	}, [searchTerm, showOnlyReady]);
+
+	useEffect(() => {
+		setShowFilters(false);
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, []);
 
 	return (
-		<div className="SongList p-2">
-			{songs.map((song) => {
-				return (
-					<div
-						className="p-2 m-2 row border song d-flex justify-content-between align-items-center pointer text-center"
-						key={`song-${song.title}`}
-						onClick={() => { 
-							setSelectedSong(song);
-							goToPage('song');
-						}}
-					>
-						<p className="flex-grow-1 font-weight-bold p-2 m-0">{song.title}</p>
-
-					</div>
-				);
-			})}
-			<div className="m-2 row">
-				<button
-					className="btn btn-block btn-success mt-2"
-					onClick={() => {
-						setSelectedSong(null);
-						goToPage('new-song');
-					}}
-				>
-					Add song
-				</button>
-			</div>
+		<div className="SongList">
+			{showFilters && <Filters />}
+			{searchResults
+				.sort((a: ISong, b: ISong) => {
+					return ("" + a.title).localeCompare(b.title);
+				})
+				.map((song: ISong, i:number) => {
+					return (
+						<Paper
+							className="paper"
+							key={`song-${song.title}=${i}`}
+							onClick={() => {
+								setSelectedSong(song);
+								navigate(`/song/${stringToSlug(song.title)}`);
+							}}>
+							<Grid container wrap="nowrap">
+								<Grid className="wrapper">
+									<p className="title">{song.title}</p>
+									{song.presentable && (
+										<span className="alignLeft">
+											<StarIcon />
+										</span>
+									)}
+								</Grid>
+							</Grid>
+						</Paper>
+					);
+				})}
 		</div>
 	);
 };

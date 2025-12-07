@@ -1,0 +1,115 @@
+@use '../../assets/styles/style_resources.scss' as *;
+
+.logoutBtn {
+	width: 2em;
+	height: 2em;
+	margin: 1em;
+	cursor: pointer;
+	display: inline-flex;
+	justify-content: center;
+	align-items: center;
+	background: #ccc;
+	border-radius: 50%;
+	svg {
+		max-width: 80%;
+		height: auto;
+	}
+}
+
+.Header{
+	flex-grow: 1;
+	@media print {
+		display: none;
+	}
+	.title {
+			display: none;
+			@media screen and (min-width:700px) {
+				display: block;
+			}
+			cursor: pointer;
+			&:hover{
+				color: rgba(255,255,255,0.85);
+			}
+	}
+
+	.homeBtn {
+		margin-right: 2rem;
+		display: block;
+		width: 2rem;
+		@media screen and (min-width:700px) {
+			display: none;
+		}
+		cursor: pointer;
+		&:hover {
+			color: rgba(255,255,255,0.85);
+		}
+	}
+
+	.playlistBtn{
+		margin-right: 2rem;
+		display: block;
+		width: 2.2rem;
+		height: 2.2rem;
+		padding:0.3rem; 
+		border-radius: 50%;;
+		background: $accent;
+		@media screen and (min-width:700px) {
+			display: none;
+		}
+		cursor: pointer;
+		&:hover {
+			color: $accent-light;
+		}
+	}
+
+	.playlistTitle{
+		margin:0 1rem;
+		display: none;
+		color: $accent;
+		@media screen and (min-width:700px) {
+			display: block;
+		}
+		cursor: pointer;
+		&:hover{
+			color: $accent-light;
+		}
+	}
+
+	.search {
+		position: relative;
+		border-radius: 0.3rem;
+		background-color: rgba(255,255,255,0.15);
+		&:hover {
+			background-color: rgba(255,255,255,0.25);
+		}
+		margin-right: 2rem;
+		margin-left: 0;
+		width: 100%;
+		@media screen and (min-width:700px) {
+			margin-left: 3rem;
+			width: auto;
+		}
+		flex-grow: 1;
+	}
+
+	.searchIcon {
+		padding: 0 2rem;
+		height: 100%;
+		position: absolute;
+		pointer-events: none;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+	}
+
+	.inputRoot {
+		color: inherit;
+		width: 100%;
+	}
+
+	.inputInput {
+		padding-left: 5rem;
+		transition: width 0.5s;
+		width: 100%;
+	}
+}

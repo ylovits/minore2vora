@@ -1,0 +1,16 @@
+body{
+	#root{
+		.speedDial {
+			@media print {
+				display: none;
+			}
+			position:fixed;
+			bottom:1em;
+			right:1em;
+			.MuiSpeedDialAction-staticTooltipLabel{
+				white-space: pre;
+				text-align: right;
+			}
+		}
+	}
+}

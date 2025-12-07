@@ -1,0 +1,28 @@
+@use '../../assets/styles/style_resources.scss' as *;
+
+.SongForm {
+	flex-grow: 1;
+	overflow: hidden;
+	padding-top: 1rem;
+	.formControl {
+		margin: 1rem;
+		min-width: 120px;
+	}
+	#stixoi{
+		font-family: $mono-family;
+		font-size:1rem;
+	}
+	.phoneIndicator{
+		position: relative;
+		display: block;
+		.phoneWidth{
+			position: absolute;
+			top: 0;
+			left: 25rem;
+			bottom: 0;
+			width: 2px;
+			height: 100%;
+			background: $primary;
+		}
+	}
+}

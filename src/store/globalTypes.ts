@@ -1,13 +1,31 @@
-import { ISong } from 'interfaces/interfaces';
-import { State } from 'zustand';
-
-export interface IGlobalSate extends State {
-	page: string;
-	isLoading: boolean;
-	selectedSong: ISong | null;
-	setSelectedSong:(_song:ISong | null)=>void;
-	logOut: () => void;
-	setIsLoading: (_bool: boolean) => void;
-	goToPage: (_page: string) => void;
-	setGlobalState: (_newState: IGlobalSate) => void;
+import { IFilter, IPlaylist, ISong } from "interfaces/interfaces";
+export interface IGlobalState {
+  isLoading: boolean;
+  selectedSong: ISong | null;
+  songs: ISong[] | [];
+  playlists: IPlaylist[] | [];
+  activePlaylist: string;
+  showComments: boolean;
+  showOnlyReady: boolean;
+  tempUrl: string;
+  filteredBy: IFilter[] | [];
+  showChords: boolean;
+  showDrawer: boolean;
+  showFilters: boolean;
+  showAvailableLists: boolean;
+  setSelectedSong: (_song: ISong | null) => void;
+  setSongs: (_songs: ISong[] | []) => void;
+  setPlaylists: (_playlists: IPlaylist[] | []) => void;
+  setActivePlaylist: (_activePlaylist: string) => void;
+  logOut: () => void;
+  setIsLoading: (_bool: boolean) => void;
+  setGlobalState: (_newState: IGlobalState) => void;
+  setShowOnlyReady: (_bool: boolean) => void;
+  setShowComments: (_bool: boolean) => void;
+  setFilteredBy: (_filters: IFilter[] | []) => void;
+  setShowChords: (_showChords: boolean) => void;
+  setShowDrawer: (_showDrawer: boolean) => void;
+  setShowFilters: (_showFilters: boolean) => void;
+  setTempUrl: (_url: string) => void;
+  setShowAvailableLists: (_bool: boolean) => void;
 }

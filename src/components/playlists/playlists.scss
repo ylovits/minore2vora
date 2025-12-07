@@ -1,0 +1,104 @@
+@use '../../assets/styles/style_resources.scss' as *;
+
+.Playlists{
+	flex-grow: 1;
+	overflow: hidden;
+	padding: 0 3rem;
+	padding-top: 1rem;
+	margin-bottom: 4rem;
+	@media print {
+		display: none;
+	}
+	h1 {
+		@media screen and (min-width:900px) {
+			max-width: 600px;
+			margin-left:auto;
+			margin-right:auto;
+			margin-bottom:1rem;
+			padding-left:1rem;
+		}
+	}
+	.paper{
+		max-width: 100%;
+		@media screen and (min-width:700px) {
+			width: 100%;
+			max-width: 100%;
+		}
+		@media screen and (min-width:900px) {
+			max-width: 600px;
+			margin-left:auto;
+			margin-right:auto;
+		}
+		margin: 1rem 0 0 0;
+		padding: 1rem;
+		cursor: pointer;
+		&:hover {
+			background-color: $primary-dark,
+		}
+		background-color: $primary-black;
+		.wrapper{
+			display: flex;
+			justify-content: space-between;
+			align-items: center;
+			width: 100%;
+			padding-top: 0;
+			.title{
+				flex-grow: 1;
+				margin: 0;
+				color: $primary-light;
+				font-weight: bold;
+			}
+		}
+		.dragHandle{
+			flex-shrink: 0;
+			background:$primary-black;
+			color:#fff;
+			height:2rem;
+			width:2rem;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			padding:1rem;
+			margin-right:1rem;
+		}
+		.numbering{
+			flex-shrink: 0;
+			padding:1rem 1rem 1rem 0;
+			margin-right:1rem;
+			background-color: $primary;
+			color:#fff;
+			border-radius: 50%;
+			height:2rem;
+			width:2rem;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			padding:1rem;
+			margin-right:1rem;
+		}
+	}
+	.remove-song{
+		background:$accent;
+		color:#fff;
+		border-radius: 50%;
+		border:none;
+		width:2rem;
+		height:2rem;
+		padding:0.3rem;
+		font-weight: bold;
+		font-family: $mono-family;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		flex-shrink: 0;
+		&:hover{
+			background-color: $accent-light;
+			cursor: pointer;
+		}
+	}
+}
+.saveOrder{
+	position: fixed;
+	bottom: 4rem;
+	left:1rem;
+}

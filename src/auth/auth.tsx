@@ -1,7 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import useStore from 'store/globalStore';
-import firebase from '../firebase';
-
+import React, { useState, useEffect } from "react";
+import firebase from "../firebase";
 interface IProps {
     children: React.ReactNode;
 }
@@ -24,17 +22,12 @@ export const AuthContext = React.createContext(defaultAuthContext);
 
 const AuthProvider:React.FC<IProps> = ({children}: IProps) => {
 
-	const [goToPage] = useStore((state) => {
-		return [state.goToPage];
-	});
-
 	const [user, setUser] = useState(null as firebase.User | null);
 	const [loadingAuthState, setLoadingAuthState] = useState(true);
 
 	useEffect(() => {
 		firebase.auth().onAuthStateChanged((user) => {
 			setUser(user);
-			goToPage('song-list');
 			setLoadingAuthState(false);
 		});
 	// eslint-disable-next-line react-hooks/exhaustive-deps
@@ -42,7 +35,9 @@ const AuthProvider:React.FC<IProps> = ({children}: IProps) => {
 
 	if (loadingAuthState) {
 		return (
-			<h1>Loading...</h1>
+			<div className="loading">
+				<h1>Loading...</h1>
+			</div>
 		);
 	}
 
