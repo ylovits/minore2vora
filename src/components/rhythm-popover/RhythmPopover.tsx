@@ -1,4 +1,4 @@
-import React from "react";
+import { useState } from "react";
 import { AllRythms } from "interfaces/interfaces";
 import { Chip, Typography, Popover } from "@mui/material";
 import InfoIcon from "@mui/icons-material/Info";
@@ -11,7 +11,7 @@ interface IProps {
 
 const RhythmPopover = ({ rhythmName, rhythmDesription }: IProps) => {
 
-	const [rhythmAnchorEl, setRhythmAnchorEl] = React.useState<Element | ((_element: Element) => Element) | null | undefined>(null);
+	const [rhythmAnchorEl, setRhythmAnchorEl] = useState<HTMLElement | null>(null);
 
 	const handleRhythmClick = (event: React.MouseEvent<HTMLDivElement>) => {
 		setRhythmAnchorEl(event.currentTarget);

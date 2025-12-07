@@ -102,13 +102,13 @@ const Song: React.FC<IProps> = ({ song, setShowDeletePopup }: IProps) => {
 		setOpenTranspose(true);
 	};
 
-	const handleCancelTranspose = (event: React.SyntheticEvent<unknown>, reason?: string) => {
+	const handleCancelTranspose = (_event: React.SyntheticEvent<unknown>, reason?: string) => {
 		if (reason !== "backdropClick") {
 			setOpenTranspose(false);
 		}
 	};
 
-	const handleSaveTranspose = (event: React.SyntheticEvent<unknown>, reason?: string) => {
+	const handleSaveTranspose = (_event: React.SyntheticEvent<unknown>, reason?: string) => {
 		const tempScale = scales.find((scale) => {
 			return scale.key === tempKey.key && scale.type === tempKey.type;
 		})?.value as AllScales;

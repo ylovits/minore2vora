@@ -251,7 +251,7 @@ const SnapshotFirebase: React.FC = () => {
 		setOpenSnackBar(true);
 	};
 
-	const handleCloseSnackBar = (event?: Event | SyntheticEvent<Element, Event>, reason?: SnackbarCloseReason) => {
+	const handleCloseSnackBar = (_event?: Event | SyntheticEvent<Element, Event>, reason?: SnackbarCloseReason) => {
 		if (reason === "clickaway") {
 			return;
 		}
