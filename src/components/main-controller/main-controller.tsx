@@ -45,13 +45,18 @@ const SnapshotFirebase: React.FC = () => {
 	/* load styles */
 
 	/* Import global state parts needed */
-	const [_glob, selectedSong, setSelectedSong, songs, playlists, activePlaylist, setActivePlaylist,
-		showAvailableLists, setShowAvailableLists,
-		setSongs, setPlaylists, setTempUrl, tempUrl] = useStore((state) => {
-		return [state, state.selectedSong, state.setSelectedSong, state.songs, state.playlists, state.activePlaylist, state.setActivePlaylist,
-			state.showAvailableLists, state.setShowAvailableLists,
-			state.setSongs, state.setPlaylists, state.setTempUrl, state.tempUrl];
-	});
+	const selectedSong = useStore((state) => { return state.selectedSong; });
+	const setSelectedSong = useStore((state) => { return state.setSelectedSong; });
+	const songs = useStore((state) => { return state.songs; });
+	const playlists = useStore((state) => { return state.playlists; });
+	const activePlaylist = useStore((state) => { return state.activePlaylist; });
+	const setActivePlaylist = useStore((state) => { return state.setActivePlaylist; });
+	const showAvailableLists = useStore((state) => { return state.showAvailableLists; });
+	const setShowAvailableLists = useStore((state) => { return state.setShowAvailableLists; });
+	const setSongs = useStore((state) => { return state.setSongs; });
+	const setPlaylists = useStore((state) => { return state.setPlaylists; });
+	const setTempUrl = useStore((state) => { return state.setTempUrl; });
+	const tempUrl = useStore((state) => { return state.tempUrl; });
 
 	// Uncomment those lines to get global state logging, also the appConfig import
 	// console.log('Global state:', _glob.selectedSong);
@@ -246,7 +251,7 @@ const SnapshotFirebase: React.FC = () => {
 		setOpenSnackBar(true);
 	};
 
-	const handleCloseSnackBar = (event?: Event | SyntheticEvent<any, Event>, reason?: SnackbarCloseReason) => {
+	const handleCloseSnackBar = (event?: Event | SyntheticEvent<Element, Event>, reason?: SnackbarCloseReason) => {
 		if (reason === "clickaway") {
 			return;
 		}
@@ -313,7 +318,12 @@ const SnapshotFirebase: React.FC = () => {
 			const currentSong = songs.find((song) => {
 				return stringToSlug(song.title) === location.pathname.split("song/").pop();
 			});
-			currentSong ? setSelectedSong(currentSong) : navigate("/song-list");
+			if (currentSong) {
+				setSelectedSong(currentSong);
+			} else if (songs.length > 0) {
+				// Only redirect if songs are loaded and song still not found
+				navigate("/song-list");
+			}
 		} else if (["/login", "/song-list"].includes(location.pathname)) {
 			setSelectedSong(null);
 		}
@@ -325,7 +335,7 @@ const SnapshotFirebase: React.FC = () => {
 		}
 
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [location.pathname]);
+	}, [location.pathname, songs]);
 
 	useEffect(() => {
 		if ((location.pathname.match(/\/(.*?)\//) || [""])[1] === "song") {
@@ -349,11 +359,11 @@ const SnapshotFirebase: React.FC = () => {
 				<Header logout={logout} handleSearchChange={handleSearchChange} showSearch={showSearch} />
 			</Grid>
 			<React.Suspense fallback={<Backdrop className="backdrop" open={true} ><CircularProgress color="inherit" /></Backdrop>}>
-				<Grid item xs={12}>
+				<Grid>
 					<Routes>
 						{user ? (
 							<>
-								<Route path="/" element={<Navigate to="song-list" />} />
+								<Route path="/" element={<Navigate to="/song-list" />} />
 								<Route path="/song/:title" element={
 									<Song
 										song={selectedSong as ISong}
@@ -382,13 +392,13 @@ const SnapshotFirebase: React.FC = () => {
 									<PlaylistForm setShowDeletePlaylistPopup={setShowDeletePlaylistPopup} 
 										handleSubmit={handleEditPlaylist} handleSuccess={handleSuccess} />
 								} />
-								<Route path="*" element={<Navigate to={tempUrl ? tempUrl : "song-list"} />} />
+								<Route path="*" element={<Navigate to={tempUrl ? tempUrl : "/song-list"} />} />
 							</>
 						) : (
 							<>
-								<Route path="/" element={<Navigate to="login" />} />
+								<Route path="/" element={<Navigate to="/login" />} />
 								<Route path="/login" element={<Login />} />
-								<Route path="*" element={<Navigate to="login" />} />
+								<Route path="*" element={<Navigate to="/login" />} />
 							</>
 						)}
 

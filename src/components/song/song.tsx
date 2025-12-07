@@ -32,9 +32,11 @@ const Song: React.FC<IProps> = ({ song, setShowDeletePopup }: IProps) => {
 	/**
 	 * Import global state parts needed
 	 */
-	const [setSelectedSong, setShowDrawer, showDrawer, activePlaylist, playlists] = useStore((state) => {
-		return [state.setSelectedSong, state.setShowDrawer, state.showDrawer, state.activePlaylist, state.playlists];
-	});
+	const setSelectedSong = useStore((state) => { return state.setSelectedSong; });
+	const setShowDrawer = useStore((state) => { return state.setShowDrawer; });
+	const showDrawer = useStore((state) => { return state.showDrawer; });
+	const activePlaylist = useStore((state) => { return state.activePlaylist; });
+	const playlists = useStore((state) => { return state.playlists; });
 
 
 
@@ -64,25 +66,33 @@ const Song: React.FC<IProps> = ({ song, setShowDeletePopup }: IProps) => {
 		if (song && song.key) {
 			setCurrentKey(scaleToKey(song.key));
 			setCurrentScale(song.key);
+			const tempScale = scales.find((scale) => {
+				return scale.value === song.key;
+			});
+			setTempKey({
+				key: tempScale?.key as AllKeys,
+				type: tempScale?.type as "major" | "minor"
+			});
 		}
-		const tempScale = scales.find((scale) => { return scale.value === song.key; });
-		setTempKey({
-			key: tempScale?.key as AllKeys,
-			type: tempScale?.type as "major" | "minor"
-		});
-	}, [song, song.key]);
+	}, [song]);
 
 
 	const [openTranspose, setOpenTranspose] = useState(false);
 	const [tempKey, setTempKey] = useState<{ key: AllKeys, type: "major" | "minor" }>({
-		key: scales.find((scale) => { return scale.value === currentKey; })?.key as AllKeys,
-		type: scales.find((scale) => { return scale.value === currentKey; })?.type as "major" | "minor"
+		key: scales.find((scale) => {
+			return scale.value === currentKey;
+		})?.key as AllKeys,
+		type: scales.find((scale) => {
+			return scale.value === currentKey;
+		})?.type as "major" | "minor"
 	});
 
 	const handleKeyChange = (key: AllKeys) => {
 		setTempKey((oldTempKey) => {
 			return {
-				key: scales.find((scale) => { return scale.value === key; })?.key as AllKeys,
+				key: scales.find((scale) => {
+					return scale.value === key;
+				})?.key as AllKeys,
 				type: oldTempKey.type
 			};
 		});
@@ -99,7 +109,9 @@ const Song: React.FC<IProps> = ({ song, setShowDeletePopup }: IProps) => {
 	};
 
 	const handleSaveTranspose = (event: React.SyntheticEvent<unknown>, reason?: string) => {
-		const tempScale = scales.find((scale) => { return scale.key === tempKey.key && scale.type === tempKey.type; })?.value as AllScales;
+		const tempScale = scales.find((scale) => {
+			return scale.key === tempKey.key && scale.type === tempKey.type;
+		})?.value as AllScales;
 		setCurrentKey(tempKey.key);
 		setCurrentScale(tempScale);
 		if (reason !== "backdropClick") {
@@ -110,6 +122,8 @@ const Song: React.FC<IProps> = ({ song, setShowDeletePopup }: IProps) => {
 	const [selectedInstrument, _setSelectedInstrument] = useState<Instruments>(Instruments._guitar);
 
 	useEffect(() => {
+		if (!song) return;
+
 		let songNo = null;
 		if (playlists) {
 			const pl = playlists.find((pl) => {
@@ -117,7 +131,9 @@ const Song: React.FC<IProps> = ({ song, setShowDeletePopup }: IProps) => {
 			});
 
 			if (pl) {
-				songNo = pl.songs?.findIndex((sng) => { return sng === song.title; }) + 1 || null;
+				songNo = pl.songs?.findIndex((sng) => {
+					return sng === song.title;
+				}) + 1 || null;
 				if (songNo) {
 					setSongNoInfo({
 						songNo,
@@ -127,7 +143,13 @@ const Song: React.FC<IProps> = ({ song, setShowDeletePopup }: IProps) => {
 				}
 			}
 		}
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [song]);
+
+	// Return loading state if song is null
+	if (!song) {
+		return <div className="Song"><Container maxWidth="md"><Typography>Loading...</Typography></Container></div>;
+	}
 
 	return (
 		<div className="Song">

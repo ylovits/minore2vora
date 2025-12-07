@@ -1,8 +1,6 @@
 import React, { useEffect, useState } from "react";
 import ChordSheetJS, { Line, Song } from "chordsheetjs";
-import ChordSVG from "components/song/ChordSVG";
-import GuitarDB from "assets/chords-db/guitar.json";
-import UkuleleDB from "assets/chords-db/ukulele.json";
+// import ChordSVG from "components/song/ChordSVG";
 import { AllKeys, ISong } from "interfaces/interfaces";
 import { transposeChord, scaleToKey } from "utils/transpose";
 import { crossLangSafeguard } from "utils/characterMap";
@@ -13,18 +11,18 @@ export interface Instrument {
 	strings: number;
 	fretsOnChord: number;
 	name: string;
-	keys: any[];
+	keys: string[];
 	tunings: {
 		standard: string[];
 	};
 }
 
 
-export const checkForDoubles = (string: string) => {
-	return string.includes("]x");
+export const checkForDoubles = (string?: string) => {
+	return string?.includes("]x") ?? false;
 };
 
-const parser = new ChordSheetJS.ChordSheetParser();
+const parser = new ChordSheetJS.ChordsOverWordsParser();
 const serializer = new ChordSheetJS.ChordSheetSerializer();
 
 export const songToParsed = (body: string) => { return parser.parse(body); };
@@ -36,28 +34,16 @@ interface IProps {
 	currentKey: AllKeys | undefined;
 }
 
-const SVGIntroducer = ({ song, selectedInstrument, currentKey}: IProps) => {
+const SVGIntroducer = ({ song, selectedInstrument: _selectedInstrument, currentKey}: IProps) => {
 
 	/* Import global state parts needed */
-	const [showChords] = useStore((state) => { return [	state.showChords ]; }) ;
+	const showChords = useStore((state) => { return state.showChords; });
 
 	const [chordSheet, setChordSheet] = useState<Song>();
 	const [serializedSong, setSerializedSong] = useState<{
 		type: string;
 		lines: Line[];
 	}>();
-	const [db, setDb] = useState<any>(GuitarDB);
-
-	const [instrument, setInstrument] = useState<Instrument>({
-		strings: 6,
-		fretsOnChord: 4,
-		name: "Guitar",
-		keys: [],
-		tunings: {
-			standard: ["E", "A", "D", "G", "B", "E"],
-		},
-	});
-	const lite = true;
 
 	useEffect(() => {
 		if (!!song && typeof song.body === "string") {
@@ -79,31 +65,6 @@ const SVGIntroducer = ({ song, selectedInstrument, currentKey}: IProps) => {
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [chordSheet]);
 
-	useEffect(() => {
-		if (selectedInstrument === "guitar") {
-			setInstrument({
-				strings: 6,
-				fretsOnChord: 4,
-				name: "Guitar",
-				keys: [],
-				tunings: {
-					standard: ["E", "A", "D", "G", "B", "E"],
-				},
-			});
-			setDb(GuitarDB);
-		} else if (selectedInstrument === "ukulele") {
-			setInstrument({
-				strings: 4,
-				fretsOnChord: 4,
-				name: "Ukulele",
-				keys: [],
-				tunings: {
-					standard: ["G", "C", "E", "A"],
-				},
-			});
-			setDb(UkuleleDB);
-		}
-	}, [selectedInstrument]);
 
 	const _specialParser = (string:string) =>  {
 		return currentKey ?
@@ -151,8 +112,11 @@ const SVGIntroducer = ({ song, selectedInstrument, currentKey}: IProps) => {
 								const item = JSON.parse(JSON.stringify(lineItem));
 
 								if (!item.chords) {
+									if (!item.lyrics) {
+										return null;
+									}
 									if (checkForDoubles(item.lyrics)) {
-										const strArr = item.lyrics.split(']x');
+										const strArr = item.lyrics.split("]x");
 										return (
 											<div key={`line-${i}-group-${y}`} >
 												{strArr[0]}<span className="accent">]x{strArr[1]}</span>
@@ -169,60 +133,20 @@ const SVGIntroducer = ({ song, selectedInstrument, currentKey}: IProps) => {
 								let name = item.chords.trim();
 								if (!name) return null;
 
-								const secondaryFingeringTest = /(?=.*\)\)$)(?=.*-\(\().*$/;
-								let fingering = 0;
-								if (secondaryFingeringTest.test(dirtyName) && dirtyName.length > 6) {
+								// Chord parsing logic removed - fingering notation handling
+								if (dirtyName.length > 6 && /(?=.*\)\)$)(?=.*-\(\().*$/.test(dirtyName)) {
 									name = dirtyName.substring(0, dirtyName.length - 6);
-									fingering = dirtyName[dirtyName.length - 3];
-								}
-								let key = name.charAt(0);
-								const checkForModifiers = name.charAt(1);
-								let suf = name.substring(1);
-								if (checkForModifiers === "#") {
-									key += "sharp";
-									suf = name.substring(2);
-								} else if (checkForModifiers === "b") {
-									key += "b";
-									suf = name.substring(2);
-								}
-
-								suf = suf.replace(/ *\([^)]*\) */g, "");
-
-								if (!!suf) {
-									if (suf === "m") {
-										suf = "minor";
-									}
-								} else {
-									suf = "major";
-								}
-
-								let chord = null;
-
-								if (db.chords[key as keyof typeof db.chords]) {
-									chord = db.chords[key as keyof typeof db.chords].find((suffix:any) => {
-										return suffix.suffix === suf;
-									});
-								}
-
-								let positions =  null;
-								if (chord && chord.positions) {
-									positions = chord.positions;
-								}
-
-								let chordSchema = null;
-								if (!!positions && !!positions.length) {
-									chordSchema = positions[fingering];
 								}
 
 								return (
 									<span key={`line-${i}-group-${y}`} className="mt-2">
 										<div className={`text-xs text-red-600 chord ${showChords ? "showChords" : ""}`}>
-											{(!!chordSchema && showChords) && <ChordSVG
+											{/* {(!!chordSchema && showChords) && <ChordSVG
 												chord={chordSchema}
 												instrument={instrument}
 												lite={lite}
 												title={name}
-											/>}
+											/>} */}
 											{currentKey ? <strong>{transposeChord(
 												crossLangSafeguard(name), scaleToKey(song.key), currentKey
 											)}</strong> :

@@ -1,5 +1,5 @@
 import * as globalTypes from "store/globalTypes";
-import create from "zustand";
+import { create } from "zustand";
 import firebase from "firebase/compat/app";
 import "firebase/compat/auth";
 import "firebase/compat/firestore";

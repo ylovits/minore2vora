@@ -1,3 +1,5 @@
+@use '../assets/styles/style_resources.scss' as *;
+
 *, body, html {
 	font-family: $mono-family;
 }

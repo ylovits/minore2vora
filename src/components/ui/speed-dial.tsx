@@ -5,7 +5,7 @@ import SpeedDial from "@mui/material/SpeedDial";
 import SpeedDialIcon from "@mui/material/SpeedDialIcon";
 import SpeedDialAction from "@mui/material/SpeedDialAction";
 import { useChangeTheme } from "components/ui/themeProvider";
-import useTheme from "@mui/material/styles/useTheme";
+import { useTheme } from "@mui/material/styles";
 import Brightness4Icon from "@mui/icons-material/Brightness4";
 import Brightness7Icon from "@mui/icons-material/Brightness7";
 import FilterListIcon from "@mui/icons-material/FilterList";
@@ -28,36 +28,24 @@ const SpeedDialComp = () => {
 	const navigate = useNavigate();
 
 	/* Import global state parts needed */
-	const [
-		setShowChords,
-		showChords,
-		setShowDrawer,
-		showDrawer,
-		setShowFilters,
-		showFilters,
-		setSelectedSong,
-		setActivePlaylist,
-		showAvailableLists,
-		setShowAvailableLists
-	] =
-		useStore((state) => {
-			return [
-				state.setShowChords,
-				state.showChords,
-				state.setShowDrawer,
-				state.showDrawer,
-				state.setShowFilters,
-				state.showFilters,
-				state.setSelectedSong,
-				state.setActivePlaylist,
-				state.showAvailableLists,
-				state.setShowAvailableLists
-			];
-		});
+	const setShowChords = useStore((state) => { return state.setShowChords; });
+	const showChords = useStore((state) => { return state.showChords; });
+	const setShowDrawer = useStore((state) => { return state.setShowDrawer; });
+	const showDrawer = useStore((state) => { return state.showDrawer; });
+	const setShowFilters = useStore((state) => { return state.setShowFilters; });
+	const showFilters = useStore((state) => { return state.showFilters; });
+	const setSelectedSong = useStore((state) => { return state.setSelectedSong; });
+	const setActivePlaylist = useStore((state) => { return state.setActivePlaylist; });
+	const showAvailableLists = useStore((state) => { return state.showAvailableLists; });
+	const setShowAvailableLists = useStore((state) => { return state.setShowAvailableLists; });
 
 	const [open, setOpen] = React.useState(false);
-	const handleOpen = () => { setOpen(true); };
-	const handleClose = () => { setOpen(false); };
+	const handleOpen = () => {
+		setOpen(true);
+	};
+	const handleClose = () => {
+		setOpen(false);
+	};
 
 	const theme = useTheme();
 	const changeTheme = useChangeTheme();
@@ -196,10 +184,10 @@ const SpeedDialComp = () => {
 		{
 			icon: <BorderAllIcon />,
 			name: ACTION_NAMES.SHOW_CHORDS,
-			action: () => { 
+			action: () => {
 				setOpen(false);
 				setTimeout(() => {
-					setShowChords(!showChords); 
+					setShowChords(!showChords);
 				}, 200);
 			},
 			fabProps: {
@@ -215,10 +203,10 @@ const SpeedDialComp = () => {
 		{
 			icon: <FilterListIcon />,
 			name: ACTION_NAMES.FILTER,
-			action: () => { 
+			action: () => {
 				setOpen(false);
 				setTimeout(() => {
-					setShowFilters(!showFilters); 
+					setShowFilters(!showFilters);
 				}, 200);
 			},
 			fabProps: {

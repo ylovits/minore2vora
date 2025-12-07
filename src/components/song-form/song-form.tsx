@@ -28,9 +28,8 @@ const SongForm: React.FC<IProps> = ({ handleSubmit, handleSuccess }: IProps) => 
 	/**
 	 * Import global state parts needed
 	 */
-	const [selectedSong, playlists] = useStore((state) => {
-		return [state.selectedSong, state.playlists];
-	});
+	const selectedSong = useStore((state) => { return state.selectedSong; });
+	const playlists = useStore((state) => { return state.playlists; });
 
 	const [song, setSong] = useState<ISong>({
 		id: "",
@@ -52,7 +51,7 @@ const SongForm: React.FC<IProps> = ({ handleSubmit, handleSuccess }: IProps) => 
 	};
 
 	const validateYoutube = (url:string) => {
-		if (url !== undefined || url !== '') {
+		if (url !== undefined || url !== "") {
 			const regExp = /^(https?\:\/\/)?(www\.youtube\.com|youtu\.be)\/.+$/;
 			if (url.match(regExp)) {
 				setYoutubeError(false);
@@ -224,7 +223,9 @@ const SongForm: React.FC<IProps> = ({ handleSubmit, handleSuccess }: IProps) => 
 							}
 							onChangeSelect(values, "dromos");
 						}}
-						renderValue={(selected) => { return (selected as string[]).join(", "); }}
+						renderValue={(selected) => {
+							return (selected as string[]).join(", ");
+						}}
 						MenuProps={{
 							PaperProps: {
 								style: {
@@ -265,7 +266,9 @@ const SongForm: React.FC<IProps> = ({ handleSubmit, handleSuccess }: IProps) => 
 							}
 							onChangeSelect(values, "rhythm");
 						}}
-						renderValue={(selected) => { return (selected as string[]).join(", "); }}
+						renderValue={(selected) => {
+							return (selected as string[]).join(", ");
+						}}
 						MenuProps={{
 							PaperProps: {
 								style: {
